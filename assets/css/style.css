@@ -1,3 +1,8 @@
+/* Custom Variables to change block dimensions */
+:root {
+    --block-dimensions: 50px;
+}
+
 /* Global reset to enable consistency across browsers */
 * {
     padding: 0;
@@ -9,4 +14,50 @@
 body {
     color: white;
     background-color: black;
+}
+
+/* Title Section Styles */
+.title-section {
+    background-color: lightgreen;
+    text-align: center;
+    font-size: 200%;
+}
+
+/* Actions Sections Styles */
+.action-section {
+    display: flex;
+    justify-content: space-evenly;
+    padding-block: 1rem;
+    background-color: lightblue;
+}
+
+/* Level Section Styles */
+.level-section {
+    background-color: lightpink;
+    text-align: center;
+}
+
+/* Stack Section Styles */
+.stack-section {
+    background-color: black;
+    padding-block: 2rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+    row-gap: 1rem;
+    align-items: flex-end;
+}
+
+.stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stack__block {
+    height: 50px;
+    width: 50px;
+    border: 1px solid white;
+    color: white;
 }
