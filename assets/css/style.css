@@ -1,0 +1,12 @@
+/* Global reset to enable consistency across browsers */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Added to test connectivity to the index.html file -- will be removed */
+body {
+    color: white;
+    background-color: black;
+}
