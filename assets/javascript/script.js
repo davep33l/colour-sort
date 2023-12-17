@@ -1,2 +1,5 @@
-// Added to test connectivity to the index.html file -- will be removed */
-console.log("testing")
+window.onload = checkLoaded();
+
+function checkLoaded() {
+    console.log("The window has loaded")
+}
