@@ -18,3 +18,16 @@ This project was deployed to Github Pages using the following process:
 10. Select this workflow action and there will be a link under the deploy aspect of the workflow
 11. Select the link to view the site
 12. The link for this site is https://davep33l.github.io/colour-sort/
+
+
+## Credits
+
+### Code
+
+### Content
+
+### Media
+
+### Acknowledgements
+
+To help maintain consistency with my git commits, I have utilised a local template highlighted in [this](https://blog.ossph.org/how-to-write-a-good-git-commit-message/#setting-up-a-commit-message-template) article.
