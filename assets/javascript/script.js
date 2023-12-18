@@ -27,6 +27,7 @@ class Game {
         // using the levelIncrements property to determine how many additional stacks to start the 
         // game with. 
         this.startingStackAmt = this.baseStackAmt;
+        this.stacksToFill = 2;
 
 
     }
@@ -180,6 +181,16 @@ class Game {
         console.log(newQuantity)
         this.startingStackAmt = newQuantity
     }
+
+    getStacksToFill() {
+        return this.stacksToFill
+    }
+
+    //2nd required function to initialise the game
+    setStacksToFill() {
+        this.stacksToFill = this.startingStackAmt - this.baseEmptyStackAmt
+    }
+
 }
 
 // Checks for the window to have loaded before running the game initialisation
