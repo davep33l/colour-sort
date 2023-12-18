@@ -141,9 +141,6 @@ class Game {
 
     updateBaseStackAmt(integer) {
 
-        console.log(typeof integer)
-        console.log(Number.isInteger(integer))
-
         /* 
             The below code is for protection against input of an incorrect data type, 
             as only an integer can be passed into the function. If an incorrect type 
@@ -151,7 +148,6 @@ class Game {
             baseStackAmt property set at its default value. 
         */
         if (!Number.isInteger(integer)) {
-            console.log("not a number");
             return;
         }
 
@@ -177,9 +173,6 @@ class Game {
 
     updateBaseBlockAmt(integer) {
 
-        console.log(typeof integer)
-        console.log(Number.isInteger(integer))
-
         /* 
             The below code is for protection against input of an incorrect data type, 
             as only an integer can be passed into the function. If an incorrect type 
@@ -187,7 +180,6 @@ class Game {
             baseBlockAmt property set at its default value. 
         */
         if (!Number.isInteger(integer)) {
-            console.log("not a number");
             return;
         }
 
@@ -213,9 +205,6 @@ class Game {
 
     updateBaseEmptyStackAmt(integer) {
 
-        console.log(typeof integer)
-        console.log(Number.isInteger(integer))
-
         /* 
             The below code is for protection against input of an incorrect data type, 
             as only an integer can be passed into the function. If an incorrect type 
@@ -223,7 +212,6 @@ class Game {
             baseEmptyStackAmt property set at its default value. 
         */
         if (!Number.isInteger(integer)) {
-            console.log("not a number");
             return;
         }
 
@@ -265,7 +253,6 @@ class Game {
     //1st required function to initialise the game
     setStartingStackAmt() {
         let newQuantity = 0;
-        console.log(newQuantity)
 
         for (let i = 0; i < this.levelIncrements.length; i++) {
             if (this.level < this.levelIncrements[i]) {
@@ -275,7 +262,6 @@ class Game {
                 newQuantity = this.baseStackAmt + i;
             }
         }
-        console.log(newQuantity)
         this.startingStackAmt = newQuantity
     }
 
