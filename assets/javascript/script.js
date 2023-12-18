@@ -73,8 +73,10 @@ class Game {
         */
         // this colour array serves as the base colours for the blocks to be used throughout the game
         this.baseColours = [
-            '#e6194B', // Red
-            '#3cb44b', // Green
+            "red",
+            "green",
+            // '#e6194B', // Red
+            // '#3cb44b', // Green
             '#ffe119', // Yellow
             '#4363d8', // Blue
             '#f58231', // Orange
@@ -340,7 +342,12 @@ class Game {
     }
 
     setBlockColour() {
-        //placeholder
+        for (let i = 0; i < this.stacksToFill; i++) {
+            for (let j = 0; j < this.baseBlockAmt; j++) {
+                this.gameStacks[i].blocks[j].colour = this.inGameColours[0]
+                this.inGameColours.shift();
+            }
+        }
     }
 
     setIds() {
@@ -427,4 +434,6 @@ function hasLoaded() {
     newGame.setStacksToFill();
     newGame.setInGameColours();
     newGame.createBaseStacks();
+    newGame.createBaseStacks();
+    newGame.setBlockColour();
 }
