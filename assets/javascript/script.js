@@ -427,6 +427,20 @@ class Game {
         }
     }
 
+    initialiseGame() {
+
+        this.clearGameStacks();
+        this.setStartingStackAmt();
+        this.setStacksToFill();
+        this.setInGameColours();
+        this.createBaseStacks();
+        this.createBaseStacks();
+        this.setBlockColour();
+        this.setIds();
+        this.addStackToDOM();
+        this.addEventListenersStackArea();
+    }
+
     handleGameClicks(event) {
         console.log("click received")
 
@@ -547,8 +561,14 @@ class Game {
         //placeholder
     }
 
+    // the below method clears the stacks from the DOM and is called at the 
+    // start of the initialisation method. The reference for this method was
+    // from w3schools. Link below
+    //Link: https://www.w3schools.com/jsref/met_node_removechild.asp
     clearGameStacks() {
-        //placeholder
+        while (this.domStackSection.hasChildNodes()) {
+            this.domStackSection.removeChild(this.domStackSection.firstChild);
+        }
     }
 
 }
@@ -713,13 +733,5 @@ window.onload = hasLoaded();
 function hasLoaded() {
     console.log("The window has loaded")
     newGame = new Game();
-    newGame.setStartingStackAmt();
-    newGame.setStacksToFill();
-    newGame.setInGameColours();
-    newGame.createBaseStacks();
-    newGame.createBaseStacks();
-    newGame.setBlockColour();
-    newGame.setIds();
-    newGame.addStackToDOM();
-    newGame.addEventListenersStackArea();
+    newGame.initialiseGame();
 }
