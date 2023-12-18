@@ -426,7 +426,38 @@ class Game {
         console.log(this)
         console.log(event.currentTarget)
         console.log(event.currentTarget === this)
+
+
+        //result from this method is sent to compareBlocks method
     }
+
+    compareBlocks() {
+        //placeholder that is called from handleGameClicks
+
+
+        //result from this method is sent to moveBlocks method
+    }
+
+    moveBlocks() {
+        //placeholder that is called from moveBlocks method
+
+
+
+        //always calls a hasWon method after moving the blocks
+    }
+
+    hasWon() {
+        //checks to see if game has won and resarts the game if it has
+    }
+
+    increaseLevel() {
+        //placeholder
+    }
+
+    clearGameStacks() {
+        //placeholder
+    }
+
 }
 
 // Block class for generating a block object
