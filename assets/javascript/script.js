@@ -145,6 +145,9 @@ class Game {
         this.blockClass = "stack__block";
         this.stackClass = "stack";
 
+        // Property to target the stack-section on the DOM
+        this.domStackSection = document.getElementById('stack-section');
+
     }
     // ###################################
     // # PRE-GAME INITIALISATION METHODS #
@@ -375,7 +378,25 @@ class Game {
     }
 
     addStackToDOM() {
-        //placeholder
+
+        for (let i = 0; i < this.gameStacks.length; i++) {
+            let stackForDOM = document.createElement('div');
+
+            stackForDOM.id = this.gameStacks[i].id;
+            stackForDOM.classList.add('stack');
+
+            for (let j = 0; j < this.gameStacks[i].blocks.length; j++) {
+                let blockForDOM = document.createElement('div');
+
+                // adds a concatenation of the parent stack id and the block id as the html id
+                blockForDOM.id = `${this.gameStacks[i].blocks[j].id}`;
+                blockForDOM.classList.add('stack__block');
+                blockForDOM.style.backgroundColor = this.gameStacks[i].blocks[j].colour;
+                stackForDOM.appendChild(blockForDOM);
+
+            }
+            this.domStackSection.append(stackForDOM);
+        }
     }
 
     addEventListenersStackArea() {
@@ -456,4 +477,6 @@ function hasLoaded() {
     newGame.createBaseStacks();
     newGame.createBaseStacks();
     newGame.setBlockColour();
+    newGame.setIds();
+    newGame.addStackToDOM();
 }
