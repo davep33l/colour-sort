@@ -100,3 +100,5 @@ This game was created using HTML, CSS and vanilla Javascript.
 ### Acknowledgements
 
 To help maintain consistency with my git commits, I have utilised a local template highlighted in [this](https://blog.ossph.org/how-to-write-a-good-git-commit-message/#setting-up-a-commit-message-template) article.
+
+In the interest of accessibility, I searched for colours that were unique enough, but maintained a enough contrast/difference to be distinguishable. This lead me to [this](https://sashamaps.net/docs/resources/20-colors/) website with a great resource of colours trying to solve a similar problem but for subway map lines. I selected a list of colours from this which I deemed appropriate for the game. 

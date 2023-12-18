@@ -29,6 +29,36 @@ class Game {
         this.startingStackAmt = this.baseStackAmt;
         this.stacksToFill = 2;
 
+        /*  
+            In the interest of accessibility, I searched for colours that were unique enough, 
+            but maintained a enough contrast/difference to be distinguishable. This lead me to 
+            the following website with a great resource of colours trying to solve a similar problem
+            but for subway map lines. I selected a list of colours from this which I deemed 
+            appropriate for the game. 
+        
+            Link: https://sashamaps.net/docs/resources/20-colors/
+        */
+        // this colour array serves as the base colours for the blocks to be used throughout the game
+        this.baseColours = [
+            '#e6194B', // Red
+            '#3cb44b', // Green
+            '#ffe119', // Yellow
+            '#4363d8', // Blue
+            '#f58231', // Orange
+            '#911eb4', // Purple
+            '#42d4f4', // Cyan
+            '#f032e6', // Magenta
+            '#bfef45', // Lime
+            '#fabed4', // Pink
+            '#469990', // Teal
+            '#dcbeff', // Lavender
+            '#9A6324', // Brown
+            '#fffac8', // Beige
+            '#800000', // Maroon
+            '#808000', // Olive
+            '#000075', // Navy
+            '#a9a9a9', // Grey
+        ];
 
     }
     // ###################################
@@ -161,11 +191,11 @@ class Game {
         this.levelIncrements = array
     }
 
-    //lst required function to initialise the game
     getStartingStackAmt() {
         return this.startingStackAmt
     }
 
+    //1st required function to initialise the game
     setStartingStackAmt() {
         let newQuantity = 0;
         console.log(newQuantity)
@@ -189,6 +219,14 @@ class Game {
     //2nd required function to initialise the game
     setStacksToFill() {
         this.stacksToFill = this.startingStackAmt - this.baseEmptyStackAmt
+    }
+
+    getBaseColours() {
+        return this.baseColours;
+    }
+
+    setBaseColours(array) {
+        this.baseColours = array;
     }
 
 }
