@@ -1,3 +1,36 @@
+
+/* 
+    This game utilised 3 class objects to enable the functionality of the game. Along 
+    with an initialisation function after the window.onload is successful. 
+
+    These objects will run in conjunction with the updating of the DOM and maintain
+    up to date state of the game. For properties such as block id, stack id, stack 
+    selected (first and second), base initialisation properties, like the amount
+    of stacks and blocks to start the game with, along with methods to update and 
+    retrieve those properties. Also for colours used in the game and the methods used
+    to create a randomised game colour array. 
+
+    There are also methods that create the relevant game objects (Blocks and Stacks), by 
+    adding id's, class names, colours. Along with event listeners/handlers to update
+    the DOM.
+
+    A Game class:
+    This houses all the relevant properties and methods to enable the game initialisation
+    and the creation of the blocks and stacks using the Block and Stack classes. Also
+    holds the main event handler function and supporting methods. 
+
+    A Block class: 
+    This object holds the base information of id and colour, which is the most granular level
+    of information used to allow the game to function. Keeping these updated allows for 
+    the DOM to updated at the same time. 
+
+    A Stack class:
+    This object holds initial information on the Stack object such as id and the blocks in the stack. 
+    These are updated to the DOM to keep in sync. 
+    There are also methods on this class that track pertinent inPlay game variables to help 
+    determine which blocks are eligible for moving, eligible block colours and id's. 
+*/
+
 class Game {
     constructor() {
 
@@ -293,6 +326,61 @@ class Game {
     }
 }
 
+// Block class for generating a block object
+class Block {
+    constructor() {
+        this.id = "";
+        this.colour = "";
+    }
+
+    // Start of BLOCK INITIALISATION methods
+    getBlockColour() {
+        return this.colour;
+    }
+
+    setBlockColour(newColour) {
+        this.colour = newColour
+    }
+
+    getBlockId() {
+        return this.id;
+    }
+
+    setBlockId(newId) {
+        this.id = newId;
+    }
+    // End of of BLOCK INITIALISATION methods
+}
+
+// Stack class for generating a Stack object (which will contain an array of Blocks)
+class Stack {
+    constructor() {
+        // id and blocks are set at an initialisation level so will always be accessable 
+        // to the other properties in the class
+        this.id = "";
+        this.blocks = [];
+    }
+
+    // Start of STACK INITIALISATION methods
+    getStackId() {
+        return this.id;
+    }
+
+    setStackId(newId) {
+        this.id = newId;
+    }
+
+    getStackBlocks() {
+        return this.blocks;
+    }
+
+    setStackBlocks(blockArray) {
+        this.blocks = blockArray;
+    }
+    // End of of STACK INITIALISATION methods
+}
+
+
 // Checks for the window to have loaded before running the game initialisation
 window.onload = hasLoaded();
 
@@ -303,6 +391,5 @@ function hasLoaded() {
     newGame = new Game();
     newGame.setStartingStackAmt();
     newGame.setStacksToFill();
-    newGame.setInGameColours();
     newGame.setInGameColours();
 }
