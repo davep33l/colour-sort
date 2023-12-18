@@ -151,7 +151,7 @@ class Game {
         // #####################
         // # In Game Variables #
         // #####################
-        this.firstStackId = undefined
+        this.firstStackId = undefined;
         this.secondStackId = undefined;
 
 
@@ -228,7 +228,7 @@ class Game {
     }
 
     setBaseEmptyStackAmt(integer) {
-        this.baseEmptyStackAmt;
+        this.baseEmptyStackAmt = integer;
     }
 
     updateBaseEmptyStackAmt(integer) {
@@ -267,15 +267,15 @@ class Game {
     }
 
     getLevelIncrements() {
-        return this.levelIncrements
+        return this.levelIncrements;
     }
 
     setLevelIncrements(array) {
-        this.levelIncrements = array
+        this.levelIncrements = array;
     }
 
     getStartingStackAmt() {
-        return this.startingStackAmt
+        return this.startingStackAmt;
     }
 
     //1st required function to initialise the game
@@ -290,16 +290,16 @@ class Game {
                 newQuantity = this.baseStackAmt + i;
             }
         }
-        this.startingStackAmt = newQuantity
+        this.startingStackAmt = newQuantity;
     }
 
     getStacksToFill() {
-        return this.stacksToFill
+        return this.stacksToFill;
     }
 
     //2nd required function to initialise the game
     setStacksToFill() {
-        this.stacksToFill = this.startingStackAmt - this.baseEmptyStackAmt
+        this.stacksToFill = this.startingStackAmt - this.baseEmptyStackAmt;
     }
 
     getBaseColours() {
@@ -311,14 +311,14 @@ class Game {
     }
 
     getInGameColours() {
-        return this.inGameColours
+        return this.inGameColours;
     }
 
     //3rd required function to initialise the game
     setInGameColours() {
 
         let coloursRequired = 0;
-        coloursRequired = this.stacksToFill * this.baseBlockAmt
+        coloursRequired = this.stacksToFill * this.baseBlockAmt;
 
         let tempArray1 = [];
         for (let i = 0; i < this.stacksToFill; i++) {
@@ -327,42 +327,42 @@ class Game {
             }
         }
 
-        let tempArray2 = []
+        let tempArray2 = [];
         for (let i = 0; i < coloursRequired; i++) {
             let multiplier = 0;
             multiplier = tempArray1.length;
             let randomNumber = 0;
-            randomNumber = Math.floor(Math.random() * multiplier)
+            randomNumber = Math.floor(Math.random() * multiplier);
             tempArray2.push(tempArray1[randomNumber]);
             tempArray1.splice(randomNumber, 1);
         }
-        this.inGameColours = tempArray2
+        this.inGameColours = tempArray2;
     }
 
     // this uses the block and stack class to create an empty array based on the 
     // variables set in the initialisation. 
     createBaseStacks() {
 
-        let stacks = []
+        let stacks = [];
 
         //create stacks filled with colours
         for (let i = 0; i < this.startingStackAmt; i++) {
             let newStack = new Stack();
-            let tempStack = []
+            let tempStack = [];
             for (let j = 0; j < this.baseBlockAmt; j++) {
-                let newBlock = new Block()
+                let newBlock = new Block();
                 tempStack.push(newBlock);
             }
             newStack.blocks = tempStack;
-            stacks.push(newStack)
+            stacks.push(newStack);
         }
-        return this.gameStacks = stacks;
+        this.gameStacks = stacks;
     }
 
     setBlockColour() {
         for (let i = 0; i < this.stacksToFill; i++) {
             for (let j = 0; j < this.baseBlockAmt; j++) {
-                this.gameStacks[i].blocks[j].colour = this.inGameColours[0]
+                this.gameStacks[i].blocks[j].colour = this.inGameColours[0];
                 this.inGameColours.shift();
             }
         }
@@ -371,15 +371,11 @@ class Game {
     setIds() {
 
         for (let i = 0; i < this.startingStackAmt; i++) {
-
-            this.gameStacks[i].id = this.stackIdPrefix + i
-            this.gameStacks[i].class = this.stackClass
-
+            this.gameStacks[i].id = this.stackIdPrefix + i;
+            this.gameStacks[i].class = this.stackClass;
             for (let j = 0; j < this.baseBlockAmt; j++) {
-
-                this.gameStacks[i].blocks[j].id = this.stackIdPrefix + i + this.blockIdPrefix + j
-                this.gameStacks[i].blocks[j].class = this.blockClass
-
+                this.gameStacks[i].blocks[j].id = this.stackIdPrefix + i + this.blockIdPrefix + j;
+                this.gameStacks[i].blocks[j].class = this.blockClass;
             }
         }
     }
@@ -419,7 +415,6 @@ class Game {
         Link: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#the_value_of_this_within_the_handler
 
     */
-
     addEventListenersStackArea() {
 
         for (let i = 0; i < this.gameStacks.length; i++) {
@@ -434,7 +429,6 @@ class Game {
         this.setStacksToFill();
         this.setInGameColours();
         this.createBaseStacks();
-        this.createBaseStacks();
         this.setBlockColour();
         this.setIds();
         this.addStackToDOM();
@@ -442,7 +436,7 @@ class Game {
     }
 
     handleGameClicks(event) {
-        console.log("click received")
+        console.log("click received");
 
         // this is used to define the html node selected with the click (stack)
         let stackNode = event.currentTarget;
@@ -465,7 +459,7 @@ class Game {
             The only section of code used from this website was the single line referenced below with the find method (but using my 
             gameStacks array as the object to run find on).
         */
-        let obj = this.gameStacks.find(item => item.id === stackId)
+        let obj = this.gameStacks.find(item => item.id === stackId);
 
         //count the number of full blocks (ie blocks with colours)
         obj.updateCountOfFullBlocks();
@@ -480,7 +474,7 @@ class Game {
         // console.log(obj.getIsEmpty());
 
         //check if it is full (ie colours on all blocks)
-        obj.updateIsFilled()
+        obj.updateIsFilled();
         // console.log(obj.getIsFilled());
 
 
@@ -506,22 +500,22 @@ class Game {
         */
         if (this.firstStackId == undefined) {
             if (obj.getIsEmpty()) {
-                console.log("cannot click on an empty stack for your first click")
+                console.log("cannot click on an empty stack for your first click");
                 return;
             } else {
-                console.log("setting firstStackId")
+                console.log("setting firstStackId");
                 this.firstStackId = stackId;
             }
         } else {
             if (obj.getIsFilled() || stackId == this.firstStackId) {
-                console.log("click same stack or full stack")
+                console.log("click same stack or full stack");
 
                 this.firstStackId = undefined;
                 this.secondStackId = undefined;
 
                 return;
             } else {
-                console.log("setting secondStackId")
+                console.log("setting secondStackId");
                 this.secondStackId = stackId;
 
                 this.compareBlocks();
@@ -534,10 +528,10 @@ class Game {
 
     compareBlocks() {
         //placeholder that is called from handleGameClicks
-        console.log("firstStackId is: " + this.firstStackId)
-        console.log("secondStackId is: " + this.secondStackId)
+        console.log("firstStackId is: " + this.firstStackId);
+        console.log("secondStackId is: " + this.secondStackId);
 
-        console.log("comparing blocks")
+        console.log("comparing blocks");
 
         this.firstStackId = undefined;
         this.secondStackId = undefined;
@@ -586,7 +580,7 @@ class Block {
     }
 
     setBlockColour(newColour) {
-        this.colour = newColour
+        this.colour = newColour;
     }
 
     getBlockId() {
@@ -634,10 +628,10 @@ class Stack {
     setStackBlocks(blockArray) {
         this.blocks = blockArray;
     }
-
     // ##########################################
     // # End of of STACK INITIALISATION methods #
     // ##########################################
+
 
     // ################################
     // # Start of CLICK ORDER methods #
@@ -656,10 +650,10 @@ class Stack {
         let counter = 0;
         for (let i = 0; i < this.blocks.length; i++) {
             if (this.blocks[i].colour !== "") {
-                counter++
+                counter++;
             }
         }
-        this.setCountOfFullBlocks(counter)
+        this.setCountOfFullBlocks(counter);
     }
 
     getCountOfEmptyBlocks() {
@@ -676,14 +670,14 @@ class Stack {
         let counter = 0;
         for (let i = 0; i < this.blocks.length; i++) {
             if (this.blocks[i].colour == "") {
-                counter++
+                counter++;
             }
         }
-        this.setCountOfEmptyBlocks(counter)
+        this.setCountOfEmptyBlocks(counter);
     }
 
     getIsEmpty() {
-        return this.isEmpty
+        return this.isEmpty;
     }
 
     setIsEmpty(bool) {
@@ -695,9 +689,9 @@ class Stack {
         // console.log("empty: " + this.getCountOfEmptyBlocks())
 
         if (this.getCountOfEmptyBlocks() == this.blocks.length) {
-            this.setIsEmpty(true)
+            this.setIsEmpty(true);
         } else {
-            this.setIsEmpty(false)
+            this.setIsEmpty(false);
         }
     }
 
@@ -731,7 +725,7 @@ window.onload = hasLoaded();
 // Game initialisation function which creates a new Game object, where the
 // base properties can be set. 
 function hasLoaded() {
-    console.log("The window has loaded")
-    newGame = new Game();
+    console.log("The window has loaded");
+    const newGame = new Game();
     newGame.initialiseGame();
 }
