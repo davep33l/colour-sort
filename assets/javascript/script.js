@@ -455,24 +455,64 @@ class Game {
 
         //count the number of full blocks (ie blocks with colours)
         obj.updateCountOfFullBlocks();
-        console.log(obj.getCountOfFullBlocks())
+        // console.log(obj.getCountOfFullBlocks())
 
         //count the number of empty blocks (ie blocks with no colours)
         obj.updateCountOfEmptyBlocks();
-        console.log(obj.getCountOfEmptyBlocks())
+        // console.log(obj.getCountOfEmptyBlocks())
 
         //check if it is empty (ie no colours on any blocks)
         obj.updateIsEmpty();
-        console.log(obj.getIsEmpty());
+        // console.log(obj.getIsEmpty());
 
         //check if it is full (ie colours on all blocks)
         obj.updateIsFilled()
-        console.log(obj.getIsFilled());
+        // console.log(obj.getIsFilled());
 
-        //TODO
-        //based on the above results check to see if it is the first click
-        //or it is the second click and set some more variables to help with 
-        //the identification of which block to move from where to where
+
+        /*
+            Below is the main logic of the handleGameClicks method. Its purpose
+            is to determine which clicks are first and which are second. As the 
+            Game class level properties are set as undefined by default, this if 
+            statement first checks to see if the firstStackId is undefined, meaning
+            that it has not been set yet and it is therefore the first click. It will
+            then check to see if that stack is empty and if it is, the statement will return
+            due to not being able to click on an empty stack as the first click. At this
+            point the firstStackId and secondStackId are still undefined. 
+
+            If it is not an empty stack it will set the firstStackId. When another click
+            occurs it will return false on the first check for undefined firstStackId because
+            it has already been set and move on to the else clause. Here in the else clause
+            it checks to see if the stack is filled (as you cannot click a filled stack for the
+            second click) or if the current event stackId is equal to the firstStackId 
+            Game class level property set at the first click. If either returns true it 
+            resets the firstStackId and SecondStackId Game level properties so the player
+            can start again. However if both of those return false it will continue to set
+            the secondStackId and call the compareBlocks method.             
+        */
+        if (this.firstStackId == undefined) {
+            if (obj.getIsEmpty()) {
+                console.log("cannot click on an empty stack for your first click")
+                return;
+            } else {
+                console.log("setting firstStackId")
+                this.firstStackId = stackId;
+            }
+        } else {
+            if (obj.getIsFilled() || stackId == this.firstStackId) {
+                console.log("click same stack or full stack")
+
+                this.firstStackId = undefined;
+                this.secondStackId = undefined;
+
+                return;
+            } else {
+                console.log("setting secondStackId")
+                this.secondStackId = stackId;
+
+                this.compareBlocks();
+            }
+        }
 
 
         //result from this method is sent to compareBlocks method
@@ -480,7 +520,13 @@ class Game {
 
     compareBlocks() {
         //placeholder that is called from handleGameClicks
+        console.log("firstStackId is: " + this.firstStackId)
+        console.log("secondStackId is: " + this.secondStackId)
 
+        console.log("comparing blocks")
+
+        this.firstStackId = undefined;
+        this.secondStackId = undefined;
 
         //result from this method is sent to moveBlocks method
     }
@@ -547,6 +593,8 @@ class Stack {
         this.countOfEmptyBlocks = 0;
         this.isEmpty = undefined;
         this.isFilled = undefined;
+
+
     }
     // #########################################
     // # Start of STACK INITIALISATION methods #
@@ -566,11 +614,14 @@ class Stack {
     setStackBlocks(blockArray) {
         this.blocks = blockArray;
     }
-    // #########################################
-    // End of of STACK INITIALISATION methods
-    // #########################################
-    //Start of CLICK ORDER methods
 
+    // ##########################################
+    // # End of of STACK INITIALISATION methods #
+    // ##########################################
+
+    // ################################
+    // # Start of CLICK ORDER methods #
+    // ################################
     getCountOfFullBlocks() {
         return this.countOfFullBlocks;
     }
@@ -621,7 +672,7 @@ class Stack {
 
     updateIsEmpty() {
 
-        console.log("empty: " + this.getCountOfEmptyBlocks())
+        // console.log("empty: " + this.getCountOfEmptyBlocks())
 
         if (this.getCountOfEmptyBlocks() == this.blocks.length) {
             this.setIsEmpty(true)
@@ -640,7 +691,7 @@ class Stack {
 
     updateIsFilled() {
 
-        console.log("filled: " + this.getCountOfFullBlocks())
+        // console.log("filled: " + this.getCountOfFullBlocks())
 
         if (this.getCountOfFullBlocks() == this.blocks.length) {
             this.setIsFilled(true);
@@ -648,8 +699,9 @@ class Stack {
             this.setIsFilled(false);
         }
     }
-
-    //End of Click ORDER methods
+    // #############################
+    // #End of Click ORDER methods #
+    // #############################
 }
 
 
