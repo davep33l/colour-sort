@@ -148,6 +148,13 @@ class Game {
         // Property to target the stack-section on the DOM
         this.domStackSection = document.getElementById('stack-section');
 
+        // #####################
+        // # In Game Variables #
+        // #####################
+        this.firstStackId = undefined
+        this.secondStackId = undefined;
+
+
     }
     // ###################################
     // # PRE-GAME INITIALISATION METHODS #
@@ -422,10 +429,25 @@ class Game {
 
     handleGameClicks(event) {
         console.log("click received")
-        // logging to check the clicks scope
-        console.log(this)
-        console.log(event.currentTarget)
-        console.log(event.currentTarget === this)
+
+        // this is used to define the html node selected with the click (stack)
+        let stackNode = event.currentTarget;
+        console.log(stackNode)
+
+        // this is used to define the id of the html node selected (stack id)
+        let stackId = stackNode.id;
+        console.log(stackId);
+
+        //TODO
+        //find the stack in gameStacks based on the stackId clicked
+        //count the number of full blocks (ie blocks with colours)
+        //count the number of empty blocks (ie blocks with no colours)
+        //check if it is empty (ie no colours on any blocks)
+        //check if it is full (ie colours on all blocks)
+
+        //based on the above results check to see if it is the first click
+        //or it is the second click and set some more variables to help with 
+        //the identification of which block to move from where to where
 
 
         //result from this method is sent to compareBlocks method
