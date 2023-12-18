@@ -432,12 +432,9 @@ class Game {
 
         // this is used to define the html node selected with the click (stack)
         let stackNode = event.currentTarget;
-        console.log(stackNode)
 
         // this is used to define the id of the html node selected (stack id)
         let stackId = stackNode.id;
-        console.log(stackId);
-
 
         //find the stack object in gameStacks based on the stackId clicked
         /*
@@ -464,10 +461,15 @@ class Game {
         obj.updateCountOfEmptyBlocks();
         console.log(obj.getCountOfEmptyBlocks())
 
-        //TODO
         //check if it is empty (ie no colours on any blocks)
-        //check if it is full (ie colours on all blocks)
+        obj.updateIsEmpty();
+        console.log(obj.getIsEmpty());
 
+        //check if it is full (ie colours on all blocks)
+        obj.updateIsFilled()
+        console.log(obj.getIsFilled());
+
+        //TODO
         //based on the above results check to see if it is the first click
         //or it is the second click and set some more variables to help with 
         //the identification of which block to move from where to where
@@ -538,9 +540,17 @@ class Stack {
         // to the other properties in the class
         this.id = "";
         this.blocks = [];
-    }
 
-    // Start of STACK INITIALISATION methods
+        // these are set as soon as a click is received to help determine if it was the first click (origin click) 
+        // or the second click (destination click)
+        this.countOfFullBlocks = 0;
+        this.countOfEmptyBlocks = 0;
+        this.isEmpty = undefined;
+        this.isFilled = undefined;
+    }
+    // #########################################
+    // # Start of STACK INITIALISATION methods #
+    // #########################################
     getStackId() {
         return this.id;
     }
@@ -556,8 +566,9 @@ class Stack {
     setStackBlocks(blockArray) {
         this.blocks = blockArray;
     }
+    // #########################################
     // End of of STACK INITIALISATION methods
-
+    // #########################################
     //Start of CLICK ORDER methods
 
     getCountOfFullBlocks() {
@@ -598,6 +609,44 @@ class Stack {
             }
         }
         this.setCountOfEmptyBlocks(counter)
+    }
+
+    getIsEmpty() {
+        return this.isEmpty
+    }
+
+    setIsEmpty(bool) {
+        this.isEmpty = bool;
+    }
+
+    updateIsEmpty() {
+
+        console.log("empty: " + this.getCountOfEmptyBlocks())
+
+        if (this.getCountOfEmptyBlocks() == this.blocks.length) {
+            this.setIsEmpty(true)
+        } else {
+            this.setIsEmpty(false)
+        }
+    }
+
+    getIsFilled() {
+        return this.isFilled;
+    }
+
+    setIsFilled(bool) {
+        this.isFilled = bool;
+    }
+
+    updateIsFilled() {
+
+        console.log("filled: " + this.getCountOfFullBlocks())
+
+        if (this.getCountOfFullBlocks() == this.blocks.length) {
+            this.setIsFilled(true);
+        } else {
+            this.setIsFilled(false);
+        }
     }
 
     //End of Click ORDER methods
