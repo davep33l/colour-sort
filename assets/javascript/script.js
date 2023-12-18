@@ -438,8 +438,30 @@ class Game {
         let stackId = stackNode.id;
         console.log(stackId);
 
+
+        //find the stack object in gameStacks based on the stackId clicked
+        /*
+            The below solution came from the need to locate the relevant stack within the gameStacks array based
+            on the result from the click event. This is due to all the property and methods for the game to
+            run are on the Stack object and not directly on the html DOM element. Keeping these objects of Stack
+            and Block in sync with the DOM is key to the successful running of the game. 
+
+            I searched on google for a solution to find an object by another property on that object, to 
+            return the full object and found a solution on the following link.
+
+            Link: https://www.tutorialrepublic.com/faq/how-to-find-an-object-by-property-value-in-an-array-of-javascript-objects.php
+
+            The only section of code used from this website was the single line referenced below with the find method (but using my 
+            gameStacks array as the object to run find on).
+        */
+        let obj = this.gameStacks.find(item => item.id === stackId)
+        console.log(obj)
+        console.log(obj.id)
+        console.log(obj.blocks)
+        console.log(obj.blocks[2])
+        console.log(obj.blocks[2].colour)
+
         //TODO
-        //find the stack in gameStacks based on the stackId clicked
         //count the number of full blocks (ie blocks with colours)
         //count the number of empty blocks (ie blocks with no colours)
         //check if it is empty (ie no colours on any blocks)
