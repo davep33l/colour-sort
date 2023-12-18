@@ -1,17 +1,38 @@
 class Game {
     constructor() {
 
-        // ##################################
-        // # GAME INITIALISATION PROPERTIES #
-        // ##################################
+        // ######################################
+        // # PRE-GAME INITIALISATION PROPERTIES #
+        // ######################################
+
         this.baseStackAmt = 4; // the game has to start with at least 4 stacks to be playable/enjoyable
         this.baseBlockAmt = 4; // the game has to start with at least 4 blocks in each stack to be playable/enjoyable
         this.baseEmptyStackAmt = 2; // the game has to start with at least 2 empty stacks to have a chance of completing the game
 
+
+        // ##################################
+        // # GAME INITIALISATION PROPERTIES #
+        // ##################################
+
+        this.level = 0; // current level
+
+        // this property is an array of numbers which will be checked against the current 
+        // level. If the current level is less than the levelIncrements number, it will
+        // add the index of the levelIncrements where the condition was true and add that many
+        // extra stacks to the game. 
+        this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 17];
+
+        // this property is an integer denoting the starting amount of stacks for the game and is
+        // updated throughout the game based on the level the player is currently at. It is updated
+        // using the levelIncrements property to determine how many additional stacks to start the 
+        // game with. 
+        this.startingStackAmt = this.baseStackAmt;
+
+
     }
-    // ###############################
-    // # GAME INITIALISATION METHODS #
-    // ###############################
+    // ###################################
+    // # PRE-GAME INITIALISATION METHODS #
+    // ###################################
     getBaseStackAmt() {
         return this.baseStackAmt;
     }
@@ -118,6 +139,46 @@ class Game {
         } else {
             this.setBaseEmptyStackAmt(integer);
         }
+    }
+
+    getLevel() {
+        return this.level;
+    }
+
+    setLevel(integer) {
+        if (integer <= 0) {
+            return;
+        }
+        this.level = integer;
+    }
+
+    getLevelIncrements() {
+        return this.levelIncrements
+    }
+
+    setLevelIncrements(array) {
+        this.levelIncrements = array
+    }
+
+    //lst required function to initialise the game
+    getStartingStackAmt() {
+        return this.startingStackAmt
+    }
+
+    setStartingStackAmt() {
+        let newQuantity = 0;
+        console.log(newQuantity)
+
+        for (let i = 0; i < this.levelIncrements.length; i++) {
+            if (this.level < this.levelIncrements[i]) {
+                newQuantity = this.baseStackAmt + i;
+                break;
+            } else if (this.level >= this.levelIncrements[i]) {
+                newQuantity = this.baseStackAmt + i;
+            }
+        }
+        console.log(newQuantity)
+        this.startingStackAmt = newQuantity
     }
 }
 
