@@ -88,6 +88,26 @@ This game was created using HTML, CSS and vanilla Javascript.
 
 ### Manual Testing
 
+### Bugs
+
+The first major bug I encountered was adding the event handler to the stacks. I wanted to be able to maintain the context of this within the event handler function however my first iteration of the code returned this and event as the same. Below is my first iteration. 
+
+`this.domStackSection.getElementsByClassName(this.stackClass)[i].addEventListener('click', this.handleGameClicks);`
+
+However, this was not returning the correct context of "this" (as I wanted it to reference the this properties within the class). After researching via google, I found a solution on stack overflow explaining how to access a class instance from an event handler ( [found here](https://stackoverflow.com/questions/44606399/typescript-how-to-access-the-class-instance-from-event-handler-method) ). I then researched in the MDN documentation and found supporting evidence to use an arrow function ( [found here](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#the_value_of_this_within_the_handler) ).
+
+I therefore changed the line of code that was adding the event handler to the following:
+
+`this.domStackSection.getElementsByClassName(this.stackClass)[i].addEventListener('click', (event) => this.handleGameClicks(event));`
+
+I was then able to successfully see that the output of the below returned my desired results. 
+
+`console.log(this)` // returns the Game class object (previously returning the DOM element from the event)
+
+`console.log(event.currentTarget)` // returns the DOM element from the event
+
+`console.log(event.currentTarget === this)` // returns false (as now expected)
+
 
 ## Credits
 

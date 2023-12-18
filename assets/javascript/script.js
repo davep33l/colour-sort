@@ -383,14 +383,14 @@ class Game {
             let stackForDOM = document.createElement('div');
 
             stackForDOM.id = this.gameStacks[i].id;
-            stackForDOM.classList.add('stack');
+            stackForDOM.classList.add(this.stackClass);
 
             for (let j = 0; j < this.gameStacks[i].blocks.length; j++) {
                 let blockForDOM = document.createElement('div');
 
                 // adds a concatenation of the parent stack id and the block id as the html id
                 blockForDOM.id = `${this.gameStacks[i].blocks[j].id}`;
-                blockForDOM.classList.add('stack__block');
+                blockForDOM.classList.add(this.blockClass);
                 blockForDOM.style.backgroundColor = this.gameStacks[i].blocks[j].colour;
                 stackForDOM.appendChild(blockForDOM);
 
@@ -399,12 +399,33 @@ class Game {
         }
     }
 
+    /* 
+        The below function adds event listeners to the Stack elements in the DOM.
+        The usage of the arrow function for the event listener was to maintain the context of the
+        for this to the class whilst also having access to the event itself. The resources I 
+        used to do this were as follows:
+
+        Specific solution.
+        Link: https://stackoverflow.com/questions/44606399/typescript-how-to-access-the-class-instance-from-event-handler-method
+
+        Reference and back up information to support the decision. 
+        Link: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#the_value_of_this_within_the_handler
+
+    */
+
     addEventListenersStackArea() {
-        //placeholder
+
+        for (let i = 0; i < this.gameStacks.length; i++) {
+            this.domStackSection.getElementsByClassName(this.stackClass)[i].addEventListener('click', (event) => this.handleGameClicks(event));
+        }
     }
 
     handleGameClicks(event) {
-        //placeholder
+        console.log("click received")
+        // logging to check the clicks scope
+        console.log(this)
+        console.log(event.currentTarget)
+        console.log(event.currentTarget === this)
     }
 }
 
@@ -479,4 +500,5 @@ function hasLoaded() {
     newGame.setBlockColour();
     newGame.setIds();
     newGame.addStackToDOM();
+    newGame.addEventListenersStackArea();
 }
