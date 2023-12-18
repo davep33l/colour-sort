@@ -60,6 +60,40 @@ class Game {
             '#a9a9a9', // Grey
         ];
 
+        /*
+            The below array will hold the in game colours. Essentially the method setInGameColours will
+            create a variable called coloursRequired and calculate the amount, based on the previously 
+            created stacksToFill and baseBlockAmt properties.
+            Example:
+
+            stacksToFill = 2
+            baseBlockAmt = 4
+            coloursRequired = 2 * 4 = 8
+
+            It will then pull through the required amount of colours by referencing the index of the baseColours
+            array. Using the example numbers above, it will take the colour in the first index and push it to 
+            a tempArray1 4 times, then it will move to the next index (less than stacksToFill) and push that colour
+            4 times to tempArray1. 
+
+            The output of tempArray1 would look like this:
+
+            tempArray1 = ["red","red","red","red","green","green","green","green"]
+
+            There is a second part to this method, that randomises the colours in tempArray1 by creating a new tempArray2
+            variable and loops through up until the coloursRequired variable.
+            In the loop it will create a "multiplier" variable which represents the length of tempArray1 (note this array has items
+            spliced from it later). With this multiplier a random integer is found using Math.random. This is essentially an index in
+            the tempArray1 for a colour. That colour is then pushed on to tempArray2 and the colour is spliced from tempArray1.
+
+            This will result in a shuffled tempArray2 which is used to set the inGameColours property of the Game class.
+
+            The output of tempArray1 would look like this:
+
+            tempArray2 = ["green","green","red","red","red","green","red","green"]
+
+        */
+        this.inGameColours = [];
+
     }
     // ###################################
     // # PRE-GAME INITIALISATION METHODS #
@@ -229,6 +263,34 @@ class Game {
         this.baseColours = array;
     }
 
+    getInGameColours() {
+        return this.inGameColours
+    }
+
+    //3rd required function to initialise the game
+    setInGameColours() {
+
+        let coloursRequired = 0;
+        coloursRequired = this.stacksToFill * this.baseBlockAmt
+
+        let tempArray1 = [];
+        for (let i = 0; i < this.stacksToFill; i++) {
+            for (let j = 0; j < this.baseBlockAmt; j++) {
+                tempArray1.push(this.baseColours[i]);
+            }
+        }
+
+        let tempArray2 = []
+        for (let i = 0; i < coloursRequired; i++) {
+            let multiplier = 0;
+            multiplier = tempArray1.length;
+            let randomNumber = 0;
+            randomNumber = Math.floor(Math.random() * multiplier)
+            tempArray2.push(tempArray1[randomNumber]);
+            tempArray1.splice(randomNumber, 1);
+        }
+        this.inGameColours = tempArray2
+    }
 }
 
 // Checks for the window to have loaded before running the game initialisation
@@ -239,7 +301,8 @@ window.onload = hasLoaded();
 function hasLoaded() {
     console.log("The window has loaded")
     newGame = new Game();
-    newGame.updateBaseStackAmt(4);
-    newGame.updateBaseBlockAmt(5);
-    newGame.updateBaseEmptyStackAmt(2);
+    newGame.setStartingStackAmt();
+    newGame.setStacksToFill();
+    newGame.setInGameColours();
+    newGame.setInGameColours();
 }
