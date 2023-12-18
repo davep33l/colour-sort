@@ -455,15 +455,16 @@ class Game {
             gameStacks array as the object to run find on).
         */
         let obj = this.gameStacks.find(item => item.id === stackId)
-        console.log(obj)
-        console.log(obj.id)
-        console.log(obj.blocks)
-        console.log(obj.blocks[2])
-        console.log(obj.blocks[2].colour)
+
+        //count the number of full blocks (ie blocks with colours)
+        obj.updateCountOfFullBlocks();
+        console.log(obj.getCountOfFullBlocks())
+
+        //count the number of empty blocks (ie blocks with no colours)
+        obj.updateCountOfEmptyBlocks();
+        console.log(obj.getCountOfEmptyBlocks())
 
         //TODO
-        //count the number of full blocks (ie blocks with colours)
-        //count the number of empty blocks (ie blocks with no colours)
         //check if it is empty (ie no colours on any blocks)
         //check if it is full (ie colours on all blocks)
 
@@ -556,6 +557,50 @@ class Stack {
         this.blocks = blockArray;
     }
     // End of of STACK INITIALISATION methods
+
+    //Start of CLICK ORDER methods
+
+    getCountOfFullBlocks() {
+        return this.countOfFullBlocks;
+    }
+
+    setCountOfFullBlocks(integer) {
+        this.countOfFullBlocks = integer;
+    }
+
+    //for updating the value of countOfFullBlocks based on the current state of the object/element that was clicked
+    updateCountOfFullBlocks() {
+
+        let counter = 0;
+        for (let i = 0; i < this.blocks.length; i++) {
+            if (this.blocks[i].colour !== "") {
+                counter++
+            }
+        }
+        this.setCountOfFullBlocks(counter)
+    }
+
+    getCountOfEmptyBlocks() {
+        return this.countOfEmptyBlocks;
+    }
+
+    setCountOfEmptyBlocks(integer) {
+        this.countOfEmptyBlocks = integer;
+    }
+
+    //for updating the value of countOfEmptyBlocks based on the current state of the object/element that was clicked
+    updateCountOfEmptyBlocks() {
+
+        let counter = 0;
+        for (let i = 0; i < this.blocks.length; i++) {
+            if (this.blocks[i].colour == "") {
+                counter++
+            }
+        }
+        this.setCountOfEmptyBlocks(counter)
+    }
+
+    //End of Click ORDER methods
 }
 
 
