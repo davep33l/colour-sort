@@ -127,6 +127,14 @@ class Game {
         */
         this.inGameColours = [];
 
+        /* 
+            This holds the Stack object in an array so they can be accessed throughout the game.
+            The Stack object in turn will hold an array of Block objects.
+            There are 3 methods associated with this.
+            createBaseStacks, setBlockColour and setIds.
+        */
+        this.gameStacks = [];
+
     }
     // ###################################
     // # PRE-GAME INITIALISATION METHODS #
@@ -310,6 +318,46 @@ class Game {
         }
         this.inGameColours = tempArray2
     }
+
+    // this uses the block and stack class to create an empty array based on the 
+    // variables set in the initialisation. 
+    createBaseStacks() {
+
+        let stacks = []
+
+        //create stacks filled with colours
+        for (let i = 0; i < this.startingStackAmt; i++) {
+            let newStack = new Stack();
+            let tempStack = []
+            for (let j = 0; j < this.baseBlockAmt; j++) {
+                let newBlock = new Block()
+                tempStack.push(newBlock);
+            }
+            newStack.blocks = tempStack;
+            stacks.push(newStack)
+        }
+        return this.gameStacks = stacks;
+    }
+
+    setBlockColour() {
+        //placeholder
+    }
+
+    setIds() {
+        //placeholder
+    }
+
+    addStackToDOM() {
+        //placeholder
+    }
+
+    addEventListenersStackArea() {
+        //placeholder
+    }
+
+    handleGameClicks(event) {
+        //placeholder
+    }
 }
 
 // Block class for generating a block object
@@ -378,4 +426,5 @@ function hasLoaded() {
     newGame.setStartingStackAmt();
     newGame.setStacksToFill();
     newGame.setInGameColours();
+    newGame.createBaseStacks();
 }
