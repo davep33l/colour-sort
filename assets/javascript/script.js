@@ -137,6 +137,14 @@ class Game {
         */
         this.gameStacks = [];
 
+        // Properties set for the id and class prefixes to allow for easy change if required.
+        // These are used with the setIds methond when updating the gameStacks array of Stack and
+        // Block objects. 
+        this.blockIdPrefix = "-block-";
+        this.stackIdPrefix = "stack-";
+        this.blockClass = "stack__block";
+        this.stackClass = "stack";
+
     }
     // ###################################
     // # PRE-GAME INITIALISATION METHODS #
@@ -351,7 +359,19 @@ class Game {
     }
 
     setIds() {
-        //placeholder
+
+        for (let i = 0; i < this.startingStackAmt; i++) {
+
+            this.gameStacks[i].id = this.stackIdPrefix + i
+            this.gameStacks[i].class = this.stackClass
+
+            for (let j = 0; j < this.baseBlockAmt; j++) {
+
+                this.gameStacks[i].blocks[j].id = this.stackIdPrefix + i + this.blockIdPrefix + j
+                this.gameStacks[i].blocks[j].class = this.blockClass
+
+            }
+        }
     }
 
     addStackToDOM() {
