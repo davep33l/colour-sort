@@ -542,8 +542,14 @@ class Game {
 
                 // TODO:
                 // get destination top colour index
+                obj.updateDestinationTopColourIndex()
+                console.log(getDestinationTopColourIndex())
                 // get destination top colour
+                obj.updateDestinationTopColour()
+                console.log(getDestinationTopColour())
                 // get destination top colour id
+                obj.updateDestinationTopColourId()
+                console.log(getDestinationTopColourId())
 
                 // get destination available space index
                 // get destination available space id
@@ -650,9 +656,9 @@ class Stack {
 
 
         // second click (destination click) properties
-        // dest top colour index
-        // dest top colour
-        // dest top colour id
+        this.destinationTopColourIndex = undefined
+        this.destinationTopColour = "";
+        this.destinationTopColourId = "";
         // dest avail space index
         // dest avail space id
 
@@ -823,6 +829,80 @@ class Stack {
     // # End of FIRST CLICK (ORIGIN CLICK) methods #
     // #############################################
 
+
+    // #####################################################
+    // # Start of SECOND CLICK (DESTINATION CLICK) methods #
+    // #####################################################
+
+    getDestinationTopColourIndex() {
+        return this.destinationTopColourIndex;
+
+    }
+
+    setDestinationTopColourIndex(integer) {
+        this.destinationTopColourIndex = integer;
+
+    }
+
+    updateDestinationTopColourIndex() {
+
+        if (this.blocks.length - this.getCountOfEmptyBlocks() == 0) { //this can be probably be replaced with getIsFull()
+            // if its full do nothing
+            return
+        } else {
+            let index = this.getCountOfEmptyBlocks()
+            this.setDestinationTopColourIndex(index)
+        }
+    }
+
+
+    getDestinationTopColour() {
+        return this.destinationTopColour;
+    }
+
+    setDestinationTopColour(string) {
+
+        this.destinationTopColour = string;
+    }
+
+    updateDestinationTopColour() {
+
+        console.log("dest index: " + this.getDestinationTopColourIndex())
+
+        if (this.getDestinationTopColourIndex() == undefined) {
+            return
+        } else {
+            let colour = this.blocks[this.getDestinationTopColourIndex()].colour
+            this.setDestinationTopColour(colour)
+        }
+    }
+
+    getDestinationTopColourId() {
+        return this.destinationTopColourId;
+    }
+
+    setDestinationTopColourId(string) {
+
+        this.destinationTopColourId = string;
+    }
+
+    updateDestinationTopColourId() {
+
+
+        if (this.getDestinationTopColourIndex() == undefined) {
+            return
+        } else {
+
+            let id = this.blocks[this.getDestinationTopColourIndex()].id
+            this.setDestinationTopColourId(id)
+
+        }
+    }
+
+
+    // ###################################################
+    // # End of SECOND CLICK (DESTINATION CLICK) methods #
+    // ###################################################
 
 }
 
