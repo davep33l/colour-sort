@@ -543,16 +543,22 @@ class Game {
                 // TODO:
                 // get destination top colour index
                 obj.updateDestinationTopColourIndex()
-                console.log(getDestinationTopColourIndex())
+                console.log(obj.getDestinationTopColourIndex())
                 // get destination top colour
                 obj.updateDestinationTopColour()
-                console.log(getDestinationTopColour())
+                console.log(obj.getDestinationTopColour())
                 // get destination top colour id
                 obj.updateDestinationTopColourId()
-                console.log(getDestinationTopColourId())
+                console.log(obj.getDestinationTopColourId())
 
                 // get destination available space index
+                obj.updateDestinationAvailableSpaceIndex()
+                console.log(obj.getDestinationAvailableSpaceIndex())
+
                 // get destination available space id
+                obj.updateDestinationAvailableSpaceId()
+                console.log(obj.getDestinationAvailableSpaceId())
+
 
                 // remove the visual change on selected stack
                 document.getElementById(this.firstStackId).style.border = "";
@@ -659,10 +665,12 @@ class Stack {
         this.destinationTopColourIndex = undefined
         this.destinationTopColour = "";
         this.destinationTopColourId = "";
-        // dest avail space index
-        // dest avail space id
+
+        this.destinationAvailableSpaceIndex = 0
+        this.destinationAvailableSpaceId = "";
 
     }
+
     // #########################################
     // # Start of STACK INITIALISATION methods #
     // #########################################
@@ -887,23 +895,46 @@ class Stack {
     }
 
     updateDestinationTopColourId() {
-
-
         if (this.getDestinationTopColourIndex() == undefined) {
             return
         } else {
-
             let id = this.blocks[this.getDestinationTopColourIndex()].id
             this.setDestinationTopColourId(id)
 
         }
     }
 
+    getDestinationAvailableSpaceIndex() {
+        return this.destinationAvailableSpaceIndex;
+    }
 
+    setDestinationAvailableSpaceIndex(integer) {
+        this.destinationAvailableSpaceIndex = integer
+    }
+
+    updateDestinationAvailableSpaceIndex() {
+        if (this.getIsEmpty()) {
+            this.setDestinationAvailableSpaceIndex(this.blocks.length - 1)
+        } else {
+            this.setDestinationAvailableSpaceIndex(this.getDestinationTopColourIndex() - 1)
+        }
+    }
+
+    getDestinationAvailableSpaceId() {
+        return this.destinationAvailableSpaceId;
+    }
+
+    setDestinationAvailableSpaceId(string) {
+        this.destinationAvailableSpaceId = string;
+    }
+
+    updateDestinationAvailableSpaceId() {
+
+        this.setDestinationAvailableSpaceId(this.blocks[this.getDestinationAvailableSpaceIndex()].id)
+    }
     // ###################################################
     // # End of SECOND CLICK (DESTINATION CLICK) methods #
     // ###################################################
-
 }
 
 
