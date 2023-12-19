@@ -579,22 +579,66 @@ class Game {
 
         console.log("comparing blocks");
 
-        this.firstStackId = undefined;
-        this.secondStackId = undefined;
+        let originStack = this.gameStacks.find(item => item.id === this.firstStackId)
+        let destStack = this.gameStacks.find(item => item.id === this.secondStackId)
+
+        console.log(destStack.getIsEmpty())
+        console.log(destStack.getDestinationTopColour())
+        console.log(originStack.getOriginTopColour())
+
+        if (destStack.getIsEmpty()) {
+            console.log("desination is empty - go to move blocks")
+            this.moveBlocks()
+        } else if (destStack.getDestinationTopColour() == originStack.getOriginTopColour()) {
+            console.log("colours match - go to move blocks")
+            this.moveBlocks()
+        } else {
+            console.log("nothing matches - do not move - reset variables")
+
+            this.firstStackId = undefined;
+            this.secondStackId = undefined;
+        }
 
         //result from this method is sent to moveBlocks method
     }
 
     moveBlocks() {
         //placeholder that is called from moveBlocks method
+        console.log("moving blocks")
 
+        let originStack = this.gameStacks.find(item => item.id === this.firstStackId)
+        let destStack = this.gameStacks.find(item => item.id === this.secondStackId)
 
+        console.log(originStack)
+        console.log(destStack)
+
+        let originBlock = originStack.blocks.find(item => item.id === originStack.originTopColourId)
+        let destBlock = destStack.blocks.find(item => item.id === destStack.destinationAvailableSpaceId)
+
+        console.log(originBlock)
+        console.log(destBlock)
+
+        console.log(document.getElementById(originStack.originTopColourId))
+        console.log(document.getElementById(destStack.destinationAvailableSpaceId))
+
+        // changes the colour in the DOM
+        document.getElementById(originStack.originTopColourId).style.backgroundColor = ""
+        document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour
+
+        // changes the colour in the gameStacks array to keep in sync with the DOM
+        destBlock.colour = originBlock.colour
+        originBlock.colour = ""
+
+        this.firstStackId = undefined;
+        this.secondStackId = undefined;
 
         //always calls a hasWon method after moving the blocks
+        this.hasWon()
     }
 
     hasWon() {
         //checks to see if game has won and resarts the game if it has
+        console.log("checking for win")
     }
 
     increaseLevel() {
