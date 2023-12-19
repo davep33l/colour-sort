@@ -511,8 +511,14 @@ class Game {
                 // get origin top filled colour index
                 obj.updateOriginTopFilledColourIndex()
                 console.log(obj.getOriginTopFilledColourIndex())
+
                 // get origin top colour
+                obj.updateOriginTopColour()
+                console.log(obj.getOriginTopColour())
+
                 // get origin top colour id
+                obj.updateOriginTopColourId()
+                console.log(obj.getOriginTopColourId())
 
                 // add a visual change to selected stack
             }
@@ -632,8 +638,9 @@ class Stack {
 
         // first click (origin click) properties
         this.originTopFilledColourIndex = undefined;
-        // origin top colour
-        // origin top colour id
+        this.originTopColour = "";
+        this.originTopColourId = "";
+
 
 
         // second click (destination click) properties
@@ -778,6 +785,32 @@ class Stack {
             let index = this.blocks.length - this.getCountOfFullBlocks();
             this.setOriginTopFilledColourIndex(index);
         }
+    }
+
+    getOriginTopColour() {
+        return this.originTopColour
+    }
+
+    setOriginTopColour(string) {
+        this.originTopColour = string
+    }
+
+    updateOriginTopColour() {
+        this.setOriginTopColour(this.blocks[this.getOriginTopFilledColourIndex()].colour)
+    }
+
+    getOriginTopColourId() {
+        return this.originTopColourId
+
+    }
+
+    setOriginTopColourId(string) {
+        this.originTopColourId = string
+    }
+
+    updateOriginTopColourId() {
+        this.setOriginTopColourId(this.blocks[this.getOriginTopFilledColourIndex()].id)
+
     }
 
     // #############################################
