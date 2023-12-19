@@ -148,6 +148,10 @@ class Game {
         // Property to target the stack-section on the DOM
         this.domStackSection = document.getElementById('stack-section');
 
+        // Property to target the level text on the DOM
+        this.levelText = document.getElementById('level-section__level');
+
+
         // #####################
         // # In Game Variables #
         // #####################
@@ -425,6 +429,7 @@ class Game {
     initialiseGame() {
 
         this.clearGameStacks();
+        this.increaseLevel();
         this.setStartingStackAmt();
         this.setStacksToFill();
         this.setInGameColours();
@@ -637,7 +642,8 @@ class Game {
     }
 
     increaseLevel() {
-        //placeholder
+        this.level++;
+        this.levelText.textContent = `Level ${this.level}`;
     }
 
     // the below method clears the stacks from the DOM and is called at the 
