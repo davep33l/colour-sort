@@ -684,15 +684,52 @@ class Game {
     }
 
     undoMove() {
-        //placeholder
 
         console.log("performing undo move")
+
+        if (this.moves.length == 0) {
+            console.log("cannot perform undo if no moves have taken place")
+            return
+        }
+
+        let lastMove = this.moves.pop()
+
+        let originStackId = lastMove[0][0]
+        let originStackTopColourId = lastMove[0][1]
+        let originStackTopColour = lastMove[0][2]
+        let destStackId = lastMove[1][0]
+        let destAvailableSpaceId = lastMove[1][2]
+
+        let originStack = this.gameStacks.find(item => item.id === originStackId)
+        let destStack = this.gameStacks.find(item => item.id === destStackId)
+
+        let originBlock = originStack.blocks.find(item => item.id === originStackTopColourId)
+        let destBlock = destStack.blocks.find(item => item.id === destAvailableSpaceId)
+
+        // changes the colours in the DOM
+        document.getElementById(destAvailableSpaceId).style.backgroundColor = ""
+        document.getElementById(originStackTopColourId).style.backgroundColor = originStackTopColour
+
+        // changes the colour in the gameStacks array to keep in sync with the DOM
+        destBlock.colour = ""
+        originBlock.colour = originStackTopColour
+
+
     }
 
     resetLevel() {
-        //placeholder
+
 
         console.log("performing level reset")
+
+        if (this.moves.length == 0) {
+            console.log("cannot perform undo if no moves have taken place")
+            return
+        }
+
+        for (let i = this.moves.length; i > 0; i--) {
+            this.undoMove()
+        }
     }
 
     addBlock() {
