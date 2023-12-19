@@ -590,6 +590,50 @@ class Game {
     hasWon() {
         //checks to see if game has won and resarts the game if it has
         console.log("checking for win");
+        console.log(this.gameStacks)
+
+        let stackCompleteStatus = false;
+        let winningArray = [];
+        let stacks = this.domStackSection.getElementsByClassName(this.stackClass);
+        let stacksToCheck = stacks.length - this.baseEmptyStackAmt;
+
+        for (let i = 0; i < stacksToCheck; i++) {
+            let stack = stacks[i];
+            stackCompleteStatus = this.checkIfFilledWithSameColour(stack);
+            winningArray.push(stackCompleteStatus);
+        }
+
+        let counter = 0;
+        for (let i = 0; i < winningArray.length; i++) {
+            if (winningArray[i] == true) {
+                counter++;
+            }
+        }
+
+        if (counter == (stacksToCheck)) {
+            console.log("you have won");
+            this.initialiseGame();
+        } else {
+            console.log("not won yet")
+        }
+    }
+
+    checkIfFilledWithSameColour(stack) {
+
+        let counter = 0;
+        let validationColour = stack.children[0].style.backgroundColor;
+        for (let i = 0; i < stack.children.length; i++) {
+            if (stack.children[i].style.backgroundColor == validationColour) {
+                counter++;
+            }
+        }
+
+        if (counter == this.baseBlockAmt) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     increaseLevel() {
@@ -910,7 +954,6 @@ class Stack {
     // # End of SECOND CLICK (DESTINATION CLICK) methods #
     // ###################################################
 }
-
 
 // Checks for the window to have loaded before running the game initialisation
 window.onload = hasLoaded();
