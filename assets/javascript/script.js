@@ -521,12 +521,16 @@ class Game {
                 console.log(obj.getOriginTopColourId())
 
                 // add a visual change to selected stack
+                document.getElementById(this.firstStackId).style.border = "2px solid white";
+
             }
         } else {
             if (obj.getIsFilled() || stackId == this.firstStackId) {
                 console.log("click same stack or full stack");
 
                 // remove the visual change to selected stack
+                document.getElementById(this.firstStackId).style.border = "";
+
 
                 this.firstStackId = undefined;
                 this.secondStackId = undefined;
@@ -545,6 +549,8 @@ class Game {
                 // get destination available space id
 
                 // remove the visual change on selected stack
+                document.getElementById(this.firstStackId).style.border = "";
+
 
                 this.compareBlocks();
             }
