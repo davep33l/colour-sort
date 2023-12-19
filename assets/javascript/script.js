@@ -505,10 +505,22 @@ class Game {
             } else {
                 console.log("setting firstStackId");
                 this.firstStackId = stackId;
+
+                // TODO:
+
+                // get origin top filled colour index
+                obj.updateOriginTopFilledColourIndex()
+                console.log(obj.getOriginTopFilledColourIndex())
+                // get origin top colour
+                // get origin top colour id
+
+                // add a visual change to selected stack
             }
         } else {
             if (obj.getIsFilled() || stackId == this.firstStackId) {
                 console.log("click same stack or full stack");
+
+                // remove the visual change to selected stack
 
                 this.firstStackId = undefined;
                 this.secondStackId = undefined;
@@ -517,6 +529,16 @@ class Game {
             } else {
                 console.log("setting secondStackId");
                 this.secondStackId = stackId;
+
+                // TODO:
+                // get destination top colour index
+                // get destination top colour
+                // get destination top colour id
+
+                // get destination available space index
+                // get destination available space id
+
+                // remove the visual change on selected stack
 
                 this.compareBlocks();
             }
@@ -608,6 +630,18 @@ class Stack {
         this.isEmpty = undefined;
         this.isFilled = undefined;
 
+        // first click (origin click) properties
+        this.originTopFilledColourIndex = undefined;
+        // origin top colour
+        // origin top colour id
+
+
+        // second click (destination click) properties
+        // dest top colour index
+        // dest top colour
+        // dest top colour id
+        // dest avail space index
+        // dest avail space id
 
     }
     // #########################################
@@ -713,9 +747,44 @@ class Stack {
             this.setIsFilled(false);
         }
     }
-    // #############################
-    // #End of Click ORDER methods #
-    // #############################
+    // ##############################
+    // # End of Click ORDER methods #
+    // ##############################
+
+
+    // ###############################################
+    // # Start of FIRST CLICK (ORIGIN CLICK) methods #
+    // ###############################################
+
+    getOriginTopFilledColourIndex() {
+        return this.originTopFilledColourIndex;
+    }
+
+    setOriginTopFilledColourIndex(integer) {
+        this.originTopFilledColourIndex = integer;
+    }
+
+    updateOriginTopFilledColourIndex() {
+
+        // TODO: retest this once able to move blocks around
+
+        console.log(this.blocks.length)
+        console.log(this.getCountOfFullBlocks())
+
+        if (this.blocks.length - this.getCountOfFullBlocks() == this.blocks.length) { // this can be probably be replaced with getIsEmpty()
+            // if its empty do nothing
+            return;
+        } else {
+            let index = this.blocks.length - this.getCountOfFullBlocks();
+            this.setOriginTopFilledColourIndex(index);
+        }
+    }
+
+    // #############################################
+    // # End of FIRST CLICK (ORIGIN CLICK) methods #
+    // #############################################
+
+
 }
 
 
