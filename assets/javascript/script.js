@@ -436,7 +436,6 @@ class Game {
     }
 
     handleGameClicks(event) {
-        console.log("click received");
 
         // this is used to define the html node selected with the click (stack)
         let stackNode = event.currentTarget;
@@ -463,19 +462,16 @@ class Game {
 
         //count the number of full blocks (ie blocks with colours)
         obj.updateCountOfFullBlocks();
-        // console.log(obj.getCountOfFullBlocks())
 
         //count the number of empty blocks (ie blocks with no colours)
         obj.updateCountOfEmptyBlocks();
-        // console.log(obj.getCountOfEmptyBlocks())
 
         //check if it is empty (ie no colours on any blocks)
         obj.updateIsEmpty();
-        // console.log(obj.getIsEmpty());
 
         //check if it is full (ie colours on all blocks)
         obj.updateIsFilled();
-        // console.log(obj.getIsFilled());
+
 
 
         /*
@@ -500,25 +496,18 @@ class Game {
         */
         if (this.firstStackId == undefined) {
             if (obj.getIsEmpty()) {
-                console.log("cannot click on an empty stack for your first click");
                 return;
             } else {
-                console.log("setting firstStackId");
                 this.firstStackId = stackId;
 
-                // TODO:
-
                 // get origin top filled colour index
-                obj.updateOriginTopFilledColourIndex()
-                console.log(obj.getOriginTopFilledColourIndex())
+                obj.updateOriginTopFilledColourIndex();
 
                 // get origin top colour
-                obj.updateOriginTopColour()
-                console.log(obj.getOriginTopColour())
+                obj.updateOriginTopColour();
 
                 // get origin top colour id
-                obj.updateOriginTopColourId()
-                console.log(obj.getOriginTopColourId())
+                obj.updateOriginTopColourId();
 
                 // add a visual change to selected stack
                 document.getElementById(this.firstStackId).style.border = "2px solid white";
@@ -526,119 +515,81 @@ class Game {
             }
         } else {
             if (obj.getIsFilled() || stackId == this.firstStackId) {
-                console.log("click same stack or full stack");
 
                 // remove the visual change to selected stack
                 document.getElementById(this.firstStackId).style.border = "";
-
 
                 this.firstStackId = undefined;
                 this.secondStackId = undefined;
 
                 return;
             } else {
-                console.log("setting secondStackId");
+
                 this.secondStackId = stackId;
 
-                // TODO:
                 // get destination top colour index
-                obj.updateDestinationTopColourIndex()
-                console.log(obj.getDestinationTopColourIndex())
+                obj.updateDestinationTopColourIndex();
+
                 // get destination top colour
-                obj.updateDestinationTopColour()
-                console.log(obj.getDestinationTopColour())
+                obj.updateDestinationTopColour();
+
                 // get destination top colour id
-                obj.updateDestinationTopColourId()
-                console.log(obj.getDestinationTopColourId())
+                obj.updateDestinationTopColourId();
 
                 // get destination available space index
-                obj.updateDestinationAvailableSpaceIndex()
-                console.log(obj.getDestinationAvailableSpaceIndex())
+                obj.updateDestinationAvailableSpaceIndex();
 
                 // get destination available space id
-                obj.updateDestinationAvailableSpaceId()
-                console.log(obj.getDestinationAvailableSpaceId())
-
+                obj.updateDestinationAvailableSpaceId();
 
                 // remove the visual change on selected stack
                 document.getElementById(this.firstStackId).style.border = "";
-
-
                 this.compareBlocks();
             }
         }
-
-
-        //result from this method is sent to compareBlocks method
     }
 
     compareBlocks() {
-        //placeholder that is called from handleGameClicks
-        console.log("firstStackId is: " + this.firstStackId);
-        console.log("secondStackId is: " + this.secondStackId);
 
-        console.log("comparing blocks");
-
-        let originStack = this.gameStacks.find(item => item.id === this.firstStackId)
-        let destStack = this.gameStacks.find(item => item.id === this.secondStackId)
-
-        console.log(destStack.getIsEmpty())
-        console.log(destStack.getDestinationTopColour())
-        console.log(originStack.getOriginTopColour())
+        let originStack = this.gameStacks.find(item => item.id === this.firstStackId);
+        let destStack = this.gameStacks.find(item => item.id === this.secondStackId);
 
         if (destStack.getIsEmpty()) {
-            console.log("desination is empty - go to move blocks")
-            this.moveBlocks()
+            this.moveBlocks();
         } else if (destStack.getDestinationTopColour() == originStack.getOriginTopColour()) {
-            console.log("colours match - go to move blocks")
-            this.moveBlocks()
+            this.moveBlocks();
         } else {
-            console.log("nothing matches - do not move - reset variables")
-
             this.firstStackId = undefined;
             this.secondStackId = undefined;
         }
-
-        //result from this method is sent to moveBlocks method
     }
 
     moveBlocks() {
-        //placeholder that is called from moveBlocks method
-        console.log("moving blocks")
 
-        let originStack = this.gameStacks.find(item => item.id === this.firstStackId)
-        let destStack = this.gameStacks.find(item => item.id === this.secondStackId)
+        let originStack = this.gameStacks.find(item => item.id === this.firstStackId);
+        let destStack = this.gameStacks.find(item => item.id === this.secondStackId);
 
-        console.log(originStack)
-        console.log(destStack)
-
-        let originBlock = originStack.blocks.find(item => item.id === originStack.originTopColourId)
-        let destBlock = destStack.blocks.find(item => item.id === destStack.destinationAvailableSpaceId)
-
-        console.log(originBlock)
-        console.log(destBlock)
-
-        console.log(document.getElementById(originStack.originTopColourId))
-        console.log(document.getElementById(destStack.destinationAvailableSpaceId))
+        let originBlock = originStack.blocks.find(item => item.id === originStack.originTopColourId);
+        let destBlock = destStack.blocks.find(item => item.id === destStack.destinationAvailableSpaceId);
 
         // changes the colour in the DOM
-        document.getElementById(originStack.originTopColourId).style.backgroundColor = ""
-        document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour
+        document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
+        document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour;
 
         // changes the colour in the gameStacks array to keep in sync with the DOM
-        destBlock.colour = originBlock.colour
-        originBlock.colour = ""
+        destBlock.colour = originBlock.colour;
+        originBlock.colour = "";
 
         this.firstStackId = undefined;
         this.secondStackId = undefined;
 
         //always calls a hasWon method after moving the blocks
-        this.hasWon()
+        this.hasWon();
     }
 
     hasWon() {
         //checks to see if game has won and resarts the game if it has
-        console.log("checking for win")
+        console.log("checking for win");
     }
 
     increaseLevel() {
@@ -706,11 +657,11 @@ class Stack {
 
 
         // second click (destination click) properties
-        this.destinationTopColourIndex = undefined
+        this.destinationTopColourIndex = undefined;
         this.destinationTopColour = "";
         this.destinationTopColourId = "";
 
-        this.destinationAvailableSpaceIndex = 0
+        this.destinationAvailableSpaceIndex = 0;
         this.destinationAvailableSpaceId = "";
 
     }
@@ -836,14 +787,7 @@ class Stack {
     }
 
     updateOriginTopFilledColourIndex() {
-
-        // TODO: retest this once able to move blocks around
-
-        console.log(this.blocks.length)
-        console.log(this.getCountOfFullBlocks())
-
         if (this.blocks.length - this.getCountOfFullBlocks() == this.blocks.length) { // this can be probably be replaced with getIsEmpty()
-            // if its empty do nothing
             return;
         } else {
             let index = this.blocks.length - this.getCountOfFullBlocks();
@@ -852,29 +796,27 @@ class Stack {
     }
 
     getOriginTopColour() {
-        return this.originTopColour
+        return this.originTopColour;
     }
 
     setOriginTopColour(string) {
-        this.originTopColour = string
+        this.originTopColour = string;
     }
 
     updateOriginTopColour() {
-        this.setOriginTopColour(this.blocks[this.getOriginTopFilledColourIndex()].colour)
+        this.setOriginTopColour(this.blocks[this.getOriginTopFilledColourIndex()].colour);
     }
 
     getOriginTopColourId() {
-        return this.originTopColourId
-
+        return this.originTopColourId;
     }
 
     setOriginTopColourId(string) {
-        this.originTopColourId = string
+        this.originTopColourId = string;
     }
 
     updateOriginTopColourId() {
-        this.setOriginTopColourId(this.blocks[this.getOriginTopFilledColourIndex()].id)
-
+        this.setOriginTopColourId(this.blocks[this.getOriginTopFilledColourIndex()].id);
     }
 
     // #############################################
@@ -888,44 +830,35 @@ class Stack {
 
     getDestinationTopColourIndex() {
         return this.destinationTopColourIndex;
-
     }
 
     setDestinationTopColourIndex(integer) {
         this.destinationTopColourIndex = integer;
-
     }
 
     updateDestinationTopColourIndex() {
-
         if (this.blocks.length - this.getCountOfEmptyBlocks() == 0) { //this can be probably be replaced with getIsFull()
-            // if its full do nothing
-            return
+            return;
         } else {
-            let index = this.getCountOfEmptyBlocks()
-            this.setDestinationTopColourIndex(index)
+            let index = this.getCountOfEmptyBlocks();
+            this.setDestinationTopColourIndex(index);
         }
     }
-
 
     getDestinationTopColour() {
         return this.destinationTopColour;
     }
 
     setDestinationTopColour(string) {
-
         this.destinationTopColour = string;
     }
 
     updateDestinationTopColour() {
-
-        console.log("dest index: " + this.getDestinationTopColourIndex())
-
         if (this.getDestinationTopColourIndex() == undefined) {
-            return
+            return;
         } else {
-            let colour = this.blocks[this.getDestinationTopColourIndex()].colour
-            this.setDestinationTopColour(colour)
+            let colour = this.blocks[this.getDestinationTopColourIndex()].colour;
+            this.setDestinationTopColour(colour);
         }
     }
 
@@ -934,17 +867,15 @@ class Stack {
     }
 
     setDestinationTopColourId(string) {
-
         this.destinationTopColourId = string;
     }
 
     updateDestinationTopColourId() {
         if (this.getDestinationTopColourIndex() == undefined) {
-            return
+            return;
         } else {
-            let id = this.blocks[this.getDestinationTopColourIndex()].id
-            this.setDestinationTopColourId(id)
-
+            let id = this.blocks[this.getDestinationTopColourIndex()].id;
+            this.setDestinationTopColourId(id);
         }
     }
 
@@ -953,14 +884,14 @@ class Stack {
     }
 
     setDestinationAvailableSpaceIndex(integer) {
-        this.destinationAvailableSpaceIndex = integer
+        this.destinationAvailableSpaceIndex = integer;
     }
 
     updateDestinationAvailableSpaceIndex() {
         if (this.getIsEmpty()) {
-            this.setDestinationAvailableSpaceIndex(this.blocks.length - 1)
+            this.setDestinationAvailableSpaceIndex(this.blocks.length - 1);
         } else {
-            this.setDestinationAvailableSpaceIndex(this.getDestinationTopColourIndex() - 1)
+            this.setDestinationAvailableSpaceIndex(this.getDestinationTopColourIndex() - 1);
         }
     }
 
@@ -973,8 +904,7 @@ class Stack {
     }
 
     updateDestinationAvailableSpaceId() {
-
-        this.setDestinationAvailableSpaceId(this.blocks[this.getDestinationAvailableSpaceIndex()].id)
+        this.setDestinationAvailableSpaceId(this.blocks[this.getDestinationAvailableSpaceIndex()].id);
     }
     // ###################################################
     // # End of SECOND CLICK (DESTINATION CLICK) methods #
