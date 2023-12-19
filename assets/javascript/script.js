@@ -151,12 +151,30 @@ class Game {
         // Property to target the level text on the DOM
         this.levelText = document.getElementById('level-section__level');
 
+        // Property to target the undo button on the DOM
+        this.undoButton = document.getElementById('undo-button');
+
+        // Property to target the reset button on the DOM
+        this.resetButton = document.getElementById('reset-button');
+
+        // Property to target the reset button on the DOM
+        this.addBlockButton = document.getElementById('add-block-button');
+
+
+        this.undoButton.addEventListener('click', (event) => this.undoMove(event));
+        this.resetButton.addEventListener('click', (event) => this.resetLevel(event));
+        this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
+
 
         // #####################
         // # In Game Variables #
         // #####################
         this.firstStackId = undefined;
         this.secondStackId = undefined;
+
+        // array that holds the list of moves per game
+        this.moves = [];
+
 
 
     }
@@ -577,6 +595,11 @@ class Game {
         let originBlock = originStack.blocks.find(item => item.id === originStack.originTopColourId);
         let destBlock = destStack.blocks.find(item => item.id === destStack.destinationAvailableSpaceId);
 
+        // logs the move into a Game level property called moves. To be used when undoing moves or reseting level.
+        let movesLogger = [[originStack.id, originStack.originTopColourId, originStack.originTopColour], [destStack.id, destStack.destinationTopColourId, destStack.destinationAvailableSpaceId]]
+        this.moves.push(movesLogger)
+        console.log(this.moves)
+
         // changes the colour in the DOM
         document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
         document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour;
@@ -595,7 +618,6 @@ class Game {
     hasWon() {
         //checks to see if game has won and resarts the game if it has
         console.log("checking for win");
-        console.log(this.gameStacks)
 
         let stackCompleteStatus = false;
         let winningArray = [];
@@ -614,13 +636,18 @@ class Game {
                 counter++;
             }
         }
-
+        console.log(this.moves)
         if (counter == (stacksToCheck)) {
+            console.log(this.moves)
             console.log("you have won");
+            this.moves = []
+            console.log(this.moves)
             this.initialiseGame();
         } else {
             console.log("not won yet")
         }
+
+        console.log(this.moves)
     }
 
     checkIfFilledWithSameColour(stack) {
@@ -656,6 +683,23 @@ class Game {
         }
     }
 
+    undoMove() {
+        //placeholder
+
+        console.log("performing undo move")
+    }
+
+    resetLevel() {
+        //placeholder
+
+        console.log("performing level reset")
+    }
+
+    addBlock() {
+        //placeholder
+
+        console.log("adding a helper block")
+    }
 }
 
 // Block class for generating a block object
