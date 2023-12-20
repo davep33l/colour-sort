@@ -370,6 +370,10 @@ class Game {
         //create stacks filled with colours
         for (let i = 0; i < this.startingStackAmt; i++) {
             let newStack = new Stack();
+            // adds required properties to the stack object
+            newStack.bonusStack = false;
+            newStack.maxBlockAmt = this.baseBlockAmt
+
             let tempStack = [];
             for (let j = 0; j < this.baseBlockAmt; j++) {
                 let newBlock = new Block();
@@ -615,57 +619,37 @@ class Game {
         this.hasWon();
     }
 
+    // refactored this method to refernce the gameStacks instead of the DOM
     hasWon() {
         //checks to see if game has won and resarts the game if it has
         console.log("checking for win");
 
-        let stackCompleteStatus = false;
         let winningArray = [];
-        let stacks = this.domStackSection.getElementsByClassName(this.stackClass);
-        let stacksToCheck = stacks.length - this.baseEmptyStackAmt;
-
-        for (let i = 0; i < stacksToCheck; i++) {
-            let stack = stacks[i];
-            stackCompleteStatus = this.checkIfFilledWithSameColour(stack);
-            winningArray.push(stackCompleteStatus);
+        for (let i = 0; i < this.gameStacks.length; i++) {
+            if (this.gameStacks[i].bonusStack == false) {
+                this.gameStacks[i].updateIsFilledWithSameColour()
+                winningArray.push(this.gameStacks[i].isFilledWithSameColour)
+            }
         }
 
+        let stacksToCheck = winningArray.length - this.baseEmptyStackAmt;
+        console.log(winningArray)
         let counter = 0;
         for (let i = 0; i < winningArray.length; i++) {
             if (winningArray[i] == true) {
                 counter++;
             }
         }
-        console.log(this.moves)
+        console.log("counter: " + counter)
+        console.log("stacksToCheck: " + stacksToCheck)
+
         if (counter == (stacksToCheck)) {
-            console.log(this.moves)
             console.log("you have won");
             this.moves = []
-            console.log(this.moves)
             this.initialiseGame();
         } else {
             console.log("not won yet")
         }
-
-        console.log(this.moves)
-    }
-
-    checkIfFilledWithSameColour(stack) {
-
-        let counter = 0;
-        let validationColour = stack.children[0].style.backgroundColor;
-        for (let i = 0; i < stack.children.length; i++) {
-            if (stack.children[i].style.backgroundColor == validationColour) {
-                counter++;
-            }
-        }
-
-        if (counter == this.baseBlockAmt) {
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     increaseLevel() {
@@ -732,10 +716,37 @@ class Game {
         }
     }
 
+    // this method adds a new block / stack to the gameStacks to assist in completing the level.
+    // its current form adds new stacks with 1 block in each. It then calls the methods to 
+    // clear the gameStacks from the DOM and re-inserts the new gameStack (with extra stacks/blocks),
+    // to the DOM and re-adds the event listeners. 
+
+    // NOTE: this is currently a hacky way of doing it and only adds 1 block per stack. However the 
+    // game functions as expected and the player will never have a level they cannot complete. 
+    // TODO: potentially limit the amount of extra blocks that can be added and the amount
+    // of stacks that can be added by setting counter/disabling the add block functionality 
+    // after too many tries
     addBlock() {
-        //placeholder
 
         console.log("adding a helper block")
+        let block = new Block
+        block.id = this.stackIdPrefix + this.blockIdPrefix
+
+        let bonusStack = new Stack
+        bonusStack.id = this.stackIdPrefix + this.gameStacks.length
+
+        let bonusBlockArray = []
+        let bonusBlock = new Block
+        bonusBlock.id = this.stackIdPrefix + this.gameStacks.length + this.blockIdPrefix
+        bonusStack.bonusStack = true
+        bonusBlockArray.push(bonusBlock)
+        bonusStack.blocks = bonusBlockArray
+
+        this.gameStacks.push(bonusStack)
+
+        this.clearGameStacks()
+        this.addStackToDOM()
+        this.addEventListenersStackArea()
     }
 }
 
@@ -772,6 +783,22 @@ class Stack {
         // to the other properties in the class
         this.id = "";
         this.blocks = [];
+
+        // this new property allows for the hasWon method on the game to identify if the stacks
+        // are base stacks or they are the bonus stacks added as part of the add block method
+        this.bonusStack = false;
+
+        // this new property sets the base block amount for the stack so that when the hasWon method
+        // is run, it knows which stacks should be checked for filled colours. As if this wasnt set,
+        // then the hasWon method on the game object will check if a bonus stack is full with the same
+        // colours and return true even if there is only 1 block in the stack, which is not what is 
+        // required.
+        this.maxBlockAmt = 0;
+
+        // this property is set on the stack so that it can be referenced by the hasWon method on the game
+        // and uses the maxBlockAmt in its method for setting it to ensure that it doesnt set true to the 
+        // bonus stack 
+        this.isFilledWithSameColour = false;
 
         // these are set as soon as a click is received to help determine if it was the first click (origin click) 
         // or the second click (destination click)
@@ -1040,15 +1067,45 @@ class Stack {
     // ###################################################
     // # End of SECOND CLICK (DESTINATION CLICK) methods #
     // ###################################################
+
+    // Support method to determine if stack is filled with same colour.
+    // Added 3 new properties to the stack object, maxBlockAmt, bonusStack and
+    // isFilledWithSameColour 
+    updateIsFilledWithSameColour() {
+
+        let counter = 0;
+        let validationColour = this.blocks[0].colour
+
+        console.log("validationColour: " + validationColour)
+
+        for (let i = 0; i < this.maxBlockAmt; i++) {
+            if (this.blocks[i].colour == validationColour) {
+                counter++;
+            }
+        }
+
+        console.log("counter:" + counter)
+        console.log("this.maxBlockAmt: " + this.maxBlockAmt)
+
+        if (counter == this.maxBlockAmt && validationColour !== "") {
+            console.log("returning true")
+            this.isFilledWithSameColour = true
+            return true;
+        } else {
+            console.log("returning false")
+            this.isFilledWithSameColour = false
+            return false;
+        }
+    }
 }
 
 // Checks for the window to have loaded before running the game initialisation
+const newGame = new Game();
 window.onload = hasLoaded();
 
 // Game initialisation function which creates a new Game object, where the
 // base properties can be set. 
 function hasLoaded() {
     console.log("The window has loaded");
-    const newGame = new Game();
     newGame.initialiseGame();
 }
