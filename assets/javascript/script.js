@@ -175,7 +175,11 @@ class Game {
         // array that holds the list of moves per game
         this.moves = [];
 
+        // the maximum amount of bonus blocks allowed per game
+        this.maxBonusBlockAmt = 2;
 
+        // count of current bonus blocks the player has
+        this.currentBonusBlockAmt = 0;
 
     }
     // ###################################
@@ -449,7 +453,7 @@ class Game {
     }
 
     initialiseGame() {
-
+        this.currentBonusBlockAmt = 0; // reset the currentBonusBlockAmt
         this.clearGameStacks();
         this.increaseLevel();
         this.setStartingStackAmt();
@@ -716,34 +720,87 @@ class Game {
         }
     }
 
-    // this method adds a new block / stack to the gameStacks to assist in completing the level.
-    // its current form adds new stacks with 1 block in each. It then calls the methods to 
-    // clear the gameStacks from the DOM and re-inserts the new gameStack (with extra stacks/blocks),
-    // to the DOM and re-adds the event listeners. 
+    /*
+        The below method allows for a bonus block to be added to the game to assist the 
+        player in completing a level. 
+        It first checks to see if the player already has the maximum amount of blocks, if
+        they already have the maximum amount the method will return with no action.
+        TODO - potentially add some feedback that they have used the max amount (update of 
+        a number in the button or a notification).
 
-    // NOTE: this is currently a hacky way of doing it and only adds 1 block per stack. However the 
-    // game functions as expected and the player will never have a level they cannot complete. 
-    // TODO: potentially limit the amount of extra blocks that can be added and the amount
-    // of stacks that can be added by setting counter/disabling the add block functionality 
-    // after too many tries
+        If the player is eligible to add a bonus block, the method will first check to see if 
+        there is already a bonus stack in play, if there isnt then it will create a stack along
+        with a block. If there is a stack already in play it will only add a new block to the 
+        existing bonus stack.
+
+        Once the block/stack has been added, if there was a colour in the first bonus block, this
+        is shifted down to the bottom block in the stack.
+
+        Finally the method calls 3 existing methods to clear the stacks, re-add the stacks to the DOM
+        and then re-add the event listeners. 
+
+     */
     addBlock() {
 
-        console.log("adding a helper block")
-        let block = new Block
-        block.id = this.stackIdPrefix + this.blockIdPrefix
+        if (this.currentBonusBlockAmt < this.maxBonusBlockAmt) {
+            console.log("adding a helper block")
 
-        let bonusStack = new Stack
-        bonusStack.id = this.stackIdPrefix + this.gameStacks.length
+            //if there isnt already a bonus stack then create a stack and add a block to it
+            if (this.gameStacks[this.gameStacks.length - 1].bonusStack == false) {
 
-        let bonusBlockArray = []
-        let bonusBlock = new Block
-        bonusBlock.id = this.stackIdPrefix + this.gameStacks.length + this.blockIdPrefix
-        bonusStack.bonusStack = true
-        bonusBlockArray.push(bonusBlock)
-        bonusStack.blocks = bonusBlockArray
+                //create a new stack
+                let bonusStack = new Stack
+                bonusStack.id = this.stackIdPrefix + this.gameStacks.length
 
-        this.gameStacks.push(bonusStack)
+                //create an array of blocks for the stack
+                let bonusBlockArray = []
+                //create a new block
+                let bonusBlock = new Block
 
+                //set the block id relative to the position it will be added (which is the end)
+                bonusBlock.id = this.stackIdPrefix + this.gameStacks.length + this.blockIdPrefix + "0"
+
+                //set the block bonusStack status to true
+                bonusStack.bonusStack = true
+
+                //add the block to the block array
+                bonusBlockArray.push(bonusBlock)
+                bonusStack.blocks = bonusBlockArray
+
+                //add the bonus stack to the gameStacks array
+                this.gameStacks.push(bonusStack)
+
+                //increase the current bonus blocks so no more than the max amount can be added
+                this.currentBonusBlockAmt++
+
+                //if there is already a bonus stack then only add a new block to the bonus stack
+            } else {
+
+                //create the new block
+                let bonusBlock = new Block
+                //set the block id relative to the position it will be added
+                bonusBlock.id = this.stackIdPrefix + [this.gameStacks.length - 1] + this.blockIdPrefix + this.gameStacks[this.gameStacks.length - 1].blocks.length
+
+                //ensures that if a colour was in the previous block, it is moved to the new block and
+                //the block colour is changed to blank
+                let prevBlock = this.gameStacks[this.gameStacks.length - 1].blocks[this.gameStacks[this.gameStacks.length - 1].blocks.length - 1]
+                let prevColour = prevBlock.colour
+                bonusBlock.colour = prevColour
+                prevBlock.colour = ""
+
+                //add the block to the existing blocks array on the bonus stack
+                this.gameStacks[this.gameStacks.length - 1].blocks.push(bonusBlock)
+
+                //increase the current bonus blocks so no more than the max amount can be added
+                this.currentBonusBlockAmt++
+            }
+
+        } else {
+            console.log("cannot add more blocks")
+            return
+        }
+
+        //clears the game stacks so they can be re-drawn on the dom and adds the event listeners
         this.clearGameStacks()
         this.addStackToDOM()
         this.addEventListenersStackArea()
