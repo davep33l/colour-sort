@@ -707,17 +707,24 @@ class Game {
 
     resetLevel() {
 
-
         console.log("performing level reset")
 
-        if (this.moves.length == 0) {
-            console.log("cannot perform undo if no moves have taken place")
-            return
-        }
-
+        // loops through the moves array and reverses each move 1 by one
         for (let i = this.moves.length; i > 0; i--) {
             this.undoMove()
         }
+
+        // removes any bonus stacks from the gameStacks array
+        for (let i = 0; i < this.gameStacks.length; i++) {
+            if (this.gameStacks[i].bonusStack == true) {
+                this.gameStacks.pop(this.gameStacks[i])
+            }
+        }
+
+        this.currentBonusBlockAmt = 0;
+        this.clearGameStacks()
+        this.addStackToDOM()
+        this.addEventListenersStackArea()
     }
 
     /*
