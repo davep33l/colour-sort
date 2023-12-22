@@ -605,7 +605,6 @@ class Game {
         // logs the move into a Game level property called moves. To be used when undoing moves or reseting level.
         let movesLogger = [[originStack.id, originStack.originTopColourId, originStack.originTopColour], [destStack.id, destStack.destinationTopColourId, destStack.destinationAvailableSpaceId]]
         this.moves.push(movesLogger)
-        console.log(this.moves)
 
         // changes the colour in the DOM
         document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
@@ -625,7 +624,6 @@ class Game {
     // refactored this method to refernce the gameStacks instead of the DOM
     hasWon() {
         //checks to see if game has won and resarts the game if it has
-        console.log("checking for win");
 
         let winningArray = [];
         for (let i = 0; i < this.gameStacks.length; i++) {
@@ -636,22 +634,17 @@ class Game {
         }
 
         let stacksToCheck = winningArray.length - this.baseEmptyStackAmt;
-        console.log(winningArray)
         let counter = 0;
         for (let i = 0; i < winningArray.length; i++) {
             if (winningArray[i] == true) {
                 counter++;
             }
         }
-        console.log("counter: " + counter)
-        console.log("stacksToCheck: " + stacksToCheck)
 
         if (counter == (stacksToCheck)) {
-            console.log("you have won");
             this.moves = []
             this.initialiseGame();
         } else {
-            console.log("not won yet")
         }
     }
 
@@ -672,10 +665,7 @@ class Game {
 
     undoMove() {
 
-        console.log("performing undo move")
-
         if (this.moves.length == 0) {
-            console.log("cannot perform undo if no moves have taken place")
             return
         }
 
@@ -705,8 +695,6 @@ class Game {
     }
 
     resetLevel() {
-
-        console.log("performing level reset")
 
         // loops through the moves array and reverses each move 1 by one
         for (let i = this.moves.length; i > 0; i--) {
@@ -749,7 +737,6 @@ class Game {
     addBlock() {
 
         if (this.currentBonusBlockAmt < this.maxBonusBlockAmt) {
-            console.log("adding a helper block")
 
             //if there isnt already a bonus stack then create a stack and add a block to it
             if (this.gameStacks[this.gameStacks.length - 1].bonusStack == false) {
@@ -802,7 +789,6 @@ class Game {
             }
 
         } else {
-            console.log("cannot add more blocks")
             return
         }
 
@@ -963,8 +949,6 @@ class Stack {
 
     updateIsEmpty() {
 
-        // console.log("empty: " + this.getCountOfEmptyBlocks())
-
         if (this.getCountOfEmptyBlocks() == this.blocks.length) {
             this.setIsEmpty(true);
         } else {
@@ -981,8 +965,6 @@ class Stack {
     }
 
     updateIsFilled() {
-
-        // console.log("filled: " + this.getCountOfFullBlocks())
 
         if (this.getCountOfFullBlocks() == this.blocks.length) {
             this.setIsFilled(true);
@@ -1139,23 +1121,16 @@ class Stack {
         let counter = 0;
         let validationColour = this.blocks[0].colour
 
-        console.log("validationColour: " + validationColour)
-
         for (let i = 0; i < this.maxBlockAmt; i++) {
             if (this.blocks[i].colour == validationColour) {
                 counter++;
             }
         }
 
-        console.log("counter:" + counter)
-        console.log("this.maxBlockAmt: " + this.maxBlockAmt)
-
         if (counter == this.maxBlockAmt && validationColour !== "") {
-            console.log("returning true")
             this.isFilledWithSameColour = true
             return true;
         } else {
-            console.log("returning false")
             this.isFilledWithSameColour = false
             return false;
         }
@@ -1169,6 +1144,5 @@ window.onload = hasLoaded();
 // Game initialisation function which creates a new Game object, where the
 // base properties can be set. 
 function hasLoaded() {
-    console.log("The window has loaded");
     newGame.initialiseGame();
 }
