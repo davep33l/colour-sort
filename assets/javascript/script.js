@@ -181,127 +181,6 @@ class Game {
         this.currentBonusBlockAmt = 0;
 
     }
-    // ###################################
-    // # PRE-GAME INITIALISATION METHODS #
-    // ###################################
-    getBaseStackAmt() {
-        return this.baseStackAmt;
-    }
-
-    setBaseStackAmt(integer) {
-        this.baseStackAmt = integer;
-    }
-
-    updateBaseStackAmt(integer) {
-
-        /* 
-            The below code is for protection against input of an incorrect data type, 
-            as only an integer can be passed into the function. If an incorrect type 
-            is determined, the following code will return false, which leaves the 
-            baseStackAmt property set at its default value. 
-        */
-        if (!Number.isInteger(integer)) {
-            return;
-        }
-
-        /*
-             When initialising the game you can set the baseStackAmt, the below
-             checks the input value is a minimum of the default baseStackAmt and 
-             only updates to the value passed in if it is greater than the baseStackAmt.
-        */
-        if (integer < this.baseStackAmt) {
-            this.setBaseStackAmt(this.baseStackAmt);
-        } else {
-            this.setBaseStackAmt(integer);
-        }
-    }
-
-    getBaseBlockAmt() {
-        return this.baseBlockAmt;
-    }
-
-    setBaseBlockAmt(integer) {
-        this.baseBlockAmt = integer;
-    }
-
-    updateBaseBlockAmt(integer) {
-
-        /* 
-            The below code is for protection against input of an incorrect data type, 
-            as only an integer can be passed into the function. If an incorrect type 
-            is determined, the following code will return false, which leaves the 
-            baseBlockAmt property set at its default value. 
-        */
-        if (!Number.isInteger(integer)) {
-            return;
-        }
-
-        /*
-             When initialising the game you can set the baseBlockAmt, the below
-             checks the input value is a minimum of the default baseBlockAmt and 
-             only updates to the value passed in if it is greater than the baseBlockAmt.
-        */
-        if (integer < this.baseBlockAmt) {
-            this.setBaseBlockAmt(this.baseBlockAmt);
-        } else {
-            this.setBaseBlockAmt(integer);
-        }
-    }
-
-    getBaseEmptyStackAmt() {
-        return this.baseEmptyStackAmt;
-    }
-
-    setBaseEmptyStackAmt(integer) {
-        this.baseEmptyStackAmt = integer;
-    }
-
-    updateBaseEmptyStackAmt(integer) {
-
-        /* 
-            The below code is for protection against input of an incorrect data type, 
-            as only an integer can be passed into the function. If an incorrect type 
-            is determined, the following code will return false, which leaves the 
-            baseEmptyStackAmt property set at its default value. 
-        */
-        if (!Number.isInteger(integer)) {
-            return;
-        }
-
-        /*
-             When initialising the game you can set the baseEmptyStackAmt, the below
-             checks the input value is a minimum of the default baseEmptyStackAmt and 
-             only updates to the value passed in if it is greater than the baseEmptyStackAmt.
-        */
-        if (integer < this.baseEmptyStackAmt) {
-            this.setBaseEmptyStackAmt(this.baseEmptyStackAmt);
-        } else {
-            this.setBaseEmptyStackAmt(integer);
-        }
-    }
-
-    getLevel() {
-        return this.level;
-    }
-
-    setLevel(integer) {
-        if (integer <= 0) {
-            return;
-        }
-        this.level = integer;
-    }
-
-    getLevelIncrements() {
-        return this.levelIncrements;
-    }
-
-    setLevelIncrements(array) {
-        this.levelIncrements = array;
-    }
-
-    getStartingStackAmt() {
-        return this.startingStackAmt;
-    }
 
     //1st required function to initialise the game
     setStartingStackAmt() {
@@ -318,25 +197,9 @@ class Game {
         this.startingStackAmt = newQuantity;
     }
 
-    getStacksToFill() {
-        return this.stacksToFill;
-    }
-
     //2nd required function to initialise the game
     setStacksToFill() {
         this.stacksToFill = this.startingStackAmt - this.baseEmptyStackAmt;
-    }
-
-    getBaseColours() {
-        return this.baseColours;
-    }
-
-    setBaseColours(array) {
-        this.baseColours = array;
-    }
-
-    getInGameColours() {
-        return this.inGameColours;
     }
 
     //3rd required function to initialise the game
@@ -873,29 +736,6 @@ class Stack {
 
     }
 
-    // #########################################
-    // # Start of STACK INITIALISATION methods #
-    // #########################################
-    getStackId() {
-        return this.id;
-    }
-
-    setStackId(newId) {
-        this.id = newId;
-    }
-
-    getStackBlocks() {
-        return this.blocks;
-    }
-
-    setStackBlocks(blockArray) {
-        this.blocks = blockArray;
-    }
-    // ##########################################
-    // # End of of STACK INITIALISATION methods #
-    // ##########################################
-
-
     // ################################
     // # Start of CLICK ORDER methods #
     // ################################
@@ -1010,10 +850,6 @@ class Stack {
         this.setOriginTopColour(this.blocks[this.getOriginTopFilledColourIndex()].colour);
     }
 
-    getOriginTopColourId() {
-        return this.originTopColourId;
-    }
-
     setOriginTopColourId(string) {
         this.originTopColourId = string;
     }
@@ -1065,10 +901,6 @@ class Stack {
         }
     }
 
-    getDestinationTopColourId() {
-        return this.destinationTopColourId;
-    }
-
     setDestinationTopColourId(string) {
         this.destinationTopColourId = string;
     }
@@ -1096,10 +928,6 @@ class Stack {
         } else {
             this.setDestinationAvailableSpaceIndex(this.getDestinationTopColourIndex() - 1);
         }
-    }
-
-    getDestinationAvailableSpaceId() {
-        return this.destinationAvailableSpaceId;
     }
 
     setDestinationAvailableSpaceId(string) {
