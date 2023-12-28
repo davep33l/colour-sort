@@ -54,7 +54,7 @@ class Game {
         // add the index of the levelIncrements where the condition was true and add that many
         // extra stacks to the game. 
         // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10]; // use this for testing
-        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80, 80] // factor of 1.55 between level increases
+        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80, 80]; // factor of 1.55 between level increases
 
         // this property is an integer denoting the starting amount of stacks for the game and is
         // updated throughout the game based on the level the player is currently at. It is updated
@@ -238,7 +238,7 @@ class Game {
             let newStack = new Stack();
             // adds required properties to the stack object
             newStack.bonusStack = false;
-            newStack.maxBlockAmt = this.baseBlockAmt
+            newStack.maxBlockAmt = this.baseBlockAmt;
 
             let tempStack = [];
             for (let j = 0; j < this.baseBlockAmt; j++) {
@@ -388,7 +388,7 @@ class Game {
             the secondStackId and call the compareBlocks method.             
         */
         if (this.firstStackId == undefined) {
-            if (obj.getIsEmpty()) {
+            if (obj.isEmpty) {
                 return;
             } else {
                 this.firstStackId = stackId;
@@ -407,7 +407,7 @@ class Game {
 
             }
         } else {
-            if (obj.getIsFilled() || stackId == this.firstStackId) {
+            if (obj.isFilled || stackId == this.firstStackId) {
 
                 // remove the visual change to selected stack
                 document.getElementById(this.firstStackId).style.border = "";
@@ -447,9 +447,9 @@ class Game {
         let originStack = this.gameStacks.find(item => item.id === this.firstStackId);
         let destStack = this.gameStacks.find(item => item.id === this.secondStackId);
 
-        if (destStack.getIsEmpty()) {
+        if (destStack.isEmpty) {
             this.moveBlocks();
-        } else if (destStack.getDestinationTopColour() == originStack.getOriginTopColour()) {
+        } else if (destStack.destinationTopColour == originStack.originTopColour) {
             this.moveBlocks();
         } else {
             this.firstStackId = undefined;
@@ -466,8 +466,8 @@ class Game {
         let destBlock = destStack.blocks.find(item => item.id === destStack.destinationAvailableSpaceId);
 
         // logs the move into a Game level property called moves. To be used when undoing moves or reseting level.
-        let movesLogger = [[originStack.id, originStack.originTopColourId, originStack.originTopColour], [destStack.id, destStack.destinationTopColourId, destStack.destinationAvailableSpaceId]]
-        this.moves.push(movesLogger)
+        let movesLogger = [[originStack.id, originStack.originTopColourId, originStack.originTopColour], [destStack.id, destStack.destinationTopColourId, destStack.destinationAvailableSpaceId]];
+        this.moves.push(movesLogger);
 
         // changes the colour in the DOM
         document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
@@ -491,8 +491,8 @@ class Game {
         let winningArray = [];
         for (let i = 0; i < this.gameStacks.length; i++) {
             if (this.gameStacks[i].bonusStack == false) {
-                this.gameStacks[i].updateIsFilledWithSameColour()
-                winningArray.push(this.gameStacks[i].isFilledWithSameColour)
+                this.gameStacks[i].updateIsFilledWithSameColour();
+                winningArray.push(this.gameStacks[i].isFilledWithSameColour);
             }
         }
 
@@ -505,7 +505,7 @@ class Game {
         }
 
         if (counter == (stacksToCheck)) {
-            this.moves = []
+            this.moves = [];
             this.initialiseGame();
         } else {
         }
@@ -529,30 +529,30 @@ class Game {
     undoMove() {
 
         if (this.moves.length == 0) {
-            return
+            return;
         }
 
-        let lastMove = this.moves.pop()
+        let lastMove = this.moves.pop();
 
-        let originStackId = lastMove[0][0]
-        let originStackTopColourId = lastMove[0][1]
-        let originStackTopColour = lastMove[0][2]
-        let destStackId = lastMove[1][0]
-        let destAvailableSpaceId = lastMove[1][2]
+        let originStackId = lastMove[0][0];
+        let originStackTopColourId = lastMove[0][1];
+        let originStackTopColour = lastMove[0][2];
+        let destStackId = lastMove[1][0];
+        let destAvailableSpaceId = lastMove[1][2];
 
-        let originStack = this.gameStacks.find(item => item.id === originStackId)
-        let destStack = this.gameStacks.find(item => item.id === destStackId)
+        let originStack = this.gameStacks.find(item => item.id === originStackId);
+        let destStack = this.gameStacks.find(item => item.id === destStackId);
 
-        let originBlock = originStack.blocks.find(item => item.id === originStackTopColourId)
-        let destBlock = destStack.blocks.find(item => item.id === destAvailableSpaceId)
+        let originBlock = originStack.blocks.find(item => item.id === originStackTopColourId);
+        let destBlock = destStack.blocks.find(item => item.id === destAvailableSpaceId);
 
         // changes the colours in the DOM
-        document.getElementById(destAvailableSpaceId).style.backgroundColor = ""
-        document.getElementById(originStackTopColourId).style.backgroundColor = originStackTopColour
+        document.getElementById(destAvailableSpaceId).style.backgroundColor = "";
+        document.getElementById(originStackTopColourId).style.backgroundColor = originStackTopColour;
 
         // changes the colour in the gameStacks array to keep in sync with the DOM
-        destBlock.colour = ""
-        originBlock.colour = originStackTopColour
+        destBlock.colour = "";
+        originBlock.colour = originStackTopColour;
 
 
     }
@@ -561,20 +561,20 @@ class Game {
 
         // loops through the moves array and reverses each move 1 by one
         for (let i = this.moves.length; i > 0; i--) {
-            this.undoMove()
+            this.undoMove();
         }
 
         // removes any bonus stacks from the gameStacks array
         for (let i = 0; i < this.gameStacks.length; i++) {
             if (this.gameStacks[i].bonusStack == true) {
-                this.gameStacks.pop(this.gameStacks[i])
+                this.gameStacks.pop(this.gameStacks[i]);
             }
         }
 
         this.currentBonusBlockAmt = 0;
-        this.clearGameStacks()
-        this.addStackToDOM()
-        this.addEventListenersStackArea()
+        this.clearGameStacks();
+        this.addStackToDOM();
+        this.addEventListenersStackArea();
     }
 
     /*
@@ -605,60 +605,60 @@ class Game {
             if (this.gameStacks[this.gameStacks.length - 1].bonusStack == false) {
 
                 //create a new stack
-                let bonusStack = new Stack
-                bonusStack.id = this.stackIdPrefix + this.gameStacks.length
+                let bonusStack = new Stack();
+                bonusStack.id = this.stackIdPrefix + this.gameStacks.length;
 
                 //create an array of blocks for the stack
-                let bonusBlockArray = []
+                let bonusBlockArray = [];
                 //create a new block
-                let bonusBlock = new Block
+                let bonusBlock = new Block();
 
                 //set the block id relative to the position it will be added (which is the end)
-                bonusBlock.id = this.stackIdPrefix + this.gameStacks.length + this.blockIdPrefix + "0"
+                bonusBlock.id = this.stackIdPrefix + this.gameStacks.length + this.blockIdPrefix + "0";
 
                 //set the block bonusStack status to true
-                bonusStack.bonusStack = true
+                bonusStack.bonusStack = true;
 
                 //add the block to the block array
-                bonusBlockArray.push(bonusBlock)
-                bonusStack.blocks = bonusBlockArray
+                bonusBlockArray.push(bonusBlock);
+                bonusStack.blocks = bonusBlockArray;
 
                 //add the bonus stack to the gameStacks array
-                this.gameStacks.push(bonusStack)
+                this.gameStacks.push(bonusStack);
 
                 //increase the current bonus blocks so no more than the max amount can be added
-                this.currentBonusBlockAmt++
+                this.currentBonusBlockAmt++;
 
                 //if there is already a bonus stack then only add a new block to the bonus stack
             } else {
 
                 //create the new block
-                let bonusBlock = new Block
+                let bonusBlock = new Block();
                 //set the block id relative to the position it will be added
-                bonusBlock.id = this.stackIdPrefix + [this.gameStacks.length - 1] + this.blockIdPrefix + this.gameStacks[this.gameStacks.length - 1].blocks.length
+                bonusBlock.id = this.stackIdPrefix + [this.gameStacks.length - 1] + this.blockIdPrefix + this.gameStacks[this.gameStacks.length - 1].blocks.length;
 
                 //ensures that if a colour was in the previous block, it is moved to the new block and
                 //the block colour is changed to blank
-                let prevBlock = this.gameStacks[this.gameStacks.length - 1].blocks[this.gameStacks[this.gameStacks.length - 1].blocks.length - 1]
-                let prevColour = prevBlock.colour
-                bonusBlock.colour = prevColour
-                prevBlock.colour = ""
+                let prevBlock = this.gameStacks[this.gameStacks.length - 1].blocks[this.gameStacks[this.gameStacks.length - 1].blocks.length - 1];
+                let prevColour = prevBlock.colour;
+                bonusBlock.colour = prevColour;
+                prevBlock.colour = "";
 
                 //add the block to the existing blocks array on the bonus stack
-                this.gameStacks[this.gameStacks.length - 1].blocks.push(bonusBlock)
+                this.gameStacks[this.gameStacks.length - 1].blocks.push(bonusBlock);
 
                 //increase the current bonus blocks so no more than the max amount can be added
-                this.currentBonusBlockAmt++
+                this.currentBonusBlockAmt++;
             }
 
         } else {
-            return
+            return;
         }
 
         //clears the game stacks so they can be re-drawn on the dom and adds the event listeners
-        this.clearGameStacks()
-        this.addStackToDOM()
-        this.addEventListenersStackArea()
+        this.clearGameStacks();
+        this.addStackToDOM();
+        this.addEventListenersStackArea();
     }
 }
 
@@ -668,24 +668,6 @@ class Block {
         this.id = "";
         this.colour = "";
     }
-
-    // Start of BLOCK INITIALISATION methods
-    getBlockColour() {
-        return this.colour;
-    }
-
-    setBlockColour(newColour) {
-        this.colour = newColour;
-    }
-
-    getBlockId() {
-        return this.id;
-    }
-
-    setBlockId(newId) {
-        this.id = newId;
-    }
-    // End of of BLOCK INITIALISATION methods
 }
 
 // Stack class for generating a Stack object (which will contain an array of Blocks)
@@ -739,13 +721,6 @@ class Stack {
     // ################################
     // # Start of CLICK ORDER methods #
     // ################################
-    getCountOfFullBlocks() {
-        return this.countOfFullBlocks;
-    }
-
-    setCountOfFullBlocks(integer) {
-        this.countOfFullBlocks = integer;
-    }
 
     //for updating the value of countOfFullBlocks based on the current state of the object/element that was clicked
     updateCountOfFullBlocks() {
@@ -756,15 +731,7 @@ class Stack {
                 counter++;
             }
         }
-        this.setCountOfFullBlocks(counter);
-    }
-
-    getCountOfEmptyBlocks() {
-        return this.countOfEmptyBlocks;
-    }
-
-    setCountOfEmptyBlocks(integer) {
-        this.countOfEmptyBlocks = integer;
+        this.countOfFullBlocks = counter;
     }
 
     //for updating the value of countOfEmptyBlocks based on the current state of the object/element that was clicked
@@ -776,40 +743,24 @@ class Stack {
                 counter++;
             }
         }
-        this.setCountOfEmptyBlocks(counter);
-    }
-
-    getIsEmpty() {
-        return this.isEmpty;
-    }
-
-    setIsEmpty(bool) {
-        this.isEmpty = bool;
+        this.countOfEmptyBlocks = counter;
     }
 
     updateIsEmpty() {
 
-        if (this.getCountOfEmptyBlocks() == this.blocks.length) {
-            this.setIsEmpty(true);
+        if (this.countOfEmptyBlocks == this.blocks.length) {
+            this.isEmpty = true;
         } else {
-            this.setIsEmpty(false);
+            this.isEmpty = false;
         }
-    }
-
-    getIsFilled() {
-        return this.isFilled;
-    }
-
-    setIsFilled(bool) {
-        this.isFilled = bool;
     }
 
     updateIsFilled() {
 
-        if (this.getCountOfFullBlocks() == this.blocks.length) {
-            this.setIsFilled(true);
+        if (this.countOfFullBlocks == this.blocks.length) {
+            this.isFilled = true;
         } else {
-            this.setIsFilled(false);
+            this.isFilled = false;
         }
     }
     // ##############################
@@ -821,41 +772,21 @@ class Stack {
     // # Start of FIRST CLICK (ORIGIN CLICK) methods #
     // ###############################################
 
-    getOriginTopFilledColourIndex() {
-        return this.originTopFilledColourIndex;
-    }
-
-    setOriginTopFilledColourIndex(integer) {
-        this.originTopFilledColourIndex = integer;
-    }
-
     updateOriginTopFilledColourIndex() {
-        if (this.blocks.length - this.getCountOfFullBlocks() == this.blocks.length) { // this can be probably be replaced with getIsEmpty()
+        if (this.blocks.length - this.countOfFullBlocks == this.blocks.length) { // this can be probably be replaced with isEmpty
             return;
         } else {
-            let index = this.blocks.length - this.getCountOfFullBlocks();
-            this.setOriginTopFilledColourIndex(index);
+            let index = this.blocks.length - this.countOfFullBlocks;
+            this.originTopFilledColourIndex = index;
         }
     }
 
-    getOriginTopColour() {
-        return this.originTopColour;
-    }
-
-    setOriginTopColour(string) {
-        this.originTopColour = string;
-    }
-
     updateOriginTopColour() {
-        this.setOriginTopColour(this.blocks[this.getOriginTopFilledColourIndex()].colour);
-    }
-
-    setOriginTopColourId(string) {
-        this.originTopColourId = string;
+        this.originTopColour = this.blocks[this.originTopFilledColourIndex].colour;
     }
 
     updateOriginTopColourId() {
-        this.setOriginTopColourId(this.blocks[this.getOriginTopFilledColourIndex()].id);
+        this.originTopColourId = this.blocks[this.originTopFilledColourIndex].id;
     }
 
     // #############################################
@@ -867,75 +798,43 @@ class Stack {
     // # Start of SECOND CLICK (DESTINATION CLICK) methods #
     // #####################################################
 
-    getDestinationTopColourIndex() {
-        return this.destinationTopColourIndex;
-    }
-
-    setDestinationTopColourIndex(integer) {
-        this.destinationTopColourIndex = integer;
-    }
-
     updateDestinationTopColourIndex() {
-        if (this.blocks.length - this.getCountOfEmptyBlocks() == 0) { //this can be probably be replaced with getIsFull()
+        if (this.blocks.length - this.countOfEmptyBlocks == 0) { //this can be probably be replaced with getIsFull()
             return;
         } else {
-            let index = this.getCountOfEmptyBlocks();
-            this.setDestinationTopColourIndex(index);
+            let index = this.countOfEmptyBlocks;
+            this.destinationTopColourIndex = index;
         }
-    }
-
-    getDestinationTopColour() {
-        return this.destinationTopColour;
-    }
-
-    setDestinationTopColour(string) {
-        this.destinationTopColour = string;
     }
 
     updateDestinationTopColour() {
-        if (this.getDestinationTopColourIndex() == undefined) {
+        if (this.destinationTopColourIndex == undefined) {
             return;
         } else {
-            let colour = this.blocks[this.getDestinationTopColourIndex()].colour;
-            this.setDestinationTopColour(colour);
+            let colour = this.blocks[this.destinationTopColourIndex].colour;
+            this.destinationTopColour = colour;
         }
-    }
-
-    setDestinationTopColourId(string) {
-        this.destinationTopColourId = string;
     }
 
     updateDestinationTopColourId() {
-        if (this.getDestinationTopColourIndex() == undefined) {
+        if (this.destinationTopColourIndex == undefined) {
             return;
         } else {
-            let id = this.blocks[this.getDestinationTopColourIndex()].id;
-            this.setDestinationTopColourId(id);
+            let id = this.blocks[this.destinationTopColourIndex].id;
+            this.destinationTopColourId = id;
         }
-    }
-
-    getDestinationAvailableSpaceIndex() {
-        return this.destinationAvailableSpaceIndex;
-    }
-
-    setDestinationAvailableSpaceIndex(integer) {
-        this.destinationAvailableSpaceIndex = integer;
     }
 
     updateDestinationAvailableSpaceIndex() {
-        if (this.getIsEmpty()) {
-            this.setDestinationAvailableSpaceIndex(this.blocks.length - 1);
+        if (this.isEmpty) {
+            this.destinationAvailableSpaceIndex = this.blocks.length - 1;
         } else {
-            this.setDestinationAvailableSpaceIndex(this.getDestinationTopColourIndex() - 1);
+            this.destinationAvailableSpaceIndex = this.destinationTopColourIndex - 1;
         }
     }
 
-    setDestinationAvailableSpaceId(string) {
-        this.destinationAvailableSpaceId = string;
-    }
-
     updateDestinationAvailableSpaceId() {
-        this.setDestinationAvailableSpaceId(this.blocks[this.getDestinationAvailableSpaceIndex()].id);
+        this.destinationAvailableSpaceId = this.blocks[this.destinationAvailableSpaceIndex].id;
     }
     // ###################################################
     // # End of SECOND CLICK (DESTINATION CLICK) methods #
@@ -947,7 +846,7 @@ class Stack {
     updateIsFilledWithSameColour() {
 
         let counter = 0;
-        let validationColour = this.blocks[0].colour
+        let validationColour = this.blocks[0].colour;
 
         for (let i = 0; i < this.maxBlockAmt; i++) {
             if (this.blocks[i].colour == validationColour) {
@@ -956,10 +855,10 @@ class Stack {
         }
 
         if (counter == this.maxBlockAmt && validationColour !== "") {
-            this.isFilledWithSameColour = true
+            this.isFilledWithSameColour = true;
             return true;
         } else {
-            this.isFilledWithSameColour = false
+            this.isFilledWithSameColour = false;
             return false;
         }
     }
