@@ -353,19 +353,7 @@ class Game {
         */
         let obj = this.gameStacks.find(item => item.id === stackId);
 
-        //count the number of full blocks (ie blocks with colours)
-        obj.updateCountOfFullBlocks();
-
-        //count the number of empty blocks (ie blocks with no colours)
-        obj.updateCountOfEmptyBlocks();
-
-        //check if it is empty (ie no colours on any blocks)
-        obj.updateIsEmpty();
-
-        //check if it is full (ie colours on all blocks)
-        obj.updateIsFilled();
-
-
+        obj.updateClickOrderProperties();
 
         /*
             Below is the main logic of the handleGameClicks method. Its purpose
@@ -393,14 +381,7 @@ class Game {
             } else {
                 this.firstStackId = stackId;
 
-                // get origin top filled colour index
-                obj.updateOriginTopFilledColourIndex();
-
-                // get origin top colour
-                obj.updateOriginTopColour();
-
-                // get origin top colour id
-                obj.updateOriginTopColourId();
+                obj.updateOriginProperties();
 
                 // add a visual change to selected stack
                 document.getElementById(this.firstStackId).style.border = "2px solid white";
@@ -420,20 +401,7 @@ class Game {
 
                 this.secondStackId = stackId;
 
-                // get destination top colour index
-                obj.updateDestinationTopColourIndex();
-
-                // get destination top colour
-                obj.updateDestinationTopColour();
-
-                // get destination top colour id
-                obj.updateDestinationTopColourId();
-
-                // get destination available space index
-                obj.updateDestinationAvailableSpaceIndex();
-
-                // get destination available space id
-                obj.updateDestinationAvailableSpaceId();
+                obj.updateDestinationProperties();
 
                 // remove the visual change on selected stack
                 document.getElementById(this.firstStackId).style.border = "";
@@ -722,6 +690,13 @@ class Stack {
     // # Start of CLICK ORDER methods #
     // ################################
 
+    updateClickOrderProperties() {
+        this.updateCountOfFullBlocks();
+        this.updateCountOfEmptyBlocks();
+        this.updateIsEmpty();
+        this.updateIsFilled();
+    }
+
     //for updating the value of countOfFullBlocks based on the current state of the object/element that was clicked
     updateCountOfFullBlocks() {
 
@@ -772,6 +747,13 @@ class Stack {
     // # Start of FIRST CLICK (ORIGIN CLICK) methods #
     // ###############################################
 
+    updateOriginProperties() {
+        this.updateOriginTopFilledColourIndex();
+        this.updateOriginTopColour();
+        this.updateOriginTopColourId();
+
+    }
+
     updateOriginTopFilledColourIndex() {
         if (this.blocks.length - this.countOfFullBlocks == this.blocks.length) { // this can be probably be replaced with isEmpty
             return;
@@ -797,6 +779,14 @@ class Stack {
     // #####################################################
     // # Start of SECOND CLICK (DESTINATION CLICK) methods #
     // #####################################################
+
+    updateDestinationProperties() {
+        this.updateDestinationTopColourIndex();
+        this.updateDestinationTopColour();
+        this.updateDestinationTopColourId();
+        this.updateDestinationAvailableSpaceIndex();
+        this.updateDestinationAvailableSpaceId();
+    }
 
     updateDestinationTopColourIndex() {
         if (this.blocks.length - this.countOfEmptyBlocks == 0) { //this can be probably be replaced with getIsFull()
