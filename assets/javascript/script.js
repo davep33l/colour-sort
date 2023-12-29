@@ -53,8 +53,8 @@ class Game {
         // level. If the current level is less than the levelIncrements number, it will
         // add the index of the levelIncrements where the condition was true and add that many
         // extra stacks to the game. 
-        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10]; // use this for testing
-        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80, 80]; // factor of 1.55 between level increases
+        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; // use this for testing
+        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80, 100]; // factor of 1.55 between level increases
 
         // this property is an integer denoting the starting amount of stacks for the game and is
         // updated throughout the game based on the level the player is currently at. It is updated
@@ -190,7 +190,7 @@ class Game {
             if (this.level < this.levelIncrements[i]) {
                 newQuantity = this.baseStackAmt + i;
                 break;
-            } else if (this.level >= this.levelIncrements[i]) {
+            } else  {
                 newQuantity = this.baseStackAmt + i;
             }
         }
