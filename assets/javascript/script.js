@@ -252,10 +252,17 @@ class Game {
     }
 
     setBlockColour() {
+
+        let colours = []
+
+        for (let colour of this.inGameColours){
+            colours.push(colour)
+        }       
+
         for (let i = 0; i < this.stacksToFill; i++) {
             for (let j = 0; j < this.baseBlockAmt; j++) {
-                this.gameStacks[i].blocks[j].colour = this.inGameColours[0];
-                this.inGameColours.shift();
+                this.gameStacks[i].blocks[j].colour = colours[0];
+                colours.shift();
             }
         }
     }
@@ -854,12 +861,14 @@ class Stack {
     }
 }
 
-// Checks for the window to have loaded before running the game initialisation
-const newGame = new Game();
-window.onload = hasLoaded();
+// // Checks for the window to have loaded before running the game initialisation
+// const newGame = new Game();
+// window.onload = hasLoaded();
 
-// Game initialisation function which creates a new Game object, where the
-// base properties can be set. 
-function hasLoaded() {
-    newGame.initialiseGame();
-}
+// // Game initialisation function which creates a new Game object, where the
+// // base properties can be set. 
+// function hasLoaded() {
+//     newGame.initialiseGame();
+// }
+
+window.onload = new Game().initialiseGame();
