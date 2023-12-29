@@ -47,7 +47,7 @@ class Game {
         // # GAME INITIALISATION PROPERTIES #
         // ##################################
 
-        this.level = 0; // current level
+        this.level = 1; // current level
 
         // this property is an array of numbers which will be checked against the current 
         // level. If the current level is less than the levelIncrements number, it will
@@ -180,6 +180,10 @@ class Game {
         // count of current bonus blocks the player has
         this.currentBonusBlockAmt = 0;
 
+    }
+
+    saveProgressToBrowser(){
+        localStorage.setItem("level", this.level)
     }
 
     //1st required function to initialise the game
@@ -322,9 +326,15 @@ class Game {
     }
 
     initialiseGame() {
+
+        if(localStorage.getItem("level") !== null){
+            console.log(localStorage.getItem("level"))
+            this.level = localStorage.getItem("level")
+        } 
+
         this.currentBonusBlockAmt = 0; // reset the currentBonusBlockAmt
         this.clearGameStacks();
-        this.increaseLevel();
+        this.updateLevelText();
         this.setStartingStackAmt();
         this.setStacksToFill();
         this.setInGameColours();
@@ -481,6 +491,9 @@ class Game {
 
         if (counter == (stacksToCheck)) {
             this.moves = [];
+            this.increaseLevel();
+            this.updateLevelText();
+            this.saveProgressToBrowser();
             this.initialiseGame();
         } else {
         }
@@ -488,6 +501,9 @@ class Game {
 
     increaseLevel() {
         this.level++;
+    }
+
+    updateLevelText(){
         this.levelText.textContent = `Level ${this.level}`;
     }
 
