@@ -327,7 +327,7 @@ class Game {
         this.currentBonusBlockAmt = 0; // reset the currentBonusBlockAmt
         this.clearGameStacks();
         this.updateLevelText();
-
+        this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
 
         this.setStartingStackAmt();
@@ -891,6 +891,12 @@ class GameTitle {
         ]
 
         this.title = "Colour Sort"
+    }
+
+    clearTitle() {
+        while (this.heading.hasChildNodes()) {
+            this.heading.removeChild(this.heading.firstChild);
+        }
     }
 
     createTitle() {
