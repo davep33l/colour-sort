@@ -1,4 +1,3 @@
-
 /* 
     This game utilised 3 class objects to enable the functionality of the game. Along 
     with an initialisation function after the window.onload is successful. 
@@ -172,9 +171,11 @@ class Game {
         // count of current bonus blocks the player has
         this.currentBonusBlockAmt = 0;
 
+        this.gameTitle = new GameTitle()
+
     }
 
-    saveProgressToBrowser(){
+    saveProgressToBrowser() {
         localStorage.setItem("level", this.level)
     }
 
@@ -186,7 +187,7 @@ class Game {
             if (this.level < this.levelIncrements[i]) {
                 newQuantity = this.baseStackAmt + i;
                 break;
-            } else  {
+            } else {
                 newQuantity = this.baseStackAmt + i;
             }
         }
@@ -251,9 +252,9 @@ class Game {
 
         let colours = []
 
-        for (let colour of this.inGameColours){
+        for (let colour of this.inGameColours) {
             colours.push(colour)
-        }       
+        }
 
         for (let i = 0; i < this.stacksToFill; i++) {
             for (let j = 0; j < this.baseBlockAmt; j++) {
@@ -319,13 +320,16 @@ class Game {
 
     initialiseGame() {
 
-        if(localStorage.getItem("level") !== null){
+        if (localStorage.getItem("level") !== null) {
             this.level = localStorage.getItem("level")
-        } 
+        }
 
         this.currentBonusBlockAmt = 0; // reset the currentBonusBlockAmt
         this.clearGameStacks();
         this.updateLevelText();
+
+        this.gameTitle.createTitle();
+
         this.setStartingStackAmt();
         this.setStacksToFill();
         this.setInGameColours();
@@ -494,7 +498,7 @@ class Game {
         this.level++;
     }
 
-    updateLevelText(){
+    updateLevelText() {
         this.levelText.textContent = `Level ${this.level}`;
     }
 
@@ -868,6 +872,63 @@ class Stack {
     }
 }
 
+class GameTitle {
+    constructor() {
+        this.heading = document.getElementById('heading');
+
+        this.colours = [
+            "blue",
+            "orange",
+            "maroon",
+            "magenta",
+            "cyan",
+            "olive",
+            "red",
+            "green",
+            "yellow",
+            "yellow",
+            "yellow",
+        ]
+
+        this.title = "Colour Sort"
+    }
+
+    createTitle() {
+        for (let i = 0; i < this.title.length; i++) {
+            let letter = document.createElement('span')
+            letter.innerText = this.title[i]
+            this.heading.appendChild(letter)
+        }
+
+        this.giveTitleRandomColour();
+    }
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async giveTitleRandomColour() {
+
+        for (let i = 0; i < this.heading.children.length; i++) {
+            let randomNumber = Math.floor(Math.random() * (this.colours.length));
+            this.heading.children[i].className = this.colours[randomNumber]
+            await this.sleep(75)
+        }
+    }
+
+    async checkRandom() {
+
+        await this.giveTitleRandomColour();
+
+        let firstChildText = this.heading.childNodes.item(0).className
+        let seventhChildText = this.heading.childNodes.item(7).className
+
+        if (firstChildText == seventhChildText) {
+            console.log("WHOOOOO SPECIAL LEVEL")
+        }
+    }
+}
+
 // // Checks for the window to have loaded before running the game initialisation
 // const newGame = new Game();
 // window.onload = hasLoaded();
@@ -879,3 +940,4 @@ class Stack {
 // }
 
 window.onload = new Game().initialiseGame();
+
