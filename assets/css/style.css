@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Doodle+Shadow&display=swap');
+
 /* Custom Variables to change block dimensions */
 :root {
     --block-dimensions: 40px;
@@ -14,13 +16,18 @@
 body {
     color: white;
     background-color: black;
+    font-family: "Rubik Doodle Shadow";
 }
 
 /* Title Section Styles */
 .title-section {
-    background-color: lightgreen;
+    margin-block: 1rem;
     text-align: center;
-    font-size: 200%;
+    font-size: 220%;
+    letter-spacing: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Actions Sections Styles */
@@ -28,23 +35,27 @@ body {
     display: flex;
     justify-content: space-evenly;
     padding-block: 1rem;
-    background-color: lightblue;
+    border-top: 1px solid white;
 }
 
 /* Level Section Styles */
 .level-section {
-    background-color: lightpink;
+    border-block: 1px solid white;
     text-align: center;
+    letter-spacing: 5px;
+    font-style: oblique;
+    padding-block: 5px;
 }
 
 /* Stack Section Styles */
 .stack-section {
     background-color: black;
     padding-block: 2rem;
+    padding-inline: .5rem;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    column-gap: 1rem;
+    column-gap: .5rem;
     row-gap: 1rem;
     align-items: flex-end;
 }
@@ -60,4 +71,66 @@ body {
     width: var(--block-dimensions);
     border: 1px solid white;
     color: white;
+}
+
+.button {
+    height: var(--block-dimensions);
+    width: var(--block-dimensions);
+    border: 1px solid white;
+}
+
+#undo-button {
+    background: url(../icons/undo-icon.png) no-repeat center center/cover;
+}
+
+#reset-button {
+    background: url(../icons/reset-icon.png) no-repeat center center/cover;
+}
+
+#add-block-button {
+    background: url(../icons/add-icon.png) no-repeat center center/cover;
+}
+
+.red {
+    color: #e6194B;
+}
+
+.blue {
+    color: #4363d8;
+}
+
+.yellow {
+    color: #ffe119;
+}
+
+.green {
+    color: #3cb44b;
+}
+
+.orange {
+    color: #f58231;
+}
+
+.purple {
+    color: #911eb4;
+}
+
+.cyan {
+    color: #42d4f4;
+}
+
+.magenta {
+    color: #f032e6;
+}
+
+.maroon {
+    color: #800000;
+}
+
+.grey {
+    color: #a9a9a9;
+}
+
+.olive {
+    color: #808000;
 }

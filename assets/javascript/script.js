@@ -53,8 +53,8 @@ class Game {
         // level. If the current level is less than the levelIncrements number, it will
         // add the index of the levelIncrements where the condition was true and add that many
         // extra stacks to the game. 
-        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]; // use this for testing
-        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80, 100]; // factor of 1.55 between level increases
+        this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // use this for testing
+        // this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80]; // factor of 1.55 between level increases
 
         // this property is an integer denoting the starting amount of stacks for the game and is
         // updated throughout the game based on the level the player is currently at. It is updated
@@ -76,22 +76,14 @@ class Game {
         this.baseColours = [
             '#e6194B', // Red
             '#3cb44b', // Green
-            '#ffe119', // Yellow
             '#4363d8', // Blue
+            '#ffe119', // Yellow
             '#f58231', // Orange
             '#911eb4', // Purple
             '#42d4f4', // Cyan
             '#f032e6', // Magenta
             '#800000', // Maroon
-            '#000075', // Navy
             '#a9a9a9', // Grey
-            // '#808000', // Olive
-            // '#bfef45', // Lime
-            // '#469990', // Teal
-            // '#fabed4', // Pink
-            // '#dcbeff', // Lavender
-            // '#fffac8', // Beige
-            // '#9A6324', // Brown
         ];
 
         /*
@@ -328,7 +320,6 @@ class Game {
     initialiseGame() {
 
         if(localStorage.getItem("level") !== null){
-            console.log(localStorage.getItem("level"))
             this.level = localStorage.getItem("level")
         } 
 
