@@ -52,8 +52,8 @@ class Game {
         // level. If the current level is less than the levelIncrements number, it will
         // add the index of the levelIncrements where the condition was true and add that many
         // extra stacks to the game. 
-        this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // use this for testing
-        // this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80]; // factor of 1.55 between level increases
+        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // use this for testing
+        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80]; // factor of 1.55 between level increases
 
         // this property is an integer denoting the starting amount of stacks for the game and is
         // updated throughout the game based on the level the player is currently at. It is updated
@@ -171,8 +171,17 @@ class Game {
         // count of current bonus blocks the player has
         this.currentBonusBlockAmt = 0;
 
-        this.gameTitle = new GameTitle()
+        this.gameTitle = new GameTitle();
 
+        this.bonusLevel = false;
+    }
+
+    setBonusLevel() {
+        if (this.level % 2 == 0) {
+            this.bonusLevel = true;
+        } else {
+            this.bonusLevel = false;
+        }
     }
 
     saveProgressToBrowser() {
@@ -298,6 +307,15 @@ class Game {
         }
     }
 
+    adjustDOMStackColoursForBonusLevel() {
+        for (let i = 0; i < this.domStackSection.children.length - 2; i++) {
+            for (let j = 1; j < this.domStackSection.firstChild.children.length; j++) {
+                this.domStackSection.children[i].childNodes.item(j).style.backgroundColor = ""
+                this.domStackSection.children[i].childNodes.item(j).innerText = "?"
+            }
+        }
+    }
+
     /* 
         The below function adds event listeners to the Stack elements in the DOM.
         The usage of the arrow function for the event listener was to maintain the context of the
@@ -329,7 +347,6 @@ class Game {
         this.updateLevelText();
         this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
-
         this.setStartingStackAmt();
         this.setStacksToFill();
         this.setInGameColours();
@@ -337,6 +354,13 @@ class Game {
         this.setBlockColour();
         this.setIds();
         this.addStackToDOM();
+        this.setBonusLevel();
+
+        if (this.bonusLevel == true) {
+            console.log("run bonus level")
+            this.adjustDOMStackColoursForBonusLevel();
+        }
+
         this.addEventListenersStackArea();
     }
 
@@ -449,18 +473,31 @@ class Game {
         let movesLogger = [[originStack.id, originStack.originTopColourId, originStack.originTopColour], [destStack.id, destStack.destinationTopColourId, destStack.destinationAvailableSpaceId]];
         this.moves.push(movesLogger);
 
-        // changes the colour in the DOM
-        document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
-        document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour;
+        if (this.bonusLevel) {
+            if (originStack.originTopFilledColourIndex == 3) {
+                console.log("do nothing")
+                document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
+                document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour;
 
-        // changes the colour in the gameStacks array to keep in sync with the DOM
+            } else {
+
+                document.getElementById(originStack.id).children[originStack.originTopFilledColourIndex + 1].style.backgroundColor = originStack.blocks[originStack.originTopFilledColourIndex + 1].colour;
+                document.getElementById(originStack.id).children[originStack.originTopFilledColourIndex + 1].innerText = "";
+
+                document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
+                document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour;
+
+            }
+        } else {
+            document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
+            document.getElementById(destStack.destinationAvailableSpaceId).style.backgroundColor = originStack.originTopColour;
+        }
+
         destBlock.colour = originBlock.colour;
         originBlock.colour = "";
-
         this.firstStackId = undefined;
         this.secondStackId = undefined;
 
-        //always calls a hasWon method after moving the blocks
         this.hasWon();
     }
 
@@ -560,6 +597,11 @@ class Game {
         this.currentBonusBlockAmt = 0;
         this.clearGameStacks();
         this.addStackToDOM();
+
+        if (this.bonusLevel == true) {
+            this.adjustDOMStackColoursForBonusLevel();
+        }
+
         this.addEventListenersStackArea();
     }
 
@@ -909,6 +951,9 @@ class GameTitle {
         this.giveTitleRandomColour();
     }
 
+    // used the following link to understand how to create a delay of a loop
+    // so I could delay the colour changes on the title. 
+    // LINK: https://www.tutorialspoint.com/how-to-add-delay-in-a-loop-in-javascript
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
