@@ -93,6 +93,11 @@ body {
     background: url(../icons/add-icon.png) no-repeat center center/cover;
 }
 
+#how-to-button {
+    background: url(../icons/how-to-icon.png) no-repeat center center/cover;
+}
+
+
 .red {
     color: #e6194B;
 }
