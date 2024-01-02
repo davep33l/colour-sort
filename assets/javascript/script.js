@@ -37,42 +37,19 @@ class Game {
         // # PRE-GAME INITIALISATION PROPERTIES #
         // ######################################
 
-        this.baseStackAmt = 4; // the game has to start with at least 4 stacks to be playable/enjoyable
-        this.baseBlockAmt = 4; // the game has to start with at least 4 blocks in each stack to be playable/enjoyable
-        this.baseEmptyStackAmt = 2; // the game has to start with at least 2 empty stacks to have a chance of completing the game
+        // Minumum values for the game to function and be enjoyable
+        this.BASE_STACK_AMT = 4;
+        this.BASE_BLOCK_AMT = 4;
+        this.BASE_EMPTY_STACK_AMT = 2;
 
+        // Animated game title updated at the start of each level
+        this.gameTitle = new GameTitle();
 
-        // ##################################
-        // # GAME INITIALISATION PROPERTIES #
-        // ##################################
+        // this.LEVEL_INCREMENTS = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // Use this for testing
+        // Defines how many additional stacks (by using the index that returns true) are added based on the level
+        this.LEVEL_INCREMENTS = [2, 4, 6, 9, 14, 22, 33, 51, 80];
 
-        this.level = 1; // current level
-
-        // this property is an array of numbers which will be checked against the current 
-        // level. If the current level is less than the levelIncrements number, it will
-        // add the index of the levelIncrements where the condition was true and add that many
-        // extra stacks to the game. 
-        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // use this for testing
-        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80]; // factor of 1.55 between level increases
-
-        // this property is an integer denoting the starting amount of stacks for the game and is
-        // updated throughout the game based on the level the player is currently at. It is updated
-        // using the levelIncrements property to determine how many additional stacks to start the 
-        // game with. 
-        this.startingStackAmt = this.baseStackAmt;
-        this.stacksToFill = 2;
-
-        /*  
-            In the interest of accessibility, I searched for colours that were unique enough, 
-            but maintained a enough contrast/difference to be distinguishable. This lead me to 
-            the following website with a great resource of colours trying to solve a similar problem
-            but for subway map lines. I selected a list of colours from this which I deemed 
-            appropriate for the game. 
-        
-            Link: https://sashamaps.net/docs/resources/20-colors/
-        */
-        // this colour array serves as the base colours for the blocks to be used throughout the game
-        this.baseColours = [
+        this.BASE_COLOURS = [
             '#e6194B', // Red
             '#3cb44b', // Green
             '#4363d8', // Blue
@@ -85,154 +62,109 @@ class Game {
             '#a9a9a9', // Grey
         ];
 
-        /*
-            The below array will hold the in game colours. Essentially the method setInGameColours will
-            create a variable called coloursRequired and calculate the amount, based on the previously 
-            created stacksToFill and baseBlockAmt properties.
-            Example:
+        // ##################################
+        // # GAME INITIALISATION PROPERTIES #
+        // ##################################
 
-            stacksToFill = 2
-            baseBlockAmt = 4
-            coloursRequired = 2 * 4 = 8
+        this.level = 1; // Current level
 
-            It will then pull through the required amount of colours by referencing the index of the baseColours
-            array. Using the example numbers above, it will take the colour in the first index and push it to 
-            a tempArray1 4 times, then it will move to the next index (less than stacksToFill) and push that colour
-            4 times to tempArray1. 
+        this.levelStartingStackAmt = this.BASE_STACK_AMT; // Set by setLevelStartingStackAmt()
+        this.levelStacksToFill = this.BASE_STACK_AMT - this.BASE_EMPTY_STACK_AMT; // Set by setLevelStacksToFill()
 
-            The output of tempArray1 would look like this:
 
-            tempArray1 = ["red","red","red","red","green","green","green","green"]
+        this.inGameColours = []; // Stores randomly assorted colours to be populated on the gameStacks
 
-            There is a second part to this method, that randomises the colours in tempArray1 by creating a new tempArray2
-            variable and loops through up until the coloursRequired variable.
-            In the loop it will create a "multiplier" variable which represents the length of tempArray1 (note this array has items
-            spliced from it later). With this multiplier a random integer is found using Math.random. This is essentially an index in
-            the tempArray1 for a colour. That colour is then pushed on to tempArray2 and the colour is spliced from tempArray1.
+        this.gameStacks = []; // Stores all the Stacks (with internal Blocks) for the game
 
-            This will result in a shuffled tempArray2 which is used to set the inGameColours property of the Game class.
-
-            The output of tempArray1 would look like this:
-
-            tempArray2 = ["green","green","red","red","red","green","red","green"]
-
-        */
-        this.inGameColours = [];
-
-        /* 
-            This holds the Stack object in an array so they can be accessed throughout the game.
-            The Stack object in turn will hold an array of Block objects.
-            There are 3 methods associated with this.
-            createBaseStacks, setBlockColour and setIds.
-        */
-        this.gameStacks = [];
-
-        // Properties set for the id and class prefixes to allow for easy change if required.
-        // These are used with the setIds methond when updating the gameStacks array of Stack and
-        // Block objects. 
+        // Ids and classes associated with the HMTL and CSS
         this.blockIdPrefix = "-block-";
         this.stackIdPrefix = "stack-";
         this.blockClass = "stack__block";
         this.stackClass = "stack";
 
-        // Property to target the stack-section on the DOM
+        // Targets for DOM elements
         this.domStackSection = document.getElementById('stack-section');
-
-        // Property to target the level text on the DOM
         this.levelText = document.getElementById('level-section__level');
+        this.howToModal = document.getElementById('how-to-modal');
 
-        // Property to target the undo button on the DOM
+        // Clickable buttons on DOM
         this.undoButton = document.getElementById('undo-button');
-
-        // Property to target the reset button on the DOM
         this.resetButton = document.getElementById('reset-button');
-
-        // Property to target the reset button on the DOM
         this.addBlockButton = document.getElementById('add-block-button');
-
         this.howToButton = document.getElementById('how-to-button');
-        this.howToModal = document.getElementById('how-to-modal')
-        this.closeHowToModal = document.getElementById('close-button')
+        this.closeHowToButton = document.getElementById('close-button');
 
+        // Event listeners for clickable buttons
         this.undoButton.addEventListener('click', (event) => this.undoMove(event));
         this.resetButton.addEventListener('click', (event) => this.resetLevel(event));
         this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
-        this.howToButton.addEventListener('click', (event) => this.howToPlay(event));
-        this.closeHowToModal.addEventListener('click', (event) => this.closeHowToPlay(event));
+        this.howToButton.addEventListener('click', (event) => this.eventHandlerOpenHowToPlay(event));
+        this.closeHowToButton.addEventListener('click', (event) => this.eventHandlerCloseHowToPlay(event));
 
 
         // #####################
         // # In Game Variables #
         // #####################
-        this.firstStackId = undefined;
-        this.secondStackId = undefined;
 
-        // array that holds the list of moves per game
-        this.moves = [];
-
-        // the maximum amount of bonus blocks allowed per game
+        this.firstStackId = undefined; // Stores stack id of the first valid game click
+        this.secondStackId = undefined; // Stores stack id of the second valid game click
+        this.levelMovesArray = [];
         this.maxBonusBlockAmt = 2;
-
-        // count of current bonus blocks the player has
         this.currentBonusBlockAmt = 0;
-
-        this.gameTitle = new GameTitle();
-
-        this.bonusLevel = false;
+        this.isBonusLevel = false;
     }
 
-    howToPlay() {
-        console.log("adding modal")
-        this.howToModal.style.display = "block"
+    eventHandlerOpenHowToPlay() {
+        console.log("adding modal");
+        this.howToModal.style.display = "block";
     }
 
-
-    closeHowToPlay() {
-        this.howToModal.style.display = "none"
+    eventHandlerCloseHowToPlay() {
+        this.howToModal.style.display = "none";
     }
 
-    setBonusLevel() {
+    setIsBonusLevel() {
         if (this.level % 2 == 0) {
-            this.bonusLevel = true;
+            this.isBonusLevel = true;
         } else {
-            this.bonusLevel = false;
+            this.isBonusLevel = false;
         }
     }
 
     saveProgressToBrowser() {
-        localStorage.setItem("level", this.level)
+        localStorage.setItem("level", this.level);
     }
 
     //1st required function to initialise the game
-    setStartingStackAmt() {
-        let newQuantity = 0;
+    setLevelStartingStackAmt() {
+        let tempStartingStackAmount = 0;
 
-        for (let i = 0; i < this.levelIncrements.length; i++) {
-            if (this.level < this.levelIncrements[i]) {
-                newQuantity = this.baseStackAmt + i;
+        for (let i = 0; i < this.LEVEL_INCREMENTS.length; i++) {
+            if (this.level < this.LEVEL_INCREMENTS[i]) {
+                tempStartingStackAmount = this.BASE_STACK_AMT + i;
                 break;
             } else {
-                newQuantity = this.baseStackAmt + i;
+                tempStartingStackAmount = this.BASE_STACK_AMT + i;
             }
         }
-        this.startingStackAmt = newQuantity;
+        this.levelStartingStackAmt = tempStartingStackAmount;
     }
 
     //2nd required function to initialise the game
-    setStacksToFill() {
-        this.stacksToFill = this.startingStackAmt - this.baseEmptyStackAmt;
+    setLevelStacksToFill() {
+        this.levelStacksToFill = this.levelStartingStackAmt - this.BASE_EMPTY_STACK_AMT;
     }
 
     //3rd required function to initialise the game
     setInGameColours() {
 
         let coloursRequired = 0;
-        coloursRequired = this.stacksToFill * this.baseBlockAmt;
+        coloursRequired = this.levelStacksToFill * this.BASE_BLOCK_AMT;
 
         let tempArray1 = [];
-        for (let i = 0; i < this.stacksToFill; i++) {
-            for (let j = 0; j < this.baseBlockAmt; j++) {
-                tempArray1.push(this.baseColours[i]);
+        for (let i = 0; i < this.levelStacksToFill; i++) {
+            for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
+                tempArray1.push(this.BASE_COLOURS[i]);
             }
         }
 
@@ -255,14 +187,14 @@ class Game {
         let stacks = [];
 
         //create stacks filled with colours
-        for (let i = 0; i < this.startingStackAmt; i++) {
+        for (let i = 0; i < this.levelStartingStackAmt; i++) {
             let newStack = new Stack();
             // adds required properties to the stack object
             newStack.bonusStack = false;
-            newStack.maxBlockAmt = this.baseBlockAmt;
+            newStack.maxBlockAmt = this.BASE_BLOCK_AMT;
 
             let tempStack = [];
-            for (let j = 0; j < this.baseBlockAmt; j++) {
+            for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
                 let newBlock = new Block();
                 tempStack.push(newBlock);
             }
@@ -274,14 +206,14 @@ class Game {
 
     setBlockColour() {
 
-        let colours = []
+        let colours = [];
 
         for (let colour of this.inGameColours) {
-            colours.push(colour)
+            colours.push(colour);
         }
 
-        for (let i = 0; i < this.stacksToFill; i++) {
-            for (let j = 0; j < this.baseBlockAmt; j++) {
+        for (let i = 0; i < this.levelStacksToFill; i++) {
+            for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
                 this.gameStacks[i].blocks[j].colour = colours[0];
                 colours.shift();
             }
@@ -290,10 +222,10 @@ class Game {
 
     setIds() {
 
-        for (let i = 0; i < this.startingStackAmt; i++) {
+        for (let i = 0; i < this.levelStartingStackAmt; i++) {
             this.gameStacks[i].id = this.stackIdPrefix + i;
             this.gameStacks[i].class = this.stackClass;
-            for (let j = 0; j < this.baseBlockAmt; j++) {
+            for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
                 this.gameStacks[i].blocks[j].id = this.stackIdPrefix + i + this.blockIdPrefix + j;
                 this.gameStacks[i].blocks[j].class = this.blockClass;
             }
@@ -311,9 +243,9 @@ class Game {
             for (let j = 0; j < this.gameStacks[i].blocks.length; j++) {
                 let blockForDOM = document.createElement('div');
 
-                let newBlockInnerSpan = document.createElement('span')
-                newBlockInnerSpan.classList.add(`${this.gameStacks[i].blocks[j].id}-text`)
-                blockForDOM.appendChild(newBlockInnerSpan)
+                let newBlockInnerSpan = document.createElement('span');
+                newBlockInnerSpan.classList.add(`${this.gameStacks[i].blocks[j].id}-text`);
+                blockForDOM.appendChild(newBlockInnerSpan);
 
                 // adds a concatenation of the parent stack id and the block id as the html id
                 blockForDOM.id = `${this.gameStacks[i].blocks[j].id}`;
@@ -329,8 +261,8 @@ class Game {
     adjustDOMStackColoursForBonusLevel() {
         for (let i = 0; i < this.domStackSection.children.length - 2; i++) {
             for (let j = 1; j < this.domStackSection.firstChild.children.length; j++) {
-                this.domStackSection.children[i].childNodes.item(j).style.backgroundColor = ""
-                this.domStackSection.children[i].childNodes.item(j).firstChild.innerText = "?"
+                this.domStackSection.children[i].childNodes.item(j).style.backgroundColor = "";
+                this.domStackSection.children[i].childNodes.item(j).firstChild.innerText = "?";
             }
         }
     }
@@ -358,7 +290,7 @@ class Game {
     initialiseGame() {
 
         if (localStorage.getItem("level") !== null) {
-            this.level = localStorage.getItem("level")
+            this.level = localStorage.getItem("level");
         }
 
         this.currentBonusBlockAmt = 0; // reset the currentBonusBlockAmt
@@ -366,17 +298,17 @@ class Game {
         this.updateLevelText();
         this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
-        this.setStartingStackAmt();
-        this.setStacksToFill();
+        this.setLevelStartingStackAmt();
+        this.setLevelStacksToFill();
         this.setInGameColours();
         this.createBaseStacks();
         this.setBlockColour();
         this.setIds();
         this.addStackToDOM();
-        this.setBonusLevel();
+        this.setIsBonusLevel();
 
-        if (this.bonusLevel == true) {
-            console.log("run bonus level")
+        if (this.isBonusLevel == true) {
+            console.log("run bonus level");
             this.adjustDOMStackColoursForBonusLevel();
         }
 
@@ -490,9 +422,9 @@ class Game {
 
         // logs the move into a Game level property called moves. To be used when undoing moves or reseting level.
         let movesLogger = [[originStack.id, originStack.originTopColourId, originStack.originTopColour], [destStack.id, destStack.destinationTopColourId, destStack.destinationAvailableSpaceId]];
-        this.moves.push(movesLogger);
+        this.levelMovesArray.push(movesLogger);
 
-        if (this.bonusLevel) {
+        if (this.isBonusLevel) {
             if (originStack.originTopFilledColourIndex == 3) {
                 console.log("do nothing")
                 document.getElementById(originStack.originTopColourId).style.backgroundColor = "";
@@ -532,7 +464,7 @@ class Game {
             }
         }
 
-        let stacksToCheck = winningArray.length - this.baseEmptyStackAmt;
+        let stacksToCheck = winningArray.length - this.BASE_EMPTY_STACK_AMT;
         let counter = 0;
         for (let i = 0; i < winningArray.length; i++) {
             if (winningArray[i] == true) {
@@ -541,7 +473,7 @@ class Game {
         }
 
         if (counter == (stacksToCheck)) {
-            this.moves = [];
+            this.levelMovesArray = [];
             this.increaseLevel();
             this.updateLevelText();
             this.saveProgressToBrowser();
@@ -570,11 +502,11 @@ class Game {
 
     undoMove() {
 
-        if (this.moves.length == 0) {
+        if (this.levelMovesArray.length == 0) {
             return;
         }
 
-        let lastMove = this.moves.pop();
+        let lastMove = this.levelMovesArray.pop();
 
         let originStackId = lastMove[0][0];
         let originStackTopColourId = lastMove[0][1];
@@ -602,7 +534,7 @@ class Game {
     resetLevel() {
 
         // loops through the moves array and reverses each move 1 by one
-        for (let i = this.moves.length; i > 0; i--) {
+        for (let i = this.levelMovesArray.length; i > 0; i--) {
             this.undoMove();
         }
 
@@ -617,7 +549,7 @@ class Game {
         this.clearGameStacks();
         this.addStackToDOM();
 
-        if (this.bonusLevel == true) {
+        if (this.isBonusLevel == true) {
             this.adjustDOMStackColoursForBonusLevel();
         }
 
@@ -1012,3 +944,7 @@ class GameTitle {
 
 window.onload = new Game().initialiseGame();
 
+
+
+//create stack skeleton 2 full 2 empty
+// 2 full 2 empty plus bonus stack with
