@@ -296,6 +296,10 @@ class Game {
             for (let j = 0; j < this.gameStacks[i].blocks.length; j++) {
                 let blockForDOM = document.createElement('div');
 
+                let newBlockInnerSpan = document.createElement('span')
+                newBlockInnerSpan.classList.add(`${this.gameStacks[i].blocks[j].id}-text`)
+                blockForDOM.appendChild(newBlockInnerSpan)
+
                 // adds a concatenation of the parent stack id and the block id as the html id
                 blockForDOM.id = `${this.gameStacks[i].blocks[j].id}`;
                 blockForDOM.classList.add(this.blockClass);
@@ -311,7 +315,7 @@ class Game {
         for (let i = 0; i < this.domStackSection.children.length - 2; i++) {
             for (let j = 1; j < this.domStackSection.firstChild.children.length; j++) {
                 this.domStackSection.children[i].childNodes.item(j).style.backgroundColor = ""
-                this.domStackSection.children[i].childNodes.item(j).innerText = "?"
+                this.domStackSection.children[i].childNodes.item(j).firstChild.innerText = "?"
             }
         }
     }
@@ -501,9 +505,9 @@ class Game {
         this.hasWon();
     }
 
-    // refactored this method to refernce the gameStacks instead of the DOM
     hasWon() {
-        //checks to see if game has won and resarts the game if it has
+        // TODO: adjust this so that it doesnt auto complete a game if there a still hidden blocks
+        // maybe add a check to only run this if the count of empty background colours is the right amount. 
 
         let winningArray = [];
         for (let i = 0; i < this.gameStacks.length; i++) {
@@ -695,6 +699,7 @@ class Block {
     constructor() {
         this.id = "";
         this.colour = "";
+        this.blockText = "";
     }
 }
 

@@ -71,6 +71,9 @@ body {
     width: var(--block-dimensions);
     border: 1px solid white;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .button {
