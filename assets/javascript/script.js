@@ -150,10 +150,15 @@ class Game {
         // Property to target the reset button on the DOM
         this.addBlockButton = document.getElementById('add-block-button');
 
+        this.howToButton = document.getElementById('how-to-button');
+        this.howToModal = document.getElementById('how-to-modal')
+        this.closeHowToModal = document.getElementById('close-button')
 
         this.undoButton.addEventListener('click', (event) => this.undoMove(event));
         this.resetButton.addEventListener('click', (event) => this.resetLevel(event));
         this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
+        this.howToButton.addEventListener('click', (event) => this.howToPlay(event));
+        this.closeHowToModal.addEventListener('click', (event) => this.closeHowToPlay(event));
 
 
         // #####################
@@ -174,6 +179,16 @@ class Game {
         this.gameTitle = new GameTitle();
 
         this.bonusLevel = false;
+    }
+
+    howToPlay() {
+        console.log("adding modal")
+        this.howToModal.style.display = "block"
+    }
+
+
+    closeHowToPlay() {
+        this.howToModal.style.display = "none"
     }
 
     setBonusLevel() {
