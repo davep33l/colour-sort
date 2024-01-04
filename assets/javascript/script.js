@@ -43,24 +43,12 @@ class Game {
         this.BASE_EMPTY_STACK_AMT = 2;
 
         // Animated game title updated at the start of each level
-        this.gameTitle = new GameTitle();
+        this.GAME_TITLE = new GameTitle();
 
-        // this.LEVEL_INCREMENTS = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // Use this for testing
+        this.LEVEL_INCREMENTS = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // Use this for testing
         // Defines how many additional stacks (by using the index that returns true) are added based on the level
-        this.LEVEL_INCREMENTS = [2, 4, 6, 9, 14, 22, 33, 51, 80];
+        // this.LEVEL_INCREMENTS = [10000000, 4, 6, 9, 14, 22, 33, 51, 80];
 
-        this.BASE_COLOURS = [
-            '#e6194B', // Red
-            '#3cb44b', // Green
-            '#4363d8', // Blue
-            '#ffe119', // Yellow
-            '#f58231', // Orange
-            '#911eb4', // Purple
-            '#42d4f4', // Cyan
-            '#f032e6', // Magenta
-            '#800000', // Maroon
-            '#a9a9a9', // Grey
-        ];
 
         // ##################################
         // # GAME INITIALISATION PROPERTIES #
@@ -77,10 +65,10 @@ class Game {
         this.gameStacks = []; // Stores all the Stacks (with internal Blocks) for the game
 
         // Ids and classes associated with the HMTL and CSS
-        this.blockIdPrefix = "-block-";
-        this.stackIdPrefix = "stack-";
-        this.blockClass = "stack__block";
-        this.stackClass = "stack";
+        this.STACK_ID_PREFIX = "stack-";
+        this.BLOCK_ID_PREFIX = "-block-";
+        this.BLOCK_CLASS = "stack__block";
+        this.STACK_CLASS = "stack";
 
         // Targets for DOM elements
         this.domStackSection = document.getElementById('stack-section');
@@ -124,7 +112,7 @@ class Game {
     }
 
     setIsBonusLevel() {
-        if (this.level % 2 == 0) {
+        if (this.level % 10 == 0) {
             this.isBonusLevel = true;
         } else {
             this.isBonusLevel = false;
@@ -153,31 +141,6 @@ class Game {
     //2nd required function to initialise the game
     setLevelStacksToFill() {
         this.levelStacksToFill = this.levelStartingStackAmt - this.BASE_EMPTY_STACK_AMT;
-    }
-
-    //3rd required function to initialise the game
-    setInGameColours() {
-
-        let coloursRequired = 0;
-        coloursRequired = this.levelStacksToFill * this.BASE_BLOCK_AMT;
-
-        let tempArray1 = [];
-        for (let i = 0; i < this.levelStacksToFill; i++) {
-            for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
-                tempArray1.push(this.BASE_COLOURS[i]);
-            }
-        }
-
-        let tempArray2 = [];
-        for (let i = 0; i < coloursRequired; i++) {
-            let multiplier = 0;
-            multiplier = tempArray1.length;
-            let randomNumber = 0;
-            randomNumber = Math.floor(Math.random() * multiplier);
-            tempArray2.push(tempArray1[randomNumber]);
-            tempArray1.splice(randomNumber, 1);
-        }
-        this.inGameColours = tempArray2;
     }
 
     // this uses the block and stack class to create an empty array based on the 
@@ -223,11 +186,11 @@ class Game {
     setIds() {
 
         for (let i = 0; i < this.levelStartingStackAmt; i++) {
-            this.gameStacks[i].id = this.stackIdPrefix + i;
-            this.gameStacks[i].class = this.stackClass;
+            this.gameStacks[i].id = this.STACK_ID_PREFIX + i;
+            this.gameStacks[i].class = this.STACK_CLASS;
             for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
-                this.gameStacks[i].blocks[j].id = this.stackIdPrefix + i + this.blockIdPrefix + j;
-                this.gameStacks[i].blocks[j].class = this.blockClass;
+                this.gameStacks[i].blocks[j].id = this.STACK_ID_PREFIX + i + this.BLOCK_ID_PREFIX + j;
+                this.gameStacks[i].blocks[j].class = this.BLOCK_CLASS;
             }
         }
     }
@@ -238,7 +201,7 @@ class Game {
             let stackForDOM = document.createElement('div');
 
             stackForDOM.id = this.gameStacks[i].id;
-            stackForDOM.classList.add(this.stackClass);
+            stackForDOM.classList.add(this.STACK_CLASS);
 
             for (let j = 0; j < this.gameStacks[i].blocks.length; j++) {
                 let blockForDOM = document.createElement('div');
@@ -249,7 +212,7 @@ class Game {
 
                 // adds a concatenation of the parent stack id and the block id as the html id
                 blockForDOM.id = `${this.gameStacks[i].blocks[j].id}`;
-                blockForDOM.classList.add(this.blockClass);
+                blockForDOM.classList.add(this.BLOCK_CLASS);
                 blockForDOM.style.backgroundColor = this.gameStacks[i].blocks[j].colour;
                 stackForDOM.appendChild(blockForDOM);
 
@@ -283,7 +246,7 @@ class Game {
     addEventListenersStackArea() {
 
         for (let i = 0; i < this.gameStacks.length; i++) {
-            this.domStackSection.getElementsByClassName(this.stackClass)[i].addEventListener('click', (event) => this.handleGameClicks(event));
+            this.domStackSection.getElementsByClassName(this.STACK_CLASS)[i].addEventListener('click', (event) => this.handleGameClicks(event));
         }
     }
 
@@ -296,11 +259,11 @@ class Game {
         this.currentBonusBlockAmt = 0; // reset the currentBonusBlockAmt
         this.clearGameStacks();
         this.updateLevelText();
-        this.gameTitle.clearTitle();
-        this.gameTitle.createTitle();
+        this.GAME_TITLE.clearTitle();
+        this.GAME_TITLE.createTitle();
         this.setLevelStartingStackAmt();
         this.setLevelStacksToFill();
-        this.setInGameColours();
+        this.inGameColours = new ColourManager(this.levelStacksToFill, this.BASE_BLOCK_AMT).setInGameColours()
         this.createBaseStacks();
         this.setBlockColour();
         this.setIds();
@@ -313,6 +276,7 @@ class Game {
         }
 
         this.addEventListenersStackArea();
+        console.log(this)
     }
 
     handleGameClicks(event) {
@@ -585,7 +549,7 @@ class Game {
 
                 //create a new stack
                 let bonusStack = new Stack();
-                bonusStack.id = this.stackIdPrefix + this.gameStacks.length;
+                bonusStack.id = this.STACK_ID_PREFIX + this.gameStacks.length;
 
                 //create an array of blocks for the stack
                 let bonusBlockArray = [];
@@ -593,7 +557,7 @@ class Game {
                 let bonusBlock = new Block();
 
                 //set the block id relative to the position it will be added (which is the end)
-                bonusBlock.id = this.stackIdPrefix + this.gameStacks.length + this.blockIdPrefix + "0";
+                bonusBlock.id = this.STACK_ID_PREFIX + this.gameStacks.length + this.BLOCK_ID_PREFIX + "0";
 
                 //set the block bonusStack status to true
                 bonusStack.bonusStack = true;
@@ -614,7 +578,7 @@ class Game {
                 //create the new block
                 let bonusBlock = new Block();
                 //set the block id relative to the position it will be added
-                bonusBlock.id = this.stackIdPrefix + [this.gameStacks.length - 1] + this.blockIdPrefix + this.gameStacks[this.gameStacks.length - 1].blocks.length;
+                bonusBlock.id = this.STACK_ID_PREFIX + [this.gameStacks.length - 1] + this.BLOCK_ID_PREFIX + this.gameStacks[this.gameStacks.length - 1].blocks.length;
 
                 //ensures that if a colour was in the previous block, it is moved to the new block and
                 //the block colour is changed to blank
@@ -929,6 +893,52 @@ class GameTitle {
         if (firstChildText == seventhChildText) {
             console.log("WHOOOOO SPECIAL LEVEL")
         }
+    }
+}
+
+class ColourManager {
+    constructor(level, blockAmt) {
+        this.level = level;
+        this.blockAmt = blockAmt;
+        this.BASE_COLOURS = [
+            'red',
+            'green',
+            '#e6194B', // Red
+            '#3cb44b', // Green
+            '#4363d8', // Blue
+            '#ffe119', // Yellow
+            '#f58231', // Orange
+            '#911eb4', // Purple
+            '#42d4f4', // Cyan
+            '#f032e6', // Magenta
+            '#800000', // Maroon
+            '#a9a9a9', // Grey
+        ];
+    }
+
+    setInGameColours() {
+
+        let coloursRequired = 0;
+        coloursRequired = this.level * this.blockAmt;
+        console.log(this.BASE_COLOURS)
+        console.log(coloursRequired)
+        let tempArray1 = [];
+        for (let i = 0; i < this.level; i++) {
+            for (let j = 0; j < this.blockAmt; j++) {
+                tempArray1.push(this.BASE_COLOURS[i]);
+            }
+        }
+
+        let tempArray2 = [];
+        for (let i = 0; i < coloursRequired; i++) {
+            let multiplier = 0;
+            multiplier = tempArray1.length;
+            let randomNumber = 0;
+            randomNumber = Math.floor(Math.random() * multiplier);
+            tempArray2.push(tempArray1[randomNumber]);
+            tempArray1.splice(randomNumber, 1);
+        }
+        return tempArray2;
     }
 }
 
