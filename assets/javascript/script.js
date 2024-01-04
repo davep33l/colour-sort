@@ -47,7 +47,7 @@ class Game {
 
         this.LEVEL_INCREMENTS = [2, 3, 4, 5, 6, 7, 8, 9, 10]; // Use this for testing
         // Defines how many additional stacks (by using the index that returns true) are added based on the level
-        // this.LEVEL_INCREMENTS = [10000000, 4, 6, 9, 14, 22, 33, 51, 80];
+        // this.LEVEL_INCREMENTS = [2, 4, 6, 9, 14, 22, 33, 51, 80];
 
 
         // ##################################
@@ -143,30 +143,6 @@ class Game {
         this.levelStacksToFill = this.levelStartingStackAmt - this.BASE_EMPTY_STACK_AMT;
     }
 
-    // this uses the block and stack class to create an empty array based on the 
-    // variables set in the initialisation. 
-    createBaseStacks() {
-
-        let stacks = [];
-
-        //create stacks filled with colours
-        for (let i = 0; i < this.levelStartingStackAmt; i++) {
-            let newStack = new Stack();
-            // adds required properties to the stack object
-            newStack.bonusStack = false;
-            newStack.maxBlockAmt = this.BASE_BLOCK_AMT;
-
-            let tempStack = [];
-            for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
-                let newBlock = new Block();
-                tempStack.push(newBlock);
-            }
-            newStack.blocks = tempStack;
-            stacks.push(newStack);
-        }
-        this.gameStacks = stacks;
-    }
-
     setBlockColour() {
 
         let colours = [];
@@ -177,7 +153,7 @@ class Game {
 
         for (let i = 0; i < this.levelStacksToFill; i++) {
             for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
-                this.gameStacks[i].blocks[j].colour = colours[0];
+                this.gameStacks.stacks[i].blocks[j].colour = colours[0];
                 colours.shift();
             }
         }
@@ -186,34 +162,34 @@ class Game {
     setIds() {
 
         for (let i = 0; i < this.levelStartingStackAmt; i++) {
-            this.gameStacks[i].id = this.STACK_ID_PREFIX + i;
-            this.gameStacks[i].class = this.STACK_CLASS;
+            this.gameStacks.stacks[i].id = this.STACK_ID_PREFIX + i;
+            this.gameStacks.stacks[i].class = this.STACK_CLASS;
             for (let j = 0; j < this.BASE_BLOCK_AMT; j++) {
-                this.gameStacks[i].blocks[j].id = this.STACK_ID_PREFIX + i + this.BLOCK_ID_PREFIX + j;
-                this.gameStacks[i].blocks[j].class = this.BLOCK_CLASS;
+                this.gameStacks.stacks[i].blocks[j].id = this.STACK_ID_PREFIX + i + this.BLOCK_ID_PREFIX + j;
+                this.gameStacks.stacks[i].blocks[j].class = this.BLOCK_CLASS;
             }
         }
     }
 
     addStackToDOM() {
 
-        for (let i = 0; i < this.gameStacks.length; i++) {
+        for (let i = 0; i < this.gameStacks.stacks.length; i++) {
             let stackForDOM = document.createElement('div');
 
-            stackForDOM.id = this.gameStacks[i].id;
+            stackForDOM.id = this.gameStacks.stacks[i].id;
             stackForDOM.classList.add(this.STACK_CLASS);
 
-            for (let j = 0; j < this.gameStacks[i].blocks.length; j++) {
+            for (let j = 0; j < this.gameStacks.stacks[i].blocks.length; j++) {
                 let blockForDOM = document.createElement('div');
 
                 let newBlockInnerSpan = document.createElement('span');
-                newBlockInnerSpan.classList.add(`${this.gameStacks[i].blocks[j].id}-text`);
+                newBlockInnerSpan.classList.add(`${this.gameStacks.stacks[i].blocks[j].id}-text`);
                 blockForDOM.appendChild(newBlockInnerSpan);
 
                 // adds a concatenation of the parent stack id and the block id as the html id
-                blockForDOM.id = `${this.gameStacks[i].blocks[j].id}`;
+                blockForDOM.id = `${this.gameStacks.stacks[i].blocks[j].id}`;
                 blockForDOM.classList.add(this.BLOCK_CLASS);
-                blockForDOM.style.backgroundColor = this.gameStacks[i].blocks[j].colour;
+                blockForDOM.style.backgroundColor = this.gameStacks.stacks[i].blocks[j].colour;
                 stackForDOM.appendChild(blockForDOM);
 
             }
@@ -245,7 +221,7 @@ class Game {
     */
     addEventListenersStackArea() {
 
-        for (let i = 0; i < this.gameStacks.length; i++) {
+        for (let i = 0; i < this.gameStacks.stacks.length; i++) {
             this.domStackSection.getElementsByClassName(this.STACK_CLASS)[i].addEventListener('click', (event) => this.handleGameClicks(event));
         }
     }
@@ -264,7 +240,10 @@ class Game {
         this.setLevelStartingStackAmt();
         this.setLevelStacksToFill();
         this.inGameColours = new ColourManager(this.levelStacksToFill, this.BASE_BLOCK_AMT).setInGameColours()
-        this.createBaseStacks();
+
+        this.gameStacks = new GameStacks(this.levelStartingStackAmt, this.BASE_BLOCK_AMT, 1, 0).createGameStacks()
+        console.log(this.gameStacks)
+
         this.setBlockColour();
         this.setIds();
         this.addStackToDOM();
@@ -302,7 +281,7 @@ class Game {
             The only section of code used from this website was the single line referenced below with the find method (but using my 
             gameStacks array as the object to run find on).
         */
-        let obj = this.gameStacks.find(item => item.id === stackId);
+        let obj = this.gameStacks.stacks.find(item => item.id === stackId);
 
         obj.updateClickOrderProperties();
 
@@ -363,8 +342,8 @@ class Game {
 
     compareBlocks() {
 
-        let originStack = this.gameStacks.find(item => item.id === this.firstStackId);
-        let destStack = this.gameStacks.find(item => item.id === this.secondStackId);
+        let originStack = this.gameStacks.stacks.find(item => item.id === this.firstStackId);
+        let destStack = this.gameStacks.stacks.find(item => item.id === this.secondStackId);
 
         if (destStack.isEmpty) {
             this.moveBlocks();
@@ -378,8 +357,8 @@ class Game {
 
     moveBlocks() {
 
-        let originStack = this.gameStacks.find(item => item.id === this.firstStackId);
-        let destStack = this.gameStacks.find(item => item.id === this.secondStackId);
+        let originStack = this.gameStacks.stacks.find(item => item.id === this.firstStackId);
+        let destStack = this.gameStacks.stacks.find(item => item.id === this.secondStackId);
 
         let originBlock = originStack.blocks.find(item => item.id === originStack.originTopColourId);
         let destBlock = destStack.blocks.find(item => item.id === destStack.destinationAvailableSpaceId);
@@ -421,10 +400,10 @@ class Game {
         // maybe add a check to only run this if the count of empty background colours is the right amount. 
 
         let winningArray = [];
-        for (let i = 0; i < this.gameStacks.length; i++) {
-            if (this.gameStacks[i].bonusStack == false) {
-                this.gameStacks[i].updateIsFilledWithSameColour();
-                winningArray.push(this.gameStacks[i].isFilledWithSameColour);
+        for (let i = 0; i < this.gameStacks.stacks.length; i++) {
+            if (this.gameStacks.stacks[i].bonusStack == false) {
+                this.gameStacks.stacks[i].updateIsFilledWithSameColour();
+                winningArray.push(this.gameStacks.stacks[i].isFilledWithSameColour);
             }
         }
 
@@ -478,8 +457,8 @@ class Game {
         let destStackId = lastMove[1][0];
         let destAvailableSpaceId = lastMove[1][2];
 
-        let originStack = this.gameStacks.find(item => item.id === originStackId);
-        let destStack = this.gameStacks.find(item => item.id === destStackId);
+        let originStack = this.gameStacks.stacks.find(item => item.id === originStackId);
+        let destStack = this.gameStacks.stacks.find(item => item.id === destStackId);
 
         let originBlock = originStack.blocks.find(item => item.id === originStackTopColourId);
         let destBlock = destStack.blocks.find(item => item.id === destAvailableSpaceId);
@@ -503,9 +482,9 @@ class Game {
         }
 
         // removes any bonus stacks from the gameStacks array
-        for (let i = 0; i < this.gameStacks.length; i++) {
-            if (this.gameStacks[i].bonusStack == true) {
-                this.gameStacks.pop(this.gameStacks[i]);
+        for (let i = 0; i < this.gameStacks.stacks.length; i++) {
+            if (this.gameStacks.stacks[i].bonusStack == true) {
+                this.gameStacks.stacks.pop(this.gameStacks.stacks[i]);
             }
         }
 
@@ -545,11 +524,11 @@ class Game {
         if (this.currentBonusBlockAmt < this.maxBonusBlockAmt) {
 
             //if there isnt already a bonus stack then create a stack and add a block to it
-            if (this.gameStacks[this.gameStacks.length - 1].bonusStack == false) {
+            if (this.gameStacks.stacks[this.gameStacks.stacks.length - 1].bonusStack == false) {
 
                 //create a new stack
                 let bonusStack = new Stack();
-                bonusStack.id = this.STACK_ID_PREFIX + this.gameStacks.length;
+                bonusStack.id = this.STACK_ID_PREFIX + this.gameStacks.stacks.length;
 
                 //create an array of blocks for the stack
                 let bonusBlockArray = [];
@@ -557,7 +536,7 @@ class Game {
                 let bonusBlock = new Block();
 
                 //set the block id relative to the position it will be added (which is the end)
-                bonusBlock.id = this.STACK_ID_PREFIX + this.gameStacks.length + this.BLOCK_ID_PREFIX + "0";
+                bonusBlock.id = this.STACK_ID_PREFIX + this.gameStacks.stacks.length + this.BLOCK_ID_PREFIX + "0";
 
                 //set the block bonusStack status to true
                 bonusStack.bonusStack = true;
@@ -567,7 +546,7 @@ class Game {
                 bonusStack.blocks = bonusBlockArray;
 
                 //add the bonus stack to the gameStacks array
-                this.gameStacks.push(bonusStack);
+                this.gameStacks.stacks.push(bonusStack);
 
                 //increase the current bonus blocks so no more than the max amount can be added
                 this.currentBonusBlockAmt++;
@@ -578,17 +557,17 @@ class Game {
                 //create the new block
                 let bonusBlock = new Block();
                 //set the block id relative to the position it will be added
-                bonusBlock.id = this.STACK_ID_PREFIX + [this.gameStacks.length - 1] + this.BLOCK_ID_PREFIX + this.gameStacks[this.gameStacks.length - 1].blocks.length;
+                bonusBlock.id = this.STACK_ID_PREFIX + [this.gameStacks.stacks.length - 1] + this.BLOCK_ID_PREFIX + this.gameStacks.stacks[this.gameStacks.stacks.length - 1].blocks.length;
 
                 //ensures that if a colour was in the previous block, it is moved to the new block and
                 //the block colour is changed to blank
-                let prevBlock = this.gameStacks[this.gameStacks.length - 1].blocks[this.gameStacks[this.gameStacks.length - 1].blocks.length - 1];
+                let prevBlock = this.gameStacks.stacks[this.gameStacks.stacks.length - 1].blocks[this.gameStacks.stacks[this.gameStacks.stacks.length - 1].blocks.length - 1];
                 let prevColour = prevBlock.colour;
                 bonusBlock.colour = prevColour;
                 prevBlock.colour = "";
 
                 //add the block to the existing blocks array on the bonus stack
-                this.gameStacks[this.gameStacks.length - 1].blocks.push(bonusBlock);
+                this.gameStacks.stacks[this.gameStacks.stacks.length - 1].blocks.push(bonusBlock);
 
                 //increase the current bonus blocks so no more than the max amount can be added
                 this.currentBonusBlockAmt++;
@@ -828,6 +807,41 @@ class Stack {
             return false;
         }
     }
+}
+
+class GameStacks {
+    constructor(normalStackAmt, normalBlockAmtPerStack, bonusStackAmt, bonusBlockAmtPerBonusStack) {
+        this.normalStackAmt = normalStackAmt;
+        this.normalBlockAmtPerStack = normalBlockAmtPerStack;
+        this.bonusStackAmt = bonusStackAmt;
+        this.bonusBlockAmtPerBonusStack = bonusBlockAmtPerBonusStack;
+        this.stacks = undefined;
+    }
+
+    createGameStacks() {
+
+        let stacks = [];
+
+        //create stacks filled with colours
+        for (let i = 0; i < this.normalStackAmt; i++) {
+            let newStack = new Stack();
+            // adds required properties to the stack object
+            newStack.bonusStack = false;
+            newStack.maxBlockAmt = this.normalBlockAmtPerStack;
+
+            let tempStack = [];
+            for (let j = 0; j < this.normalBlockAmtPerStack; j++) {
+                let newBlock = new Block();
+                tempStack.push(newBlock);
+            }
+            newStack.blocks = tempStack;
+            stacks.push(newStack);
+        }
+
+        this.stacks = stacks
+        return this
+    }
+
 }
 
 class GameTitle {
