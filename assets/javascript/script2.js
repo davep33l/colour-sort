@@ -43,3 +43,10 @@ class Stack {
     }
 }
 
+class Block {
+    constructor() {
+        this.blockClass = undefined;
+        this.blockId = undefined;
+        this.blockColour = undefined;
+    }
+}
