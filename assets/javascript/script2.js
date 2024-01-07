@@ -49,16 +49,23 @@ class GameManager {
         this.colourInitialiser = new ColourInitialiser();
         this.initialColourArray = []
 
+        this.gameStacks = undefined
+
         this.domStackSection = document.getElementById('stack-section');
         this.levelText = document.getElementById('level-section__level');
+        this.howToModal = document.getElementById('how-to-modal');
 
         this.undoButton = document.getElementById('undo-button');
         this.resetButton = document.getElementById('reset-button');
         this.addBlockButton = document.getElementById('add-block-button');
+        this.howToButton = document.getElementById('how-to-button');
+        this.closeHowToButton = document.getElementById('close-button');
 
         this.undoButton.addEventListener('click', (event) => this.undoMove(event));
         this.resetButton.addEventListener('click', (event) => this.resetLevel(event));
         this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
+        this.howToButton.addEventListener('click', (event) => this.eventHandlerOpenHowToPlay(event));
+        this.closeHowToButton.addEventListener('click', (event) => this.eventHandlerCloseHowToPlay(event));
 
     }
 
@@ -191,6 +198,15 @@ class GameManager {
         this.clearGameStacks();
         this.drawGameStacksToDom();
         this.addEventListenersStackArea();
+    }
+
+    eventHandlerOpenHowToPlay() {
+        console.log("adding modal");
+        this.howToModal.style.display = "block";
+    }
+
+    eventHandlerCloseHowToPlay() {
+        this.howToModal.style.display = "none";
     }
 }
 
