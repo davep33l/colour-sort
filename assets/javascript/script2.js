@@ -16,6 +16,17 @@ class LevelManager {
 class GameManager {
     constructor() {
 
+        this.gameSettings = new GameSettings()
+        this.gameTitle = new GameTitle()
+
+    }
+
+    startGame() {
+        console.log("starting new game")
+        this.gameTitle.clearTitle();
+        this.gameTitle.createTitle();
+        console.log(this)
+
     }
 }
 
@@ -101,3 +112,5 @@ class Block {
         this.blockColour = undefined;
     }
 }
+
+window.onload = new GameManager().startGame()
