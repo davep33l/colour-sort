@@ -52,6 +52,10 @@ class GameManager {
         this.domStackSection = document.getElementById('stack-section');
         this.levelText = document.getElementById('level-section__level');
 
+        this.addBlockButton = document.getElementById('add-block-button');
+
+        this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
+
     }
 
     startGame() {
@@ -161,6 +165,13 @@ class GameManager {
 
     updateLevelText() {
         this.levelText.textContent = `Level ${this.currentLevel}`;
+    }
+
+    addBlock() {
+        this.gameStacks = this.gameStacks.addBonusBlockToGameStacks()
+        this.clearGameStacks()
+        this.drawGameStacksToDom()
+        this.addEventListenersStackArea()
     }
 }
 
@@ -350,6 +361,52 @@ class GameStacks {
         }
         return this
 
+    }
+
+    addBonusBlockToGameStacks() {
+
+        let blocksInLastStack = this.stacks[this.stacks.length - 1].blocks.length
+
+        if (blocksInLastStack >= this.maxBonusBlocks && this.stacks[this.stacks.length - 1].isBonusStack == true) {
+            return this;
+        }
+
+        if (this.stacks[this.stacks.length - 1].isBonusStack == false) {
+
+            let bonusStack = new Stack();
+            bonusStack.isBonusStack = true;
+            bonusStack.stackClass = "stack"
+            bonusStack.stackId = `stack-${this.stacks.length}`
+
+            let bonusBlockArray = [];
+            let bonusBlock = new Block();
+            bonusBlock.isBonusBlock = true
+            bonusBlock.blockClass = "block"
+
+            bonusBlock.blockId = `stack-${this.stacks.length}-block-${bonusStack.blocks.length}`
+
+            bonusBlockArray.push(bonusBlock);
+            bonusStack.blocks = bonusBlockArray;
+            this.stacks.push(bonusStack);
+
+        } else {
+
+            let bonusBlock = new Block();
+            bonusBlock.isBonusBlock = true
+            bonusBlock.blockClass = "block"
+            bonusBlock.blockId = `stack-${this.stacks.length - 1}-block-${this.stacks[this.stacks.length - 1].blocks.length}`
+
+            let prevBlock = this.stacks[this.stacks.length - 1].blocks[this.stacks[this.stacks.length - 1].blocks.length - 1];
+            let prevColour = prevBlock.blockColour;
+            bonusBlock.blockColour = prevColour;
+            prevBlock.blockColour = undefined;
+
+
+            this.stacks[this.stacks.length - 1].blocks.push(bonusBlock);
+
+        }
+
+        return this;
     }
 
     getNewGameStacksState() {
