@@ -1,6 +1,9 @@
 class GameSettings {
     constructor() {
-
+        this.maxBonusBlocks = 4
+        this.stackAmt = 4;
+        this.blockAmt = 4;
+        this.emptyStackAmt = 2;
     }
 }
 
