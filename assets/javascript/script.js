@@ -71,6 +71,11 @@ class GameManager {
 
     startGame() {
         console.log("starting new game")
+
+        if (localStorage.getItem("level") !== null) {
+            this.currentLevel = parseInt(localStorage.getItem("level"));
+        }
+
         this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
         this.updateLevelText();
@@ -172,6 +177,10 @@ class GameManager {
         while (this.domStackSection.hasChildNodes()) {
             this.domStackSection.removeChild(this.domStackSection.firstChild);
         }
+    }
+
+    saveProgressToBrowser() {
+        localStorage.setItem("level", this.currentLevel);
     }
 
     updateLevelText() {
