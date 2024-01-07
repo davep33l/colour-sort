@@ -60,7 +60,7 @@ class GameManager {
 
         this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt)
 
-        this.gameStacks = new GameStacks().createInitialGameStacks(startingStackAmountForLevel, this.gameSettings.blockAmt)
+        this.gameStacks = new GameStacks().createInitialGameStacks(startingStackAmountForLevel, this.gameSettings.blockAmt).addColoursToGameStacksBlocks(this.initialColourArray)
 
         console.log(this.gameStacks)
 
@@ -233,6 +233,28 @@ class GameStacks {
 
         this.stacks = stacks;
         return this;
+    }
+
+    addColoursToGameStacksBlocks(colourArray) {
+
+        if (!Array.isArray(colourArray)) {
+            throw new Error(`Incorrect data type. Needs to be an Array. You passed in a ${typeof colourArray} of "${colourArray}" for colourArray`)
+        }
+
+        let colours = [];
+
+        for (let colour of colourArray) {
+            colours.push(colour);
+        }
+
+        for (let i = 0; i < this.stacks.length; i++) {
+            for (let j = 0; j < this.stacks[i].blocks.length; j++) {
+                this.stacks[i].blocks[j].blockColour = colours[0];
+                colours.shift();
+            }
+        }
+        return this
+
     }
 }
 
