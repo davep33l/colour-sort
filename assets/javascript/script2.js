@@ -53,9 +53,11 @@ class GameManager {
         this.levelText = document.getElementById('level-section__level');
 
         this.undoButton = document.getElementById('undo-button');
+        this.resetButton = document.getElementById('reset-button');
         this.addBlockButton = document.getElementById('add-block-button');
 
         this.undoButton.addEventListener('click', (event) => this.undoMove(event));
+        this.resetButton.addEventListener('click', (event) => this.resetLevel(event));
         this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
 
     }
@@ -178,6 +180,14 @@ class GameManager {
 
     undoMove() {
         this.gameStacks = this.gameStacks.undoMove();
+        this.clearGameStacks();
+        this.drawGameStacksToDom();
+        this.addEventListenersStackArea();
+    }
+
+    resetLevel() {
+        console.log("resetting level")
+        this.gameStacks = this.gameStacks.resetLevel()
         this.clearGameStacks();
         this.drawGameStacksToDom();
         this.addEventListenersStackArea();
@@ -516,6 +526,23 @@ class GameStacks {
         originBlock.blockColour = originStackTopColour;
 
         return this
+    }
+
+    resetLevel() {
+
+        for (let i = this.moveLog.length; i > 0; i--) {
+            this.undoMove();
+        }
+
+        // removes any bonus stacks from the gameStacks array
+        for (let i = 0; i < this.stacks.length; i++) {
+            if (this.stacks[i].isBonusStack == true) {
+                this.stacks.pop(this.stacks[i]);
+            }
+        }
+
+        return this
+
     }
 }
 
