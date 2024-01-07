@@ -135,10 +135,20 @@ class GameManager {
                 document.getElementById(this.gameStacks.firstStackId).style.border = "";
                 this.gameStacks.secondStackId = stackId
                 this.gameStacks = this.gameStacks.getNewGameStacksState();
+
+                this.clearGameStacks();
+                this.drawGameStacksToDom();
+                this.addEventListenersStackArea();
             }
         }
 
         console.log(this)
+    }
+
+    clearGameStacks() {
+        while (this.domStackSection.hasChildNodes()) {
+            this.domStackSection.removeChild(this.domStackSection.firstChild);
+        }
     }
 }
 
