@@ -49,6 +49,8 @@ class GameManager {
         this.colourInitialiser = new ColourInitialiser();
         this.initialColourArray = []
 
+        this.domStackSection = document.getElementById('stack-section');
+
     }
 
     startGame() {
@@ -64,7 +66,36 @@ class GameManager {
 
         console.log(this.gameStacks)
 
+        this.drawGameStacksToDom();
+
         console.log(this)
+
+    }
+
+    drawGameStacksToDom() {
+
+        for (let i = 0; i < this.gameStacks.stacks.length; i++) {
+            let stackForDOM = document.createElement('div');
+
+            stackForDOM.id = this.gameStacks.stacks[i].stackId;
+            stackForDOM.classList.add(this.gameStacks.stacks[i].stackClass);
+
+            for (let j = 0; j < this.gameStacks.stacks[i].blocks.length; j++) {
+                let blockForDOM = document.createElement('div');
+
+                let newBlockInnerSpan = document.createElement('span');
+                newBlockInnerSpan.id = `${this.gameStacks.stacks[i].blocks[j].blockId}-text`;
+                blockForDOM.appendChild(newBlockInnerSpan);
+
+                // adds a concatenation of the parent stack id and the block id as the html id
+                blockForDOM.id = this.gameStacks.stacks[i].blocks[j].blockId;
+                blockForDOM.classList.add(this.gameStacks.stacks[i].blocks[j].blockClass);
+                blockForDOM.style.backgroundColor = this.gameStacks.stacks[i].blocks[j].blockColour;
+                stackForDOM.appendChild(blockForDOM);
+
+            }
+            this.domStackSection.append(stackForDOM);
+        }
 
     }
 }

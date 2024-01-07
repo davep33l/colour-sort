@@ -66,7 +66,7 @@ body {
     justify-content: center;
 }
 
-.stack__block {
+.block {
     height: var(--block-dimensions);
     width: var(--block-dimensions);
     border: 1px solid white;
