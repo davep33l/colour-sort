@@ -52,8 +52,10 @@ class GameManager {
         this.domStackSection = document.getElementById('stack-section');
         this.levelText = document.getElementById('level-section__level');
 
+        this.undoButton = document.getElementById('undo-button');
         this.addBlockButton = document.getElementById('add-block-button');
 
+        this.undoButton.addEventListener('click', (event) => this.undoMove(event));
         this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
 
     }
@@ -172,6 +174,13 @@ class GameManager {
         this.clearGameStacks()
         this.drawGameStacksToDom()
         this.addEventListenersStackArea()
+    }
+
+    undoMove() {
+        this.gameStacks = this.gameStacks.undoMove();
+        this.clearGameStacks();
+        this.drawGameStacksToDom();
+        this.addEventListenersStackArea();
     }
 }
 
@@ -294,6 +303,10 @@ class ColourInitialiser {
 class GameStacks {
     constructor() {
         this.stacks = undefined;
+        this.maxBonusBlocks = 2
+        this.firstStackId = undefined
+        this.secondStackId = undefined
+        this.moveLog = []
     }
 
     createInitialGameStacks(normStack, normBlock) {
@@ -420,6 +433,9 @@ class GameStacks {
         let originBlock = originStack.blocks.find(item => item.blockId === originStack.topColourId);
         let destBlock = destStack.blocks.find(item => item.blockId === destStack.availableSpaceId);
 
+        let moves = [[originStack.stackId, originStack.topColourId, originStack.topColour], [destStack.stackId, destStack.topColourId, destStack.availableSpaceId]];
+        this.moveLog.push(moves);
+
         //moves the blocks
         if (destStack.isEmpty) {
             destBlock.blockColour = originBlock.blockColour;
@@ -467,6 +483,39 @@ class GameStacks {
         }
 
         return false
+    }
+
+    undoMove() {
+
+        if (this.moveLog.length == 0) {
+            console.log("cannot undo anymore")
+            return this
+        }
+
+        let lastMove = this.moveLog.pop();
+
+        console.log(lastMove)
+
+        let originStackId = lastMove[0][0];
+        let originStackTopColourId = lastMove[0][1];
+        let originStackTopColour = lastMove[0][2];
+        let destStackId = lastMove[1][0];
+        let destAvailableSpaceId = lastMove[1][2];
+
+        let originStack = this.stacks.find(item => item.stackId === originStackId);
+        console.log(originStack)
+        let destStack = this.stacks.find(item => item.stackId === destStackId);
+        console.log(destStack)
+
+        let originBlock = originStack.blocks.find(item => item.blockId === originStackTopColourId);
+        console.log(originBlock)
+        let destBlock = destStack.blocks.find(item => item.blockId === destAvailableSpaceId);
+        console.log(destBlock)
+
+        destBlock.blockColour = undefined;
+        originBlock.blockColour = originStackTopColour;
+
+        return this
     }
 }
 
