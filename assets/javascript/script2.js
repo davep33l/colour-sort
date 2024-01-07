@@ -318,11 +318,17 @@ class Stack {
 
         this.isEmpty = undefined
         this.isFilled = undefined
+        this.topColourId = undefined;
+        this.topColour = undefined;
+        this.availableSpaceId = undefined;
+
     }
 
     updateStackState() {
         this.isStackEmpty()
         this.isStackFilled()
+        this.topColourAndId()
+        this.getAvailableSpaceId()
     }
 
     isStackEmpty() {
@@ -333,6 +339,29 @@ class Stack {
     isStackFilled() {
         const colours = this.blocks.map(currentValue => currentValue.blockColour)
         this.isFilled = colours.every((currentValue) => currentValue !== undefined)
+    }
+
+    topColourAndId() {
+        if (this.isEmpty) {
+            this.topColourId = undefined;
+            this.topColour = undefined;
+        } else {
+            let index = this.blocks.findIndex((element) => element.blockColour !== undefined)
+            this.topColour = this.blocks[index].blockColour
+            this.topColourId = this.blocks[index].blockId
+        }
+    }
+
+    getAvailableSpaceId() {
+        if (this.isFilled) {
+            this.availableSpaceId = undefined;
+
+        } else if (this.isEmpty) {
+            this.availableSpaceId = this.blocks[this.blocks.length - 1].blockId
+        } else {
+            let index = this.blocks.findIndex((element) => element.blockColour !== undefined)
+            this.availableSpaceId = this.blocks[index - 1].blockId
+        }
     }
 
 }
