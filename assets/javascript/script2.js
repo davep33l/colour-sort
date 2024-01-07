@@ -57,10 +57,12 @@ class GameManager {
         this.gameTitle.createTitle();
 
         const startingStackAmountForLevel = this.levelManager.getStartingStackAmtForLevel(this.currentLevel, this.gameSettings.stackAmt)
-        console.log(startingStackAmountForLevel)
 
         this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt)
-        console.log(this.initialColourArray)
+
+        this.gameStacks = new GameStacks().createInitialGameStacks(startingStackAmountForLevel, this.gameSettings.blockAmt)
+
+        console.log(this.gameStacks)
 
         console.log(this)
 
@@ -185,12 +187,62 @@ class ColourInitialiser {
 
 class GameStacks {
     constructor() {
+        this.stacks = undefined;
+    }
 
+    createInitialGameStacks(normStack, normBlock) {
+
+        if (typeof normStack != "number") {
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normStack} of "${normStack}" for normStack`)
+        }
+
+        if (typeof normBlock != "number") {
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normBlock} of "${normBlock}" for normBlock`)
+        }
+
+
+        if (normStack == null || normBlock == null) {
+            throw new Error("You did not pass in the right amount of args")
+        }
+
+        const stacks = [];
+
+        for (let i = 0; i < normStack; i++) {
+
+            const newStack = new Stack();
+            newStack.isBonusStack = false;
+            newStack.stackClass = "stack"
+            newStack.stackId = `stack-${i}`
+            const tempStack = [];
+
+
+            for (let j = 0; j < normBlock; j++) {
+
+                const newBlock = new Block();
+                newBlock.isBonusBlock = false;
+                newBlock.blockClass = "block"
+                newBlock.blockId = `stack-${i}-block-${j}`
+                tempStack.push(newBlock);
+
+            }
+
+            newStack.blocks = tempStack;
+            stacks.push(newStack);
+
+        }
+
+        this.stacks = stacks;
+        return this;
     }
 }
 
 class Stack {
     constructor() {
+
+        this.stackId = undefined;
+        this.stackClass = undefined;
+        this.blocks = []
+        this.isBonusStack = false;
 
     }
 }
@@ -200,6 +252,7 @@ class Block {
         this.blockClass = undefined;
         this.blockId = undefined;
         this.blockColour = undefined;
+        this.isBonusBlock = false;
     }
 }
 
