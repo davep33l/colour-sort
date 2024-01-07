@@ -115,6 +115,29 @@ class GameManager {
         for (let i = 0; i < this.gameStacks.stacks.length; i++) {
             this.gameStacks.stacks[i].updateStackState();
         }
+
+        let stackNode = event.currentTarget;
+        let stackId = stackNode.id;
+        let obj = this.gameStacks.stacks.find(item => item.stackId === stackId);
+
+        if (this.gameStacks.firstStackId == undefined) {
+            if (!obj.isEmpty) {
+                this.gameStacks.firstStackId = stackId;
+                document.getElementById(this.gameStacks.firstStackId).style.border = "2px solid white";
+            }
+        } else {
+            if (obj.isFilled || stackId == this.gameStacks.firstStackId) {
+                document.getElementById(this.gameStacks.firstStackId).style.border = "";
+                this.gameStacks.firstStackId = undefined;
+                this.gameStacks.secondStackId = undefined;
+                return;
+            } else {
+                document.getElementById(this.gameStacks.firstStackId).style.border = "";
+                this.gameStacks.secondStackId = stackId
+                this.gameStacks = this.gameStacks.getNewGameStacksState();
+            }
+        }
+
         console.log(this)
     }
 }
@@ -305,6 +328,11 @@ class GameStacks {
         }
         return this
 
+    }
+
+    getNewGameStacksState() {
+        console.log("checking state")
+        return this
     }
 }
 
