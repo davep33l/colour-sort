@@ -136,6 +136,10 @@ class GameManager {
                 this.gameStacks.secondStackId = stackId
                 this.gameStacks = this.gameStacks.getNewGameStacksState();
 
+                if (this.gameStacks.hasWon()) {
+                    console.log("you have won")
+                }
+
                 this.clearGameStacks();
                 this.drawGameStacksToDom();
                 this.addEventListenersStackArea();
@@ -369,6 +373,36 @@ class GameStacks {
         this.secondStackId = undefined;
         return this
     }
+
+    hasWon() {
+
+        console.log("checking for win")
+        console.log(this)
+
+        let hasWonArray = []
+
+        for (let i = 0; i < this.stacks.length; i++) {
+            const stack = this.stacks[i];
+            if (stack.isBonusStack == false && stack.isFilledWithSameColour == true) {
+                hasWonArray.push(true);
+            }
+        }
+
+        let countOfNoneBonusStacks = 0
+
+        for (let i = 0; i < this.stacks.length; i++) {
+            if (this.stacks[i].isBonusStack == false) {
+                countOfNoneBonusStacks++
+            }
+        }
+
+
+        if (hasWonArray.length == countOfNoneBonusStacks) {
+            return true
+        }
+
+        return false
+    }
 }
 
 class Stack {
@@ -384,6 +418,7 @@ class Stack {
         this.topColourId = undefined;
         this.topColour = undefined;
         this.availableSpaceId = undefined;
+        this.isFilledWithSameColour = undefined
 
     }
 
@@ -392,6 +427,7 @@ class Stack {
         this.isStackFilled()
         this.topColourAndId()
         this.getAvailableSpaceId()
+        this.updateIsFilledWithSameColour();
     }
 
     isStackEmpty() {
@@ -425,6 +461,12 @@ class Stack {
             let index = this.blocks.findIndex((element) => element.blockColour !== undefined)
             this.availableSpaceId = this.blocks[index - 1].blockId
         }
+    }
+
+    updateIsFilledWithSameColour() {
+
+        const colours = this.blocks.map(currentValue => currentValue.blockColour)
+        this.isFilledWithSameColour = colours.every((currentValue) => currentValue == this.blocks[0].blockColour)
     }
 
 }
