@@ -332,6 +332,31 @@ class GameStacks {
 
     getNewGameStacksState() {
         console.log("checking state")
+        for (let i = 0; i < this.stacks.length; i++) {
+            this.stacks[i].updateStackState();
+        }
+
+        let originStack = this.stacks.find(item => item.stackId === this.firstStackId);
+        let destStack = this.stacks.find(item => item.stackId === this.secondStackId);
+        let originBlock = originStack.blocks.find(item => item.blockId === originStack.topColourId);
+        let destBlock = destStack.blocks.find(item => item.blockId === destStack.availableSpaceId);
+
+        //moves the blocks
+        if (destStack.isEmpty) {
+            destBlock.blockColour = originBlock.blockColour;
+            originBlock.blockColour = undefined;
+
+        } else if (originStack.topColour == destStack.topColour) {
+            destBlock.blockColour = originBlock.blockColour;
+            originBlock.blockColour = undefined;
+        }
+
+        for (let i = 0; i < this.stacks.length; i++) {
+            this.stacks[i].updateStackState();
+        }
+
+        this.firstStackId = undefined;
+        this.secondStackId = undefined;
         return this
     }
 }
