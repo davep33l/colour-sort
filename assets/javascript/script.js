@@ -1,6 +1,6 @@
 class GameSettings {
     constructor() {
-        this.maxBonusBlocks = 4
+        this.maxBonusBlocks = 4;
         this.stackAmt = 4;
         this.blockAmt = 4;
         this.emptyStackAmt = 2;
@@ -9,18 +9,18 @@ class GameSettings {
 
 class LevelManager {
     constructor() {
-        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10]
+        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10];
         this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80];
     }
 
     getStartingStackAmtForLevel(level, baseStackAmt) {
 
         if (typeof level != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof level} of "${level}" for level`)
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof level} of "${level}" for level`);
         }
 
         if (typeof baseStackAmt != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof baseStackAmt} of "${baseStackAmt}" for baseStackAmt`)
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof baseStackAmt} of "${baseStackAmt}" for baseStackAmt`);
         }
 
         let startingStackAmount = 0;
@@ -40,16 +40,16 @@ class LevelManager {
 class GameManager {
     constructor() {
 
-        this.gameSettings = new GameSettings()
-        this.gameTitle = new GameTitle()
+        this.gameSettings = new GameSettings();
+        this.gameTitle = new GameTitle();
 
         this.levelManager = new LevelManager();
         this.currentLevel = 1;
 
         this.colourInitialiser = new ColourInitialiser();
-        this.initialColourArray = []
+        this.initialColourArray = [];
 
-        this.gameStacks = undefined
+        this.gameStacks = undefined;
 
         this.domStackSection = document.getElementById('stack-section');
         this.levelText = document.getElementById('level-section__level');
@@ -70,7 +70,6 @@ class GameManager {
     }
 
     startGame() {
-        console.log("starting new game")
 
         if (localStorage.getItem("level") !== null) {
             this.currentLevel = parseInt(localStorage.getItem("level"));
@@ -79,19 +78,11 @@ class GameManager {
         this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
         this.updateLevelText();
-
-        const startingStackAmountForLevel = this.levelManager.getStartingStackAmtForLevel(this.currentLevel, this.gameSettings.stackAmt)
-
-        this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt)
-
-        this.gameStacks = new GameStacks().createInitialGameStacks(startingStackAmountForLevel, this.gameSettings.blockAmt).addColoursToGameStacksBlocks(this.initialColourArray)
-
-        console.log(this.gameStacks)
-
+        const startingStackAmountForLevel = this.levelManager.getStartingStackAmtForLevel(this.currentLevel, this.gameSettings.stackAmt);
+        this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt);
+        this.gameStacks = new GameStacks().createInitialGameStacks(startingStackAmountForLevel, this.gameSettings.blockAmt).addColoursToGameStacksBlocks(this.initialColourArray);
         this.drawGameStacksToDom();
         this.addEventListenersStackArea();
-
-        console.log(this)
 
     }
 
@@ -124,7 +115,7 @@ class GameManager {
 
     addEventListenersStackArea() {
 
-        let className = this.gameStacks.stacks[0].stackClass
+        let className = this.gameStacks.stacks[0].stackClass;
 
         for (let i = 0; i < this.gameStacks.stacks.length; i++) {
             this.domStackSection.getElementsByClassName(className)[i].addEventListener('click', (event) => this.handleGameClicks(event));
@@ -132,7 +123,6 @@ class GameManager {
     }
 
     handleGameClicks(event) {
-        console.log("click received")
 
         for (let i = 0; i < this.gameStacks.stacks.length; i++) {
             this.gameStacks.stacks[i].updateStackState();
@@ -155,13 +145,13 @@ class GameManager {
                 return;
             } else {
                 document.getElementById(this.gameStacks.firstStackId).style.border = "";
-                this.gameStacks.secondStackId = stackId
+                this.gameStacks.secondStackId = stackId;
                 this.gameStacks = this.gameStacks.getNewGameStacksState();
 
                 if (this.gameStacks.hasWon()) {
-                    console.log("you have won")
                     this.currentLevel++;
-                    this.startGame()
+                    this.saveProgressToBrowser();
+                    this.startGame();
                 }
 
                 this.clearGameStacks();
@@ -169,8 +159,6 @@ class GameManager {
                 this.addEventListenersStackArea();
             }
         }
-
-        console.log(this)
     }
 
     clearGameStacks() {
@@ -188,10 +176,10 @@ class GameManager {
     }
 
     addBlock() {
-        this.gameStacks = this.gameStacks.addBonusBlockToGameStacks()
-        this.clearGameStacks()
-        this.drawGameStacksToDom()
-        this.addEventListenersStackArea()
+        this.gameStacks = this.gameStacks.addBonusBlockToGameStacks();
+        this.clearGameStacks();
+        this.drawGameStacksToDom();
+        this.addEventListenersStackArea();
     }
 
     undoMove() {
@@ -202,15 +190,13 @@ class GameManager {
     }
 
     resetLevel() {
-        console.log("resetting level")
-        this.gameStacks = this.gameStacks.resetLevel()
+        this.gameStacks = this.gameStacks.resetLevel();
         this.clearGameStacks();
         this.drawGameStacksToDom();
         this.addEventListenersStackArea();
     }
 
     eventHandlerOpenHowToPlay() {
-        console.log("adding modal");
         this.howToModal.style.display = "block";
     }
 
@@ -235,9 +221,9 @@ class GameTitle {
             "yellow",
             "yellow",
             "yellow",
-        ]
+        ];
 
-        this.title = "Colour Sort"
+        this.title = "Colour Sort";
     }
 
     clearTitle() {
@@ -248,9 +234,9 @@ class GameTitle {
 
     createTitle() {
         for (let i = 0; i < this.title.length; i++) {
-            let letter = document.createElement('span')
-            letter.innerText = this.title[i]
-            this.heading.appendChild(letter)
+            let letter = document.createElement('span');
+            letter.innerText = this.title[i];
+            this.heading.appendChild(letter);
         }
 
         this.giveTitleRandomColour();
@@ -260,15 +246,15 @@ class GameTitle {
 
         for (let i = 0; i < this.heading.children.length; i++) {
             let randomNumber = Math.floor(Math.random() * (this.colours.length));
-            this.heading.children[i].className = this.colours[randomNumber]
-            await sleep(75)
+            this.heading.children[i].className = this.colours[randomNumber];
+            await sleep(75);
         }
 
 
         function sleep(ms) {
 
             if (typeof ms != "number") {
-                throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof ms} of "${ms}" for ms`)
+                throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof ms} of "${ms}" for ms`);
             }
 
             return new Promise(resolve => setTimeout(resolve, ms));
@@ -295,15 +281,15 @@ class ColourInitialiser {
     setInGameColours(normStack, normBlock, emptyStack) {
 
         if (typeof normStack != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normStack} of "${normStack}" for normStack`)
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normStack} of "${normStack}" for normStack`);
         }
 
         if (typeof normBlock != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normBlock} of "${normBlock}" for normBlock`)
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normBlock} of "${normBlock}" for normBlock`);
         }
 
         if (typeof emptyStack != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof emptyStack} of "${emptyStack}" for emptyStack`)
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof emptyStack} of "${emptyStack}" for emptyStack`);
         }
 
         let coloursRequired = 0;
@@ -338,25 +324,25 @@ class ColourInitialiser {
 class GameStacks {
     constructor() {
         this.stacks = undefined;
-        this.maxBonusBlocks = 2
-        this.firstStackId = undefined
-        this.secondStackId = undefined
-        this.moveLog = []
+        this.maxBonusBlocks = 2;
+        this.firstStackId = undefined;
+        this.secondStackId = undefined;
+        this.moveLog = [];
     }
 
     createInitialGameStacks(normStack, normBlock) {
 
         if (typeof normStack != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normStack} of "${normStack}" for normStack`)
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normStack} of "${normStack}" for normStack`);
         }
 
         if (typeof normBlock != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normBlock} of "${normBlock}" for normBlock`)
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normBlock} of "${normBlock}" for normBlock`);
         }
 
 
         if (normStack == null || normBlock == null) {
-            throw new Error("You did not pass in the right amount of args")
+            throw new Error("You did not pass in the right amount of args");
         }
 
         const stacks = [];
@@ -365,8 +351,8 @@ class GameStacks {
 
             const newStack = new Stack();
             newStack.isBonusStack = false;
-            newStack.stackClass = "stack"
-            newStack.stackId = `stack-${i}`
+            newStack.stackClass = "stack";
+            newStack.stackId = `stack-${i}`;
             const tempStack = [];
 
 
@@ -374,8 +360,8 @@ class GameStacks {
 
                 const newBlock = new Block();
                 newBlock.isBonusBlock = false;
-                newBlock.blockClass = "block"
-                newBlock.blockId = `stack-${i}-block-${j}`
+                newBlock.blockClass = "block";
+                newBlock.blockId = `stack-${i}-block-${j}`;
                 tempStack.push(newBlock);
 
             }
@@ -392,7 +378,7 @@ class GameStacks {
     addColoursToGameStacksBlocks(colourArray) {
 
         if (!Array.isArray(colourArray)) {
-            throw new Error(`Incorrect data type. Needs to be an Array. You passed in a ${typeof colourArray} of "${colourArray}" for colourArray`)
+            throw new Error(`Incorrect data type. Needs to be an Array. You passed in a ${typeof colourArray} of "${colourArray}" for colourArray`);
         }
 
         let colours = [];
@@ -407,13 +393,13 @@ class GameStacks {
                 colours.shift();
             }
         }
-        return this
+        return this;
 
     }
 
     addBonusBlockToGameStacks() {
 
-        let blocksInLastStack = this.stacks[this.stacks.length - 1].blocks.length
+        let blocksInLastStack = this.stacks[this.stacks.length - 1].blocks.length;
 
         if (blocksInLastStack >= this.maxBonusBlocks && this.stacks[this.stacks.length - 1].isBonusStack == true) {
             return this;
@@ -423,15 +409,15 @@ class GameStacks {
 
             let bonusStack = new Stack();
             bonusStack.isBonusStack = true;
-            bonusStack.stackClass = "stack"
-            bonusStack.stackId = `stack-${this.stacks.length}`
+            bonusStack.stackClass = "stack";
+            bonusStack.stackId = `stack-${this.stacks.length}`;
 
             let bonusBlockArray = [];
             let bonusBlock = new Block();
-            bonusBlock.isBonusBlock = true
-            bonusBlock.blockClass = "block"
+            bonusBlock.isBonusBlock = true;
+            bonusBlock.blockClass = "block";
 
-            bonusBlock.blockId = `stack-${this.stacks.length}-block-${bonusStack.blocks.length}`
+            bonusBlock.blockId = `stack-${this.stacks.length}-block-${bonusStack.blocks.length}`;
 
             bonusBlockArray.push(bonusBlock);
             bonusStack.blocks = bonusBlockArray;
@@ -440,9 +426,9 @@ class GameStacks {
         } else {
 
             let bonusBlock = new Block();
-            bonusBlock.isBonusBlock = true
-            bonusBlock.blockClass = "block"
-            bonusBlock.blockId = `stack-${this.stacks.length - 1}-block-${this.stacks[this.stacks.length - 1].blocks.length}`
+            bonusBlock.isBonusBlock = true;
+            bonusBlock.blockClass = "block";
+            bonusBlock.blockId = `stack-${this.stacks.length - 1}-block-${this.stacks[this.stacks.length - 1].blocks.length}`;
 
             let prevBlock = this.stacks[this.stacks.length - 1].blocks[this.stacks[this.stacks.length - 1].blocks.length - 1];
             let prevColour = prevBlock.blockColour;
@@ -458,7 +444,6 @@ class GameStacks {
     }
 
     getNewGameStacksState() {
-        console.log("checking state")
         for (let i = 0; i < this.stacks.length; i++) {
             this.stacks[i].updateStackState();
         }
@@ -487,15 +472,12 @@ class GameStacks {
 
         this.firstStackId = undefined;
         this.secondStackId = undefined;
-        return this
+        return this;
     }
 
     hasWon() {
 
-        console.log("checking for win")
-        console.log(this)
-
-        let hasWonArray = []
+        let hasWonArray = [];
 
         for (let i = 0; i < this.stacks.length; i++) {
             const stack = this.stacks[i];
@@ -504,32 +486,29 @@ class GameStacks {
             }
         }
 
-        let countOfNoneBonusStacks = 0
+        let countOfNoneBonusStacks = 0;
 
         for (let i = 0; i < this.stacks.length; i++) {
             if (this.stacks[i].isBonusStack == false) {
-                countOfNoneBonusStacks++
+                countOfNoneBonusStacks++;
             }
         }
 
 
         if (hasWonArray.length == countOfNoneBonusStacks) {
-            return true
+            return true;
         }
 
-        return false
+        return false;
     }
 
     undoMove() {
 
         if (this.moveLog.length == 0) {
-            console.log("cannot undo anymore")
-            return this
+            return this;
         }
 
         let lastMove = this.moveLog.pop();
-
-        console.log(lastMove)
 
         let originStackId = lastMove[0][0];
         let originStackTopColourId = lastMove[0][1];
@@ -538,19 +517,15 @@ class GameStacks {
         let destAvailableSpaceId = lastMove[1][2];
 
         let originStack = this.stacks.find(item => item.stackId === originStackId);
-        console.log(originStack)
         let destStack = this.stacks.find(item => item.stackId === destStackId);
-        console.log(destStack)
 
         let originBlock = originStack.blocks.find(item => item.blockId === originStackTopColourId);
-        console.log(originBlock)
         let destBlock = destStack.blocks.find(item => item.blockId === destAvailableSpaceId);
-        console.log(destBlock)
 
         destBlock.blockColour = undefined;
         originBlock.blockColour = originStackTopColour;
 
-        return this
+        return this;
     }
 
     resetLevel() {
@@ -566,7 +541,7 @@ class GameStacks {
             }
         }
 
-        return this
+        return this;
 
     }
 }
@@ -576,34 +551,34 @@ class Stack {
 
         this.stackId = undefined;
         this.stackClass = undefined;
-        this.blocks = []
+        this.blocks = [];
         this.isBonusStack = false;
 
-        this.isEmpty = undefined
-        this.isFilled = undefined
+        this.isEmpty = undefined;
+        this.isFilled = undefined;
         this.topColourId = undefined;
         this.topColour = undefined;
         this.availableSpaceId = undefined;
-        this.isFilledWithSameColour = undefined
+        this.isFilledWithSameColour = undefined;
 
     }
 
     updateStackState() {
-        this.isStackEmpty()
-        this.isStackFilled()
-        this.topColourAndId()
-        this.getAvailableSpaceId()
+        this.isStackEmpty();
+        this.isStackFilled();
+        this.topColourAndId();
+        this.getAvailableSpaceId();
         this.updateIsFilledWithSameColour();
     }
 
     isStackEmpty() {
-        const colours = this.blocks.map(currentValue => currentValue.blockColour)
-        this.isEmpty = colours.every((currentValue) => currentValue == undefined)
+        const colours = this.blocks.map(currentValue => currentValue.blockColour);
+        this.isEmpty = colours.every((currentValue) => currentValue == undefined);
     }
 
     isStackFilled() {
-        const colours = this.blocks.map(currentValue => currentValue.blockColour)
-        this.isFilled = colours.every((currentValue) => currentValue !== undefined)
+        const colours = this.blocks.map(currentValue => currentValue.blockColour);
+        this.isFilled = colours.every((currentValue) => currentValue !== undefined);
     }
 
     topColourAndId() {
@@ -611,9 +586,9 @@ class Stack {
             this.topColourId = undefined;
             this.topColour = undefined;
         } else {
-            let index = this.blocks.findIndex((element) => element.blockColour !== undefined)
-            this.topColour = this.blocks[index].blockColour
-            this.topColourId = this.blocks[index].blockId
+            let index = this.blocks.findIndex((element) => element.blockColour !== undefined);
+            this.topColour = this.blocks[index].blockColour;
+            this.topColourId = this.blocks[index].blockId;
         }
     }
 
@@ -622,17 +597,17 @@ class Stack {
             this.availableSpaceId = undefined;
 
         } else if (this.isEmpty) {
-            this.availableSpaceId = this.blocks[this.blocks.length - 1].blockId
+            this.availableSpaceId = this.blocks[this.blocks.length - 1].blockId;
         } else {
-            let index = this.blocks.findIndex((element) => element.blockColour !== undefined)
-            this.availableSpaceId = this.blocks[index - 1].blockId
+            let index = this.blocks.findIndex((element) => element.blockColour !== undefined);
+            this.availableSpaceId = this.blocks[index - 1].blockId;
         }
     }
 
     updateIsFilledWithSameColour() {
 
-        const colours = this.blocks.map(currentValue => currentValue.blockColour)
-        this.isFilledWithSameColour = colours.every((currentValue) => currentValue == this.blocks[0].blockColour)
+        const colours = this.blocks.map(currentValue => currentValue.blockColour);
+        this.isFilledWithSameColour = colours.every((currentValue) => currentValue == this.blocks[0].blockColour);
     }
 
 }
@@ -646,4 +621,4 @@ class Block {
     }
 }
 
-window.onload = new GameManager().startGame()
+window.onload = new GameManager().startGame();
