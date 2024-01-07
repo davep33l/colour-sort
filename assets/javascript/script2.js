@@ -109,8 +109,13 @@ class GameManager {
         }
     }
 
-    handleGameClicks() {
+    handleGameClicks(event) {
         console.log("click received")
+
+        for (let i = 0; i < this.gameStacks.stacks.length; i++) {
+            this.gameStacks.stacks[i].updateStackState();
+        }
+        console.log(this)
     }
 }
 
@@ -311,7 +316,25 @@ class Stack {
         this.blocks = []
         this.isBonusStack = false;
 
+        this.isEmpty = undefined
+        this.isFilled = undefined
     }
+
+    updateStackState() {
+        this.isStackEmpty()
+        this.isStackFilled()
+    }
+
+    isStackEmpty() {
+        const colours = this.blocks.map(currentValue => currentValue.blockColour)
+        this.isEmpty = colours.every((currentValue) => currentValue == undefined)
+    }
+
+    isStackFilled() {
+        const colours = this.blocks.map(currentValue => currentValue.blockColour)
+        this.isFilled = colours.every((currentValue) => currentValue !== undefined)
+    }
+
 }
 
 class Block {
