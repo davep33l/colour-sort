@@ -50,6 +50,7 @@ class GameManager {
         this.initialColourArray = []
 
         this.domStackSection = document.getElementById('stack-section');
+        this.levelText = document.getElementById('level-section__level');
 
     }
 
@@ -57,6 +58,7 @@ class GameManager {
         console.log("starting new game")
         this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
+        this.updateLevelText();
 
         const startingStackAmountForLevel = this.levelManager.getStartingStackAmtForLevel(this.currentLevel, this.gameSettings.stackAmt)
 
@@ -138,6 +140,8 @@ class GameManager {
 
                 if (this.gameStacks.hasWon()) {
                     console.log("you have won")
+                    this.currentLevel++;
+                    this.startGame()
                 }
 
                 this.clearGameStacks();
@@ -153,6 +157,10 @@ class GameManager {
         while (this.domStackSection.hasChildNodes()) {
             this.domStackSection.removeChild(this.domStackSection.firstChild);
         }
+    }
+
+    updateLevelText() {
+        this.levelText.textContent = `Level ${this.currentLevel}`;
     }
 }
 
