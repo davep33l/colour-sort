@@ -67,6 +67,7 @@ class GameManager {
         console.log(this.gameStacks)
 
         this.drawGameStacksToDom();
+        this.addEventListenersStackArea();
 
         console.log(this)
 
@@ -97,6 +98,19 @@ class GameManager {
             this.domStackSection.append(stackForDOM);
         }
 
+    }
+
+    addEventListenersStackArea() {
+
+        let className = this.gameStacks.stacks[0].stackClass
+
+        for (let i = 0; i < this.gameStacks.stacks.length; i++) {
+            this.domStackSection.getElementsByClassName(className)[i].addEventListener('click', (event) => this.handleGameClicks(event));
+        }
+    }
+
+    handleGameClicks() {
+        console.log("click received")
     }
 }
 
