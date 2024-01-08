@@ -81,19 +81,19 @@ body {
     width: var(--block-dimensions);
 }
 
-#undo-button {
+.undo-button {
     background: url(../icons/undo-icon.png) no-repeat center center/cover;
 }
 
-#reset-button {
+.reset-button {
     background: url(../icons/reset-icon.png) no-repeat center center/cover;
 }
 
-#add-block-button {
+.add-block-button {
     background: url(../icons/add-icon.png) no-repeat center center/cover;
 }
 
-#how-to-button {
+.how-to-button {
     background: url(../icons/how-to-icon.png) no-repeat center center/cover;
 }
 
@@ -153,4 +153,68 @@ body {
     z-index: 1;
     font-family: monospace;
     padding: 1rem;
+    overflow: auto;
+    padding-bottom: 2rem;
+    max-width: 600px;
+}
+
+.how-to-play__title {
+    font-size: 250%;
+    padding-block: 1rem;
+}
+
+.how-to-play__subtitle {
+    font-size: 150%;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.how-to-play__content {
+    padding-inline: 1rem;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+#close-button {
+    font-size: 200%;
+}
+
+.gameplay-gif {
+    width: 80%;
+    aspect-ratio: 1/1;
+    background: url(../gifs/gameplay.gif) no-repeat center center/cover;
+    border: 1px solid white;
+}
+
+.addblock-gif {
+    width: 80%;
+    aspect-ratio: 1/1;
+    background: url(../gifs/addblock.gif) no-repeat center center/cover;
+    border: 1px solid white;
+}
+
+.undo-gif {
+    width: 80%;
+    aspect-ratio: 1/1;
+    background: url(../gifs/undo.gif) no-repeat center center/cover;
+    border: 1px solid white;
+
+}
+
+.reset-gif {
+    width: 80%;
+    aspect-ratio: 1/1;
+    background: url(../gifs/reset.gif) no-repeat center center/cover;
+    border: 1px solid white;
+}
+
+.how-to-play-action {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

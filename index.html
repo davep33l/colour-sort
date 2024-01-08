@@ -28,15 +28,52 @@
     <!-- Main Game Section -->
     <div id="game-section" class="game-section">
 
-        <div id="how-to-modal" class="how-to-modal">
-            <div id="close-button" class="button"><span>X</span></div>
-            <div>How to play</div>
-            <p>The aim of the game is to sort the stacks of blocks into stacks of the same colour.</p>
-            <p>You can only move the top coloured block from a stack onto either a stack that is fully empty or a stack
-                with an empty space, but the same colour of block underneath.</p>
-            <p>Once you have successfully sorted all the stacks to have the same colour, a new level will start
-                automatically.</p>
+        <div class="flex">
+            <div id="how-to-modal" class="how-to-modal">
+                <div id="close-button" class="button"><span>X</span></div>
+
+                <section>
+                    <h2 class="how-to-play__title">How to play</h2>
+                    <div>
+                        <p class="how-to-play__content">The aim of the game is to sort the shuffled stacks of blocks
+                            into stacks containing the same colour</p>
+                        <div class="flex">
+                            <div class="gameplay-gif"></div>
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <h3 class="how-to-play__subtitle">Support Actions</h3>
+
+
+                    <div class="how-to-play-action">
+                        <div class="add-block-button button"></div>
+                        <p class="how-to-play__content">Add block</p>
+                    </div>
+                    <div class="flex">
+                        <div class="addblock-gif"></div>
+                    </div>
+
+                    <div class="how-to-play-action">
+                        <div class="undo-button button"></div>
+                        <p class="how-to-play__content">Undo move</p>
+                    </div>
+                    <div class="flex pd-top">
+                        <div class="undo-gif"></div>
+                    </div>
+
+                    <div class="how-to-play-action">
+                        <div class="reset-button button"></div>
+                        <p class="how-to-play__content">Reset Level</p>
+                    </div>
+                    <div class="flex">
+                        <div class="reset-gif"></div>
+                    </div>
+
+                </section>
+            </div>
         </div>
+
 
         <!-- Title section -->
         <div id="title-section" class="title-section">
@@ -46,16 +83,18 @@
         <!-- Action Buttons section -->
         <div id="action-section" class="action-section">
             <div>
-                <div id="reset-button" class="button" role="button" aria-label="reset button"></div>
+                <div id="reset-button" class="reset-button button" role="button" aria-label="reset button"></div>
             </div>
             <div>
-                <div id="undo-button" class="button" role="button" aria-label="undo button"></div>
+                <div id="undo-button" class="undo-button button" role="button" aria-label="undo button"></div>
             </div>
             <div>
-                <div id="add-block-button" class="button" role="button" aria-label="add block button"></div>
+                <div id="add-block-button" class="add-block-button button" role="button" aria-label="add block button">
+                </div>
             </div>
             <div>
-                <div id="how-to-button" class="button" role="button" aria-label="how to play button"></div>
+                <div id="how-to-button" class="how-to-button button" role="button" aria-label="how to play button">
+                </div>
             </div>
         </div>
 
