@@ -81,6 +81,13 @@ body {
     width: var(--block-dimensions);
 }
 
+.undo-button:active,
+.reset-button:active,
+.add-block-button:active,
+.how-to-button:active {
+    border: 2px solid white;
+}
+
 .undo-button {
     background: url(../icons/undo-icon.png) no-repeat center center/cover;
 }
@@ -96,7 +103,6 @@ body {
 .how-to-button {
     background: url(../icons/how-to-icon.png) no-repeat center center/cover;
 }
-
 
 .red {
     color: #e6194B;
@@ -201,7 +207,6 @@ body {
     aspect-ratio: 1/1;
     background: url(../gifs/undo.gif) no-repeat center center/cover;
     border: 1px solid white;
-
 }
 
 .reset-gif {
