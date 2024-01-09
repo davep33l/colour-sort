@@ -34,14 +34,12 @@ class GameManager {
         this.closeHowToButton.addEventListener('click', (event) => this.eventHandlerCloseHowToPlay(event));
 
         this.storedLevel = undefined;
-        this.storedColourArray = [];
+        this.storedColourArray = undefined;
     }
-
-
 
     startGame() {
 
-        this.extractLocalStorage()
+        this.extractLocalStorage();
         this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
 
@@ -54,7 +52,7 @@ class GameManager {
         this.updateLevelText();
         const startingStackAmountForLevel = this.levelManager.getStartingStackAmtForLevel(this.currentLevel, this.gameSettings.stackAmt);
 
-        if (this.currentLevel == 1) {
+        if (this.currentLevel == 1 || this.storedColourArray == undefined) {
             this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt);
 
         } else if (localStorage.getItem("levelData") !== null) {
@@ -64,7 +62,6 @@ class GameManager {
                 this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt);
             }
         }
-        console.log(this.initialColourArray)
 
         this.gameStacks = new GameStacks().createInitialGameStacks(startingStackAmountForLevel, this.gameSettings.blockAmt).addColoursToGameStacksBlocks(this.initialColourArray);
         this.drawGameStacksToDom();
