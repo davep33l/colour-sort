@@ -1,42 +1,8 @@
-class GameSettings {
-    constructor() {
-        this.maxBonusBlocks = 4;
-        this.stackAmt = 4;
-        this.blockAmt = 4;
-        this.emptyStackAmt = 2;
-    }
-}
-
-class LevelManager {
-    constructor() {
-        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10];
-        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80];
-    }
-
-    getStartingStackAmtForLevel(level, baseStackAmt) {
-
-        if (typeof level != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof level} of "${level}" for level`);
-        }
-
-        if (typeof baseStackAmt != "number") {
-            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof baseStackAmt} of "${baseStackAmt}" for baseStackAmt`);
-        }
-
-        let startingStackAmount = 0;
-
-        for (let i = 0; i < this.levelIncrements.length; i++) {
-            if (level < this.levelIncrements[i]) {
-                startingStackAmount = baseStackAmt + i;
-                break;
-            } else {
-                startingStackAmount = baseStackAmt + i;
-            }
-        }
-        return startingStackAmount;
-    }
-}
-
+/**
+ * Main class used to initialise the game, with startGame. 
+ * It handles the adding and handling of any event listeners and 
+ * the method to draw the gameStacks to the DOM. 
+ */
 class GameManager {
     constructor() {
 
@@ -205,6 +171,60 @@ class GameManager {
     }
 }
 
+/**
+ * Settings class which stores the minimum values for the stacks, blocks
+ * and empty stacks. 
+ * Needs to be called within the GameManager.
+ */
+class GameSettings {
+    constructor() {
+        this.stackAmt = 4;
+        this.blockAmt = 4;
+        this.emptyStackAmt = 2;
+    }
+}
+
+/**
+ * Class to define the starting stack amount per game.
+ * Needs to be called within the GameManager
+ */
+class LevelManager {
+    constructor() {
+        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+        this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80];
+    }
+
+    // Checks the current level against the level increments and adds
+    // an additional amount of stacks, based on the index it returns true
+    // on the comparison
+    getStartingStackAmtForLevel(level, baseStackAmt) {
+
+        if (typeof level != "number") {
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof level} of "${level}" for level`);
+        }
+
+        if (typeof baseStackAmt != "number") {
+            throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof baseStackAmt} of "${baseStackAmt}" for baseStackAmt`);
+        }
+
+        let startingStackAmount = 0;
+
+        for (let i = 0; i < this.levelIncrements.length; i++) {
+            if (level < this.levelIncrements[i]) {
+                startingStackAmount = baseStackAmt + i;
+                break;
+            } else {
+                startingStackAmount = baseStackAmt + i;
+            }
+        }
+        return startingStackAmount;
+    }
+}
+
+/**
+ * Contains the animation of the game title.
+ * Needs to be called within the GameManager
+ */
 class GameTitle {
     constructor() {
         this.heading = document.getElementById('heading');
@@ -262,6 +282,24 @@ class GameTitle {
     }
 }
 
+/**
+ * Takes in the amount of stacks, blocks and empty stacks and returns
+ * an array of colours. 
+ * Example: 
+ * 6 stacks, 4 blocks, 2 empty stacks would return;
+ * 
+ * Need 4 filled stacks of colours (from 6 stacks - 2 empty stacks)
+ * Need 4 of each colour (from the 4 blocks param)
+ * Need 2 empty stacks (so 4 filled stacks + 2 empty stacks = 6 total stacks)
+ * 
+ * It then randomises the colours making sure the empty stacks are at the end.
+ * returnArray =    ["colour1", "colour2","colour2","colour3",
+ *                   "colour2", "colour1", "colour4","colour4",
+ *                   "colour4", "colour3","colour3", "colour2",
+ *                   "colour1", "colour1", "colour4", "colour3",
+ *                    undefined, undefined, undefined, undefined,
+ *                    undefined, undefined, undefined, undefined]
+ */
 class ColourInitialiser {
     constructor() {
         this.BASE_COLOURS = [
@@ -321,6 +359,13 @@ class ColourInitialiser {
     }
 }
 
+/**
+ * Contains the GameStacks object for creating gameStacks, updating initialisation
+ * properties, and general state management and game logic.
+ * 
+ * Interlinked with the Stack and Block object, due to the GameStacks generating these objects
+ * within the method createInitialGameStacks().
+ */
 class GameStacks {
     constructor() {
         this.stacks = undefined;
@@ -339,7 +384,6 @@ class GameStacks {
         if (typeof normBlock != "number") {
             throw new Error(`Incorrect data type. Needs to be a number. You passed in a ${typeof normBlock} of "${normBlock}" for normBlock`);
         }
-
 
         if (normStack == null || normBlock == null) {
             throw new Error("You did not pass in the right amount of args");
@@ -546,6 +590,10 @@ class GameStacks {
     }
 }
 
+/**
+ * Class to set the state of the stacks, and hold the properties of the 
+ * class and ID used for targetting the HTML, and the blocks array. 
+ */
 class Stack {
     constructor() {
 
@@ -563,6 +611,7 @@ class Stack {
 
     }
 
+    // consolidation of all Stack state update methods, for one simple call
     updateStackState() {
         this.isStackEmpty();
         this.isStackFilled();
@@ -612,6 +661,11 @@ class Stack {
 
 }
 
+/**
+ * Basic object to hold the required properties of a block, the 
+ * Stack class checks these properties to define the Stack state throughout
+ * the game play. 
+ */
 class Block {
     constructor() {
         this.blockClass = undefined;
