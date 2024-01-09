@@ -33,23 +33,45 @@ class GameManager {
         this.howToButton.addEventListener('click', (event) => this.eventHandlerOpenHowToPlay(event));
         this.closeHowToButton.addEventListener('click', (event) => this.eventHandlerCloseHowToPlay(event));
 
+        this.storedLevel = undefined;
+        this.storedColourArray = [];
     }
+
+
 
     startGame() {
 
-        if (localStorage.getItem("level") !== null) {
-            this.currentLevel = parseInt(localStorage.getItem("level"));
-        }
-
+        this.extractLocalStorage()
         this.gameTitle.clearTitle();
         this.gameTitle.createTitle();
+
+        if (localStorage.getItem("levelData") !== null) {
+            if (this.currentLevel <= this.storedLevel) {
+                this.currentLevel = this.storedLevel;
+            }
+        }
+
         this.updateLevelText();
         const startingStackAmountForLevel = this.levelManager.getStartingStackAmtForLevel(this.currentLevel, this.gameSettings.stackAmt);
-        this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt);
+
+        if (this.currentLevel == 1) {
+            this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt);
+
+        } else if (localStorage.getItem("levelData") !== null) {
+            if (this.currentLevel <= this.storedLevel) {
+                this.initialColourArray = this.storedColourArray;
+            } else {
+                this.initialColourArray = this.colourInitialiser.setInGameColours(startingStackAmountForLevel, this.gameSettings.blockAmt, this.gameSettings.emptyStackAmt);
+            }
+        }
+        console.log(this.initialColourArray)
+
         this.gameStacks = new GameStacks().createInitialGameStacks(startingStackAmountForLevel, this.gameSettings.blockAmt).addColoursToGameStacksBlocks(this.initialColourArray);
         this.drawGameStacksToDom();
         this.addEventListenersStackArea();
+        this.saveToLocalStorage();
 
+        console.log(this)
     }
 
     drawGameStacksToDom() {
@@ -116,7 +138,6 @@ class GameManager {
 
                 if (this.gameStacks.hasWon()) {
                     this.currentLevel++;
-                    this.saveProgressToBrowser();
                     this.startGame();
                 }
 
@@ -133,8 +154,24 @@ class GameManager {
         }
     }
 
-    saveProgressToBrowser() {
-        localStorage.setItem("level", this.currentLevel);
+
+    saveToLocalStorage() {
+        localStorage.setItem("levelData", [this.currentLevel, this.initialColourArray].toString());
+    }
+
+    extractLocalStorage() {
+
+        if (localStorage.getItem("levelData") !== null) {
+            let storedData = localStorage.getItem("levelData").split(',')
+            this.storedLevel = parseInt(storedData.splice(0, 1))
+            this.storedColourArray = storedData.map((colour) => {
+                if (colour.length == 0) {
+                    return undefined
+                } else {
+                    return colour
+                }
+            });
+        }
     }
 
     updateLevelText() {
