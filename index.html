@@ -25,89 +25,89 @@
 
 <body>
 
-    <!-- Main Game Section -->
-    <div id="game-section" class="game-section">
+    <!-- How to play Modal -->
+    <div class="flex">
+        <section id="how-to-modal" class="how-to-modal">
 
-        <!-- How to play Modal -->
-        <div class="flex">
-            <div id="how-to-modal" class="how-to-modal">
-                <div id="close-button" class="close-button button"><span>X</span></div>
+            <div id="close-button" class="close-button button"><span>X</span></div>
+            <h2 class="how-to-play__title">How to play</h2>
+            <div>
+                <p class="how-to-play__content">The aim of the game is to sort the shuffled stacks of blocks
+                    into stacks containing the same colour</p>
+                <div class="flex">
+                    <div class="gameplay-gif"></div>
+                </div>
+            </div>
+
+            <section>
+                <h3 class="how-to-play__subtitle">Support Actions</h3>
 
                 <section>
-                    <h2 class="how-to-play__title">How to play</h2>
-                    <div>
-                        <p class="how-to-play__content">The aim of the game is to sort the shuffled stacks of blocks
-                            into stacks containing the same colour</p>
-                        <div class="flex">
-                            <div class="gameplay-gif"></div>
-                        </div>
-                    </div>
-                </section>
-                <section>
-                    <h3 class="how-to-play__subtitle">Support Actions</h3>
-
-
                     <div class="how-to-play-action">
                         <div class="add-block-button button"></div>
-                        <p class="how-to-play__content">Add block</p>
+                        <h4 class="how-to-play__content">Add block</h4>
                     </div>
                     <div class="flex">
                         <div class="addblock-gif"></div>
                     </div>
+                </section>
 
+                <section>
                     <div class="how-to-play-action">
                         <div class="undo-button button"></div>
-                        <p class="how-to-play__content">Undo move</p>
+                        <h4 class="how-to-play__content">Undo move</h4>
                     </div>
                     <div class="flex pd-top">
                         <div class="undo-gif"></div>
                     </div>
+                </section>
 
+                <section>
                     <div class="how-to-play-action">
                         <div class="reset-button button"></div>
-                        <p class="how-to-play__content">Reset Level</p>
+                        <h4 class="how-to-play__content">Reset
+                            Level</h4>
                     </div>
                     <div class="flex">
                         <div class="reset-gif"></div>
                     </div>
-
                 </section>
-            </div>
-        </div>
 
-        <!-- Title section -->
-        <div id="title-section" class="title-section">
-            <div id="heading" class="title-section__title" role="heading" aria-level="1" aria-label="Colour Sort"></div>
-        </div>
+            </section>
+
+        </section>
+    </div>
+
+
+    <!-- Title section -->
+    <header id="title-section" class="title-section">
+        <h1 id="heading" class="title-section__title">Colour Sort</h1>
+    </header>
+
+    <!-- Main Game Section -->
+    <main id="game-section" class="game-section">
 
         <!-- Action Buttons section -->
+        <!-- As there isn't a need for a heading, a div was used instead of section -->
         <div id="action-section" class="action-section">
-            <div>
-                <div id="reset-button" class="reset-button button" role="button" aria-label="reset button"></div>
-            </div>
-            <div>
-                <div id="undo-button" class="undo-button button" role="button" aria-label="undo button"></div>
-            </div>
-            <div>
-                <div id="add-block-button" class="add-block-button button" role="button" aria-label="add block button">
-                </div>
-            </div>
-            <div>
-                <div id="how-to-button" class="how-to-button button" role="button" aria-label="how to play button">
-                </div>
-            </div>
+            <button id="reset-button" class="reset-button button" aria-label="reset button"></button>
+            <button id="undo-button" class="undo-button button" aria-label="undo button"></button>
+            <button id="add-block-button" class="add-block-button button" aria-label="add block button">
+            </button>
+            <button id="how-to-button" class="how-to-button button" aria-label="how to play button">
+            </button>
         </div>
 
         <!-- Level Display Section -->
-        <div id="level-section" class="level-section">
+        <section id="level-section" class="level-section">
             <h2 id="level-section__level">Level 1</h2>
-        </div>
+        </section>
 
         <!-- Main Playable Game Section for the Stacks/Blocks, content injected with javascript code -->
+        <!-- As there isn't a need for a heading, a div was used instead of section -->
         <div id="stack-section" class="stack-section">
         </div>
-
-    </div>
+    </main>
 
     <script src="assets/javascript/script.js" type="module"></script>
 </body>

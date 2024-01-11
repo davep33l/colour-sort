@@ -81,6 +81,7 @@ body {
 .button {
     height: var(--block-dimensions);
     width: var(--block-dimensions);
+    border: none;
 }
 
 .undo-button:active,
@@ -119,7 +120,7 @@ body {
     font-family: monospace;
     padding: 1rem;
     overflow: auto;
-    padding-bottom: 2rem;
+    padding-bottom: 5rem;
     max-width: 600px;
 }
 
@@ -135,7 +136,7 @@ body {
 }
 
 .how-to-play__content {
-    padding-inline: 1rem;
+    padding: 1rem;
 }
 
 .close-button {
@@ -179,6 +180,12 @@ body {
 }
 
 /* Utility styles */
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
 .red {
     color: #e6194B;
 }
@@ -221,9 +228,4 @@ body {
 
 .olive {
     color: #808000;
-}
-
-.flex {
-    display: flex;
-    justify-content: center;
 }
