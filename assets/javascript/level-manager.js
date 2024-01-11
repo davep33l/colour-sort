@@ -4,7 +4,6 @@
  */
 export class LevelManager {
     constructor() {
-        // this.levelIncrements = [2, 3, 4, 5, 6, 7, 8, 9, 10];
         this.levelIncrements = [2, 4, 6, 9, 14, 22, 33, 51, 80];
     }
 

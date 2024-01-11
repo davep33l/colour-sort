@@ -1,5 +1,5 @@
-import { Stack } from './stack.js'
-import { Block } from './block.js'
+import { Stack } from './stack.js';
+import { Block } from './block.js';
 
 /**
  * Contains the GameStacks object for creating gameStacks, updating initialisation

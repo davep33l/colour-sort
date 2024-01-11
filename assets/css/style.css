@@ -37,6 +37,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-bottom: 1px solid white;
 }
 
 /* Actions Sections Styles */
@@ -44,7 +45,10 @@ main {
     display: flex;
     justify-content: space-evenly;
     padding-block: 1rem;
-    border-top: 1px solid white;
+}
+
+.action-section>* {
+    gap: 2rem;
 }
 
 /* Level Section Styles */

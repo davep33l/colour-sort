@@ -1,8 +1,8 @@
-import { GameSettings } from './game-settings.js'
-import { LevelManager } from './level-manager.js'
-import { GameTitle } from './game-title.js'
-import { ColourInitialiser } from './colour-initialiser.js'
-import { GameStacks } from './game-stacks.js'
+import { GameSettings } from './game-settings.js';
+import { LevelManager } from './level-manager.js';
+import { GameTitle } from './game-title.js';
+import { ColourInitialiser } from './colour-initialiser.js';
+import { GameStacks } from './game-stacks.js';
 
 /**
  * Main class used to initialise the game, with startGame. 
@@ -70,7 +70,6 @@ export class GameManager {
         this.addEventListenersStackArea();
         this.saveToLocalStorage();
 
-        console.log(this)
     }
 
     bindEventListeners() {
@@ -169,13 +168,13 @@ export class GameManager {
     extractLocalStorage() {
 
         if (localStorage.getItem("levelData") !== null) {
-            let storedData = localStorage.getItem("levelData").split(',')
-            this.storedLevel = parseInt(storedData.splice(0, 1))
+            let storedData = localStorage.getItem("levelData").split(',');
+            this.storedLevel = parseInt(storedData.splice(0, 1));
             this.storedColourArray = storedData.map((colour) => {
                 if (colour.length == 0) {
-                    return undefined
+                    return undefined;
                 } else {
-                    return colour
+                    return colour;
                 }
             });
         }

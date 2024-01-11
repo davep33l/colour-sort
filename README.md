@@ -4,6 +4,8 @@ Colour Sort is a single player endless sorting game. It has increasingly difficu
 
 The website can be viewed [here](https://davep33l.github.io/colour-sort/).
 
+![Am I Responsive](/readme/images/am-i-responsive.png)
+
 ## Scope
 
 ### User Stories/Goals
@@ -50,15 +52,25 @@ For the game I selected the colours in which I felt were also pleasing to the ey
 
 ## Features
 
+See Testing for demonstration of the features
+
 - Auto randomising of coloured blocks to initiate a new level/game
 - Game logic to prevent incorrect moves
 - Ability to undo the previous move
 - Ability to reset the current level
 - Ability to add up to 2 supporting blocks to assist with level completion
 - Automatic level saving
+- Saves state of colours if you close browser and return
 - Animated Game Title
 - Informative How to Play section (with gifs of gameplay)
 - Endless gameplay
+
+## Future features
+
+- An accessibility mode, where the user can turn on numbers as overlay to the colours to help identify the correct blocks if colour blind
+- Database storage for players, for a leaderboard, level storage and start game colour formation (instead of localStorage)
+- Special Level, where all colours are hidden, except for the top row, and they reveal as you move a block
+- Advertisements for using "Add block", "Reset" and "Undo"
 
 ## Deployment
 
@@ -98,43 +110,13 @@ This game was created using HTML, CSS and vanilla Javascript.
 | [favicon.io](https://favicon.io/)            | Online Software | Development     | This application was used to generate the favicons for the website, based on the png I designed in Canva |
 | [Screentogif](https://www.screentogif.com/)            | Desktop Software | Development     | This application was used to generate the gifs for the how to play section |
 | [Google Chrome](https://www.google.com/intl/en_uk/chrome/)            | Online Software | Development     | This application was used as the browser of choice for development. Utilising the Devtools throughout the development cycle |
+|[ui.dev/amiresponsive](https://ui.dev/amiresponsive)|Online Software| Misc| This was used to create the responsive image for the top of the readme|
 
 
 ## Testing
 
-### HTML Validator Testing
+Please see the [TESTING.md](/testing/TESTING.md) file for detailed test results.
 
-### CSS Validator Testing
-
-### Lighthouse Testing
-
-### Jshint Testing
-
-### WAVE (Web Accessibility Evaluation Tool) Testing
-
-### Manual Testing
-
-### Bugs
-
-#### Bug 1
-
-The first major bug I encountered was adding the event handler to the stacks. I wanted to be able to maintain the context of this within the event handler function however my first iteration of the code returned this and event as the same. Below is my first iteration.
-
-`this.domStackSection.getElementsByClassName(this.stackClass)[i].addEventListener('click', this.handleGameClicks);`
-
-However, this was not returning the correct context of "this" (as I wanted it to reference the this properties within the class). After researching via google, I found a solution on stack overflow explaining how to access a class instance from an event handler ( [found here](https://stackoverflow.com/questions/44606399/typescript-how-to-access-the-class-instance-from-event-handler-method) ). I then researched in the MDN documentation and found supporting evidence to use an arrow function ( [found here](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#the_value_of_this_within_the_handler) ).
-
-I therefore changed the line of code that was adding the event handler to the following:
-
-`this.domStackSection.getElementsByClassName(this.stackClass)[i].addEventListener('click', (event) => this.handleGameClicks(event));`
-
-I was then able to successfully see that the output of the below returned my desired results.
-
-`console.log(this)` // returns the Game class object (previously returning the DOM element from the event)
-
-`console.log(event.currentTarget)` // returns the DOM element from the event
-
-`console.log(event.currentTarget === this)` // returns false (as now expected)
 
 ## Credits
 
