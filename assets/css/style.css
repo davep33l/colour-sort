@@ -2,7 +2,7 @@
 
 /* Custom Variables to change block dimensions */
 :root {
-    --block-dimensions: 40px;
+    --block-dimensions: 30px;
 }
 
 /* Global reset to enable consistency across browsers */
@@ -16,6 +16,15 @@ body {
     color: white;
     background-color: black;
     font-family: "Rubik Doodle Shadow";
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
 }
 
 /* Title Section Styles */
@@ -23,6 +32,7 @@ body {
     margin-block: 1rem;
     text-align: center;
     font-size: 220%;
+    font-size: clamp(.9rem, 4vw, 2.8rem);
     letter-spacing: .5rem;
     display: flex;
     justify-content: center;
@@ -120,7 +130,7 @@ body {
     font-family: monospace;
     padding: 1rem;
     overflow: auto;
-    padding-bottom: 5rem;
+    padding-bottom: 15rem;
     max-width: 600px;
 }
 
@@ -228,4 +238,47 @@ body {
 
 .olive {
     color: #808000;
+}
+
+/* Media queries */
+@media screen and (min-width:360px) {
+    :root {
+        --block-dimensions: 40px;
+    }
+}
+
+@media screen and (min-width:390px) {
+    :root {
+        --block-dimensions: 44px;
+    }
+}
+
+@media screen and (min-width:414px) {
+    :root {
+        --block-dimensions: 46px;
+    }
+
+    .stack-section {
+        max-width: 414px;
+        align-self: center;
+    }
+}
+
+@media screen and (min-width:768px) {
+    :root {
+        /* keep this */
+        --block-dimensions: 50px;
+    }
+
+    .stack-section {
+        max-width: 500px;
+        align-self: center;
+    }
+}
+
+@media screen and (min-width:1024px) {
+    :root {
+        /* keep this */
+        --block-dimensions: 60px;
+    }
 }
