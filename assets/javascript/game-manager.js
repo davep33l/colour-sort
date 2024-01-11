@@ -33,11 +33,7 @@ export class GameManager {
         this.howToButton = document.getElementById('how-to-button');
         this.closeHowToButton = document.getElementById('close-button');
 
-        this.undoButton.addEventListener('click', (event) => this.undoMove(event));
-        this.resetButton.addEventListener('click', (event) => this.resetLevel(event));
-        this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
-        this.howToButton.addEventListener('click', (event) => this.eventHandlerOpenHowToPlay(event));
-        this.closeHowToButton.addEventListener('click', (event) => this.eventHandlerCloseHowToPlay(event));
+        this.bindEventListeners();
 
         this.storedLevel = undefined;
         this.storedColourArray = undefined;
@@ -75,6 +71,14 @@ export class GameManager {
         this.saveToLocalStorage();
 
         console.log(this)
+    }
+
+    bindEventListeners() {
+        this.undoButton.addEventListener('click', (event) => this.undoMove(event));
+        this.resetButton.addEventListener('click', (event) => this.resetLevel(event));
+        this.addBlockButton.addEventListener('click', (event) => this.addBlock(event));
+        this.howToButton.addEventListener('click', (event) => this.eventHandlerOpenHowToPlay(event));
+        this.closeHowToButton.addEventListener('click', (event) => this.eventHandlerCloseHowToPlay(event));
     }
 
     drawGameStacksToDom() {
